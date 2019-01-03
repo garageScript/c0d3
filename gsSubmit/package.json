@@ -1,0 +1,21 @@
+{
+  "name": "gssubmit",
+  "version": "1.0.0",
+  "description": "A script to submit git diff for students",
+  "main": "index.js",
+  "bin": {
+    "submit": "./index.js",
+    "gssubmit": "./index.js"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "child_process": "^1.0.2",
+    "graphql-request": "^1.6.0",
+    "prompt": "^1.0.0",
+    "simple-git": "^1.96.0"
+  }
+}
