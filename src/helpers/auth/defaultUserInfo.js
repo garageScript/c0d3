@@ -7,7 +7,7 @@ export const garageScript = {
   signUpSuccess: false,
   signUpFeedback: '',
   redirectPath: '/curriculum'
-};
+}
 
 export const gsEmail = {
   auth: false,
@@ -28,4 +28,4 @@ export const gsEmail = {
   },
   message: '',
   error: ''
-};
+}

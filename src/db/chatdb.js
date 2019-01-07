@@ -1,5 +1,3 @@
-import loader from './loader'
-import requests from '../helpers/requests'
 import io from 'socket.io-client'
 import { ApolloClient } from 'apollo-client'
 import gql from 'graphql-tag'
@@ -197,6 +195,7 @@ const chatdb = {
   },
 
   createRoom: function (roomName, userId, otherUserId) {
+    /*
     requests.post(
       `${serverDB}/rooms`,
       { roomName, otherUserId },
@@ -224,6 +223,7 @@ const chatdb = {
         }
       }
     )
+    */
   },
 
   editMessage: function (roomId, messageId, content, editedTime) {
@@ -264,11 +264,13 @@ const chatdb = {
       `,
       { messageId, roomId }
     ).then(() => {
+      /*
       loader.store.dispatch({
         type: 'CHAT_MESSAGE_DELETE',
         roomId,
         messageId
       })
+      */
     })
   },
 
@@ -289,15 +291,17 @@ const chatdb = {
       `,
       { userId, searchTerm }
     ).then(results => {
+      /*
       loader.store.dispatch({
         type: 'CHAT_SEARCH',
         results: results.data.searchItem
       })
+      */
     })
   },
 
   searchClear: function () {
-    loader.store.dispatch({ type: 'CHAT_SEARCH_CLEAR' })
+    // loader.store.dispatch({ type: 'CHAT_SEARCH_CLEAR' })
   }
 }
 
