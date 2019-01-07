@@ -1,0 +1,40 @@
+.card.gs-lesson-card {
+  position: relative;
+}
+
+.card.gs-lesson-card.small {
+  margin: 20px 0px;
+  width: 48%;
+  min-width: 300px;
+}
+
+.card.gs-lesson-card.passed {
+  background-color: #f4fcf5;
+  border: 2px solid #64fc76;
+}
+
+.gs-order {
+  font-size: 20px;
+  width: 60px;
+  text-align: center;
+  height: 60px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gs-order-container.col-2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.gs-card-badge {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
