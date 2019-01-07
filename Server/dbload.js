@@ -23,6 +23,8 @@ const Lesson = sequelize.define('lesson', {
 const User = sequelize.define('user', {
   name: Sequelize.STRING,
   username: Sequelize.STRING,
+  password: Sequelize.STRING,
+  email: Sequelize.STRING,
   gsId: Sequelize.INTEGER,
   isOnline: Sequelize.BOOLEAN
 })
