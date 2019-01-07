@@ -1,0 +1,23 @@
+/*
+ * additional styles for sign-in and sign-up forms
+ */
+.auth-form input.form-control {
+  margin-bottom: 1px;
+}
+.auth-form {
+  background-color: #fff;
+  box-shadow: 2px 5px 10px 2px #d4d4d4;
+  margin: 5% auto 10% auto;
+  padding: 5% 5% 2% 5%;
+  width: 500px;
+}
+.feedback {
+  font-size: 0.8rem;
+  min-height: 20px;
+}
+.feedback.invalid {
+  color: #f44336;
+}
+.feedback.valid {
+  color: #00c851;
+}
