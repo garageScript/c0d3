@@ -1,32 +1,110 @@
-.App {
-  text-align: center;
+/* bold links */
+.gs-bold {
+  font-weight: 800;
+  padding-left: 4;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
+/* nav bar styling */
+.nav-bar {
+  background-color: #343a40;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* typography */
+.gs-h1 {
+  font-family: -apple-system, BlinkMacSystemFont, “Segoe UI”, “Roboto”, “Oxygen”,
+    “Ubuntu”, “Cantarell”, “Fira Sans”, “Droid Sans”, “Helvetica Neue”,
+    sans-serif;
+  color: black;
+  padding: 5px;
+  margin-left: 37px;
+  margin-top: 0px;
+}
+
+.gs-h3 {
+  margin: 15px;
+}
+
+.gs-h5 {
+  margin: 20px;
+  padding: 5px;
+  text-color: #fff;
+  background-color: #e9ebed;
+}
+
+.gs-link {
+  padding: 5px;
+}
+
+/* layout */
+.gs-container-1 {
+  background-color: #f7f8f9;
+  padding: 40px;
+  padding-top: 15px;
+  padding-bottom: 10px;
+}
+
+.gs-container-2 {
+  background-color: white;
+  padding: 40px;
+  padding-top: 15px;
+  padding-bottom: 10px;
+}
+
+.gs-input-space {
+  padding: 5px;
+  margin: 10px;
+}
+
+.gs-body-space {
+  padding: 5px 15px 20px 15px;
+  margin: 5px 30px 8px 30px;
+}
+
+.gs-response-msg {
+  padding: 5px 15px 20px 30px;
+  margin: left;
+  display: inline;
+}
+
+.gs-card-space {
+  padding: 5px 0px 5px 0px;
+  margin: 5px 0px 5px 0px;
+}
+
+.gs-table {
+  background-color: white;
+  padding: 20px;
+  margin: 10px;
+}
+
+/* code style */
+.code,
+pre {
+  background: #f5f7f9;
+  border-bottom: 1px solid #d8dee9;
+  font-family: 'Courier New';
+  font-size: 10pt;
+}
+
+.code {
+  padding: 2px 4px;
+  vertical-align: text-bottom;
+}
+
+.pre {
+  padding: 0.2em;
+  border-left: 2.5px solid #33b6e5;
+}
+
+/* button style */
+.gs-button {
+  font-size: 10pt;
+  border-width: 1.5px;
+}
+
+.gs-input-btn {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  margin-top: auto;
+  margin-bottom: 12px;
 }
