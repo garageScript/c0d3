@@ -1,5 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { ApolloProvider } from 'react-apollo'
+
 import './App.css'
 // components
 // Enable when snippets are in graphQL
@@ -15,10 +17,9 @@ import Profile from './components/UserProfile'
 import NotFound from './components/NotFound'
 import PrivateRoute from './components/PrivateRoute'
 import NavBar from './components/NavBar'
-// garageBase
-import chatdb from './db/chatdb'
-import { ApolloProvider } from 'react-apollo'
 import LessonListAdmin from './components/Admin/LessonList'
+
+import chatdb from './db/chatdb'
 
 const Home = () => {
   return (
