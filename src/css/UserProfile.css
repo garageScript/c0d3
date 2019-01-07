@@ -1,0 +1,27 @@
+.description {
+  text-align: right;
+}
+
+.merge-request-status {
+  text-align: right;
+}
+
+.name-username-email {
+  text-align: center;
+}
+
+.date-picker {
+  text-align: center;
+}
+
+.updated-mr {
+  padding: 10px;
+}
+
+.upvote-icon {
+  padding: 2px;
+}
+
+.upvote-data {
+  padding: 10px;
+}

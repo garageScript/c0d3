@@ -1,0 +1,53 @@
+.fixed-btn {
+  bottom: 24px;
+  right: 24px;
+  position: fixed;
+}
+
+.chat-container-mini {
+  top: 100px;
+  bottom: 110px;
+  right: 35px;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+  background-color: white;
+  box-shadow: 10px 10px 10px lightgrey;
+  border: 1px solid lightgray;
+}
+
+.room-info-mini {
+  flex: 1;
+  padding-bottom: 2px;
+}
+
+.room-name-mini {
+  display: block;
+  margin: 10px 5px 0px 10px;
+}
+
+.room-desc-mini {
+  display: block;
+  margin-left: 10px;
+}
+
+.chat-body-mini {
+  flex: 8;
+  width: 350px;
+  padding: 5px;
+  border: 1px solid lightgray;
+  overflow-y: scroll;
+}
+
+.chat-message-mini {
+  margin-left: 10px;
+}
+
+.chat-input-mini {
+  flex: 1;
+  width: 100%;
+  background-color: white;
+  bottom: 0px;
+  padding: 5px;
+}

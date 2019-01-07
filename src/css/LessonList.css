@@ -1,0 +1,23 @@
+.custom-badge {
+  margin-left: 20px;
+}
+
+.custom-box {
+  width: 50%;
+}
+
+.custom-text {
+  font-family: 'courier';
+  font-size: 20px;
+}
+
+.gs-lessonlist-container {
+  display: flex;
+  flex-flow: wrap;
+  justify-content: space-between;
+}
+
+.gs-curriculum-header {
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
