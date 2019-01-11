@@ -1,0 +1,117 @@
+.container{
+  width: 650px;
+  border: 1px solid rgb(229,229,229);
+  border-radius: 5px;
+}
+.header{
+  background-color: rgb(250,250,250);
+  border-radius: 5px 5px 0 0;
+  height: 35px;
+  width: 100%;
+}
+.comment{
+  background-color: rgb(255,255,255);
+  border-radius: 0 0 5px 5px;
+  height: 80px;
+  width: 100%;
+}
+.body{
+  background-color: rgb(40,40,34);
+  height: 149px;
+  border-left: 1px solid rgb(229,229,229);
+  border-right: 1px solid rgb(229,229,229);
+}
+.header-text{
+  margin-left: 15px;
+  line-height: 35px;
+}
+.line-number{
+  line-height: 30px;
+  padding-right: 5px;
+  display: inline-block;
+  width: 5%;
+  text-align: right;
+  border-right: 1px solid rgb(128,128,128);
+  color: rgb(105,105,100);
+}
+button{
+  border: 1px solid rgb(229,229,229);
+  border-radius: 3px;
+  height: 30px;
+  vertical-align: center;
+  background-color: rgb(255,255,255);
+}
+green{
+  font-size: 0.8em;
+  color: rgb(116,226,46);
+  display: inline-block;
+}
+blue{
+  font-size: 0.8em;
+  color: rgb(101,217,239);
+  display: inline-block;
+}
+red{
+  font-size: 0.8em;
+  color: rgb(250,37,111);
+  display: inline-block;
+}
+yellow{
+  font-size: 0.8em;
+  color: rgb(230,219,116);
+  display: inline-block;
+}
+.green-background{
+  background-color: rgb(53,59,36);
+}
+.profile-section{
+  text-align: center;
+  float: left;
+  height: 100%;
+  display: inline-block;
+  width: 10%;
+}
+.profile-pic{
+  margin-top: 5px;
+  height: 30px;
+  width: 30px;
+  border-radius: 15px;
+}
+.comment-left{
+  float: left;
+  display: inline-block;
+  width: 5%;
+  height: 100%;
+  padding-right: 5px;
+  background-color: rgb(250,250,250);
+  border-right: 1px solid rgb(240,240,240);
+}
+.comment-right{
+  float: left;
+  display: inline-block;
+  width: 80%;
+  height: 100%;
+  padding-right: 5px;
+}
+.comment-up{
+  width: 100%;
+  height: 25%;
+  padding: 5px;
+}
+.comment-bottom{
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 10px 5px 10px;
+}
+.button-shape{
+  color: grey;
+  margin-left: 150px;
+  width: 35px;
+  height: 16px;
+  border: 1px solid rgb(229,229,229);
+  border-radius: 9px;
+  padding: 1px 4px;
+}
+.pointer{
+  cursor: pointer;
+}

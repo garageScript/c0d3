@@ -1,0 +1,81 @@
+#videoSection {
+  position: relative;
+  color: #0f0;
+  top: -115px;
+  margin-bottom: -115px;
+}
+
+#videoSection h3{
+  opacity: 0.8;
+  margin-bottom: -10px;
+  text-align: center;
+}
+
+.pulse {
+  display: table;
+  width: 100px;
+  height: 100px;
+  background: #798eea;
+  cursor: pointer;
+  -webkit-box-shadow: 0 0 0 rgba(121, 142, 234, 0.4);
+  box-shadow: 0 0 0 rgba(121, 142, 234, 0.4);
+  -webkit-animation: pulse 2s infinite;
+  animation: pulse 2s infinite;
+  text-align: center;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  border-radius: 50%; }
+  .pulse i {
+    font-size: 30px !important;
+    display: table-cell;
+    vertical-align: middle; }
+
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(121, 142, 234, 0.4); }
+  70% {
+    -webkit-box-shadow: 0 0 0 30px rgba(121, 142, 234, 0); }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(121, 142, 234, 0); } }
+
+@keyframes pulse {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(121, 142, 234, 0.4);
+    -webkit-box-shadow: 0 0 0 0 rgba(121, 142, 234, 0.4);
+    box-shadow: 0 0 0 0 rgba(121, 142, 234, 0.4); }
+  70% {
+    -moz-box-shadow: 0 0 0 30px rgba(121, 142, 234, 0);
+    -webkit-box-shadow: 0 0 0 30px rgba(121, 142, 234, 0);
+    box-shadow: 0 0 0 30px rgba(121, 142, 234, 0); }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(121, 142, 234, 0);
+    -webkit-box-shadow: 0 0 0 0 rgba(121, 142, 234, 0);
+    box-shadow: 0 0 0 0 rgba(121, 142, 234, 0); } }
+
+.play {
+  width: 100%;
+  display: block;
+  margin: 30px 0; }
+  .play a {
+    width: 100px;
+    height: 100px;
+    display: table;
+    margin: 0 auto;
+    text-align: center;
+    background: #798eea;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    border-radius: 50%; }
+    .play a i {
+      font-size: 20px;
+      color: #fff;
+      display: table-cell;
+      vertical-align: middle; }
+
+#imageHeading {
+  width: 80%;
+  margin: 150px auto 180px auto;
+  max-height: 400px;
+}

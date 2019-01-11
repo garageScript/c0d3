@@ -37,6 +37,46 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
+## Tests
+
+### Functional Tests
+
+Profiles:
+```
+    "profiles": {
+        "base": {
+            "tests": "path:./*.js",
+//            "env": {
+//                 these only get set when running in parallel (child processes from main process)
+//                "DEBUG": "nemo*"
+//            },
+```
+
+Capabilities:
+```
+    "profiles": {
+        "base": {
+            "tests": "path:./*.js",
+            "driver": {
+                "browser": "chrome"
+// Use the below "builders" pattern to use the selenium-webdriver Builder class:
+// see: http://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_Builder.html
+//                "builders": {
+//                    "withCapabilities": [
+//                        {
+//                            "browserName": "chrome",
+//                            "chromeOptions": {
+//                                "args": [
+//                                    "headless",
+//                                    "window-size=1200,800"
+//                                ]
+//                            }
+//                        }
+//                    ]
+//                }
+```
+
+
 ## Databases
 
 ### Migration
