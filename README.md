@@ -2,7 +2,7 @@
 
 This is the codebase for the website c0d3.com, which provides a platform for students to learn coding through solving challenges
 
-## How to Start Application
+## How to Start
 
 1. Install necessary libraries - `yarn`
 2. Create a frontend and backend url for your app (must be c0d3.com domain) at [apps.c0d3.com](https://apps.c0d3.com)
