@@ -2,7 +2,7 @@
 import axios from 'axios'
 
 const client = {
-  authServer: process.env.REACT_APP_GSDB_URL,
+  authServer: process.env.SERVER_URL,
   session: {
     reqConf: { withCredentials: true },
     getInfo: async callback => {

@@ -1,50 +1,55 @@
 # C0D3.com
+
 This is the codebase for the website c0d3.com, which provides a platform for students to learn coding through solving challenges
 
-## How to Start
+## How to Start Application
 
-1. install necessary libraries - `yarn`
+1. Install necessary libraries - `yarn`
 2. Create a frontend and backend url for your app (must be c0d3.com domain) at [apps.c0d3.com](https://apps.c0d3.com)
-2. Change the environment file `.env` to map to your server url
-3. Start the front end server on the correct port - `PORT=xxxx yarn start`
-3. Start the band end server on the correct port - `cd Server && PORT=xxxx node app.js`
+   > For Example:
+   > frontend code is https://trifrog.c0d3.com with port 9623
+   > backend url is https://tri-serv.c0d3.com with port 9643
+3. Change the environment file `.env` to map to your server url
+4. Start the frontend server on the correct port - `yarn start`
+5. Start the backend server on the correct port - `supervisor Server/app.js`
 
 ## Database Overview
 
-* Lesson (description, docUrl, githubUrl, videoUrl, order, title)
-    * hasMany Challenge
-    * hasMany Submission
-    * belongsToMany User -> UserLesson
-* Challenge (status, description, title, order)
-    * hasMany Submission
-* User (name, username, password, email, gsId, isOnline)
-    * belongsToMany User (student) -> AdoptedStudent
-    * belongsToMany Lesson -> UserLesson
-    * belongsTo Room (lastroom)
-    * belongsToMany Room -> UserRoom
-* UserLesson (isPassed, isTeaching, isEnrolled)
-* Submission (mrUrl, diff, comment, status, viewCount)
-    * belongsTo User
-    * belongsTo User (reviewer)
-    * belongsTo Challenge
-    * belongsTo Lesson
-* AdoptedStudent (lessonId)
-* Star (lessonId)
-    * belongsTo User (student)
-    * belongsTo User (mentor)
-* Room (name, description, isEditable, isPrivate)
-    * belongsToMany User -> UserRoom
-    * hasMany Message
-* Message (content, isEdited)
-    * belongsTo Room
-    * belongsTo User
-* UserRoom (unread, isLastRoom)
+- Lesson (description, docUrl, githubUrl, videoUrl, order, title)
+  - hasMany Challenge
+  - hasMany Submission
+  - belongsToMany User -> UserLesson
+- Challenge (status, description, title, order)
+  - hasMany Submission
+- User (name, username, password, email, gsId, isOnline)
+  - belongsToMany User (student) -> AdoptedStudent
+  - belongsToMany Lesson -> UserLesson
+  - belongsTo Room (lastroom)
+  - belongsToMany Room -> UserRoom
+- UserLesson (isPassed, isTeaching, isEnrolled)
+- Submission (mrUrl, diff, comment, status, viewCount)
+  - belongsTo User
+  - belongsTo User (reviewer)
+  - belongsTo Challenge
+  - belongsTo Lesson
+- AdoptedStudent (lessonId)
+- Star (lessonId)
+  - belongsTo User (student)
+  - belongsTo User (mentor)
+- Room (name, description, isEditable, isPrivate)
+  - belongsToMany User -> UserRoom
+  - hasMany Message
+- Message (content, isEdited)
+  - belongsTo Room
+  - belongsTo User
+- UserRoom (unread, isLastRoom)
 
 ## Tests
 
 ### Functional Tests
 
 Profiles:
+
 ```
     "profiles": {
         "base": {
@@ -56,6 +61,7 @@ Profiles:
 ```
 
 Capabilities:
+
 ```
     "profiles": {
         "base": {
@@ -79,10 +85,8 @@ Capabilities:
 //                }
 ```
 
-
 ## Databases
 
 ### Migration
 
 If you make a copy of postgresdb, you might run into an issue where data is not auto-incrementing. To fix this, refer to this fix: https://dba.stackexchange.com/questions/65662/postgres-how-to-insert-row-with-autoincrement-id
-
