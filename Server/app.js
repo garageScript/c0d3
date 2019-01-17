@@ -103,7 +103,7 @@ app.get('*', (req, res) => {
 })
 
 // Configure ports
-const PORT = process.env.PORT
+const PORT = process.env.SERVER_PORT
 server.listen(PORT, function () {
   console.log(`Server is listening on Port: ${PORT}`)
 })

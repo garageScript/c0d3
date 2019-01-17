@@ -12,7 +12,7 @@ import { arrUntil } from '../helpers/helpers'
 // TODO: Deprecate BASE_URL when all routes are removed
 const CONNECTION_TRIES = 10
 
-const serverDB = process.env.REACT_APP_GSDB_URL
+const serverDB = process.env.SERVER_URL
 
 const cache = new InMemoryCache()
 

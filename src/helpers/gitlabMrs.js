@@ -3,7 +3,7 @@ const gitLabMR = {
     const getMergeRequest = new XMLHttpRequest()
     getMergeRequest.open(
       'post',
-      `${process.env.REACT_APP_GSDB_URL}/profile/merge_requests`
+      `${process.env.SERVER_URL}/profile/merge_requests`
     )
     getMergeRequest.setRequestHeader('content-type', 'application/json')
     getMergeRequest.onloadend = () => {
