@@ -56,7 +56,7 @@ const apolloServer = new ApolloServer({
 apolloServer.applyMiddleware({
   app,
   cors: {
-    origin: 'https://song.c0d3.com' // TODO: Make it part of env
+    origin: process.env.CLIENT_URL
   }
 })
 
