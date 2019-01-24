@@ -76,8 +76,8 @@ app.post('/mobile-push-tokens', (req, res) => {
 })
 
 // Static content
-app.use(express.static(path.join(__dirname, '../../c0d3/build')))
-app.use(express.static(path.join(__dirname, '../../c0d3/public')))
+app.use(express.static(path.join(__dirname, '../build')))
+app.use(express.static(path.join(__dirname, '../public')))
 
 // Profile gitlab tracker
 app.post('/profile/merge_requests', gitTrackerHelper.getMergeRequests)
