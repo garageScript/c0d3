@@ -37,21 +37,42 @@ type Query {
   "Given stars"
   givenStars: [Star]
 
-  "Recieved Stars"
+ "Recieved Stars"
   receivedStars(input: UserInput):[Star]
 }
 
 type Mutation {
+  "Create or find student, then Update student enrollment to a lesson"
   enrollStudent(input: LessonId): UserLesson
+
+  "Create a star and assign it to the mentor"
   giveStar(input: LessonUserId): String
+  
+  "Create adopted student for signed-in-user"
   adoptStudent(input: LessonUserId): String
+  
+  "Delete adopted student for signed-in-user"
   unAdoptStudent(input: LessonUserId): String
+
+  "Create submission for signed-in-user"
   createSubmission(input: SubmissionInput): Submission
+
+  "Update submitted lesson"  
   unapproveSubmission(input: SubmissionEdit): Submission
+
+  "Update user lesson"
   approveSubmission(input: SubmissionEdit): Submission
+
+  "Update user lesson"
   rejectSubmission(input: SubmissionEdit): Submission
+
+  "Update submission view count"
   viewSubmission(input: SubmissionEdit): Submission
+
+  "Update student to mentor"
   makeTeacher(input: LessonId): String
+
+  "Update mentor to student"
   unMakeTeacher(input: LessonId): String
 
   "Create a new lesson"
