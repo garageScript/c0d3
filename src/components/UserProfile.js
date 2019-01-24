@@ -151,7 +151,7 @@ class UserProfile extends React.Component {
               query={USERS}
               variables={{
                 in: {
-                  userId: this.state.userId
+                  userId: `${this.state.userId}`
                 }
               }}
             >
@@ -168,7 +168,7 @@ class UserProfile extends React.Component {
               query={RECEIVED_STARS}
               variables={{
                 in: {
-                  userId: this.state.userId
+                  userId: `${this.state.userId}`
                 }
               }}
             >
@@ -306,10 +306,10 @@ class UserProfile extends React.Component {
                         <div className="md-form">
                           <DatePicker
                             todayButton={'start date'}
-                            selected={this.state.startDate}
+                            selected={this.state.startDate.toDate()}
                             selectsStart
-                            startDate={this.state.startDate}
-                            endDate={this.state.endDate}
+                            startDate={this.state.startDate.toDate()}
+                            endDate={this.state.endDate.toDate()}
                             onChange={this.handleChangeStart}
                             withPortal
                             showWeekNumbers
@@ -325,10 +325,10 @@ class UserProfile extends React.Component {
                         <div className="md-form">
                           <DatePicker
                             todayButton={'end date'}
-                            selected={this.state.endDate}
+                            selected={this.state.endDate.toDate()}
                             selectsEnd
-                            startDate={this.state.startDate}
-                            endDate={this.state.endDate}
+                            startDate={this.state.startDate.toDate()}
+                            endDate={this.state.endDate.toDate()}
                             onChange={this.handleChangeEnd}
                             withPortal
                             showWeekNumbers

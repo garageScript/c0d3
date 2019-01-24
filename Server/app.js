@@ -2,8 +2,6 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').load()
 }
 
-// Configuration imports
-const { session } = require(`./config.json`)
 const path = require('path')
 
 // Imports for requests
@@ -30,6 +28,12 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 // Middleware to set session cookies
+const session = {
+  "name": "session",
+  "secret": process.env.SESSION_SECRET,
+  "domain": process.env.HOST_NAME,
+  "maxAge": 2592000000
+}
 app.use(cookieSession(session), (req, res, next) => {
   req.user = req.session.userInfo || {}
   req.user.id = parseInt(req.user.id, 10)

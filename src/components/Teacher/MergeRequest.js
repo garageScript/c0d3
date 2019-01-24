@@ -55,14 +55,14 @@ const Undo = ({ mrInfo, submissionVar, lid }) => {
 const MergeRequest = ({ lid, mrInfo }) => {
   let submissionVar = {
     in: {
-      challengeId: mrInfo.challenge.id,
-      lessonId: Number(lid),
-      userId: mrInfo.user.id
+      challengeId: `${mrInfo.challenge.id}`,
+      lessonId: `${lid}`,
+      userId: `${mrInfo.user.id}`
     }
   }
   let comment
-  const formattedCreatedAt = moment(mrInfo.createdAt).format('MMM Do h:mma')
-  const formattedUpdatedAt = moment(mrInfo.updatedAt).fromNow()
+  const formattedCreatedAt = moment(+mrInfo.createdAt).format('MMM Do h:mma')
+  const formattedUpdatedAt = moment(+mrInfo.updatedAt).fromNow()
   return (
     <div className='card-deck'>
       <div className='card mb-2 mt-1'>

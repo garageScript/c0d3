@@ -5,7 +5,7 @@ type Query {
   rooms: [Room]
   roomInfo(input: RoomIdInput): Room
   searchItem(
-    userId: Int,
+    userId: String,
     searchTerm: String
     ): [Message]
   chat: Chat
@@ -14,7 +14,7 @@ type Query {
 type Mutation {
   destroyRoom(input: RoomIdInput): Room
   leaveRoom(input: RoomIdInput): Room
-  deletePost(messageId: Int, roomId: Int): GENERICSUCCESS
+  deletePost(messageId: String, roomId: String): GENERICSUCCESS
   editMessage(input: MsgEditInfo): GENERICSUCCESS
   createRoom(input: RoomInput): Room
   editRoom(input: RoomInput): Room
@@ -26,7 +26,7 @@ type Mutation {
 input MsgEditInfo {
   content: String
   editedTime: Long
-  messageId: Int
+  messageId: String
 }
 
 type Room { 
@@ -35,8 +35,8 @@ type Room {
   description: String
   isEditable: Boolean
   isPrivate: Boolean
-  unread: Int
-  userCount: Int
+  unread: String
+  userCount: String
   isLastRoom: Boolean
   is_editable: Boolean
   is_private: Boolean
@@ -45,12 +45,12 @@ type Room {
 }
 
 input DirectUserInput { 
-  id: Int
+  id: String
   username: String 
 }
 
 input RoomInput { 
-  id: Int
+  id: String
   name: String 
   description: String
   isEditable: Boolean
@@ -60,7 +60,7 @@ input RoomInput {
 input MessageInput { 
   content: String 
   tmpId: String 
-  roomId: Int
+  roomId: String
 }
 
 input RoomIdInput { 
@@ -74,19 +74,19 @@ type Chat {
 }
 
 type User {
-  id: Int
+  id: String
   name: String
   username: String
   time: Long
   online: Boolean
   is_active: Boolean
-  lastroomId: Int
-  last_room: Int
+  lastroomId: String
+  last_room: String
 }
 
 type GENERICRESPONSE {
   success: Boolean
-  id: Int
+  id: String
   error: String
 }
 
@@ -95,16 +95,16 @@ type GENERICSUCCESS {
 }
 
 type DeleteUser {
-  id: Int
+  id: String
 }
 
 type Message {
-  id: Int
+  id: String
   room_name: String
-  room_id: Int
-  user_id: Int
+  room_id: String
+  user_id: String
   content: String
-  userId: Int
+  userId: String
   createdAt: String
   updatedAt: String
   isEdited: Boolean
@@ -112,8 +112,8 @@ type Message {
 }
 
 type UserRoom {
-  room_test_id: Int
-  user_test_id: Int
+  room_test_id: String
+  user_test_id: String
 }`
 
 module.exports = typeDefs

@@ -96,7 +96,7 @@ const LessonTrackerItems = ({
     <div>
       <Link to={`/profile/${studentId}`}>{studentName}</Link>
       {iconToDisplay}
-      <TeacherToggle isTeaching={isTeaching} lid={lid} studentId={studentId} />
+      <TeacherToggle isTeaching={isTeaching} lid={`${lid}`} studentId={`${studentId}`} />
       <div className='submission-container'>{challengeBar}</div>
       <hr />
     </div>
