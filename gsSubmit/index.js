@@ -4,7 +4,7 @@ const simpleGit = require('simple-git')
 const { exec } = require('child_process')
 const prompt = require('prompt')
 const { request } = require('graphql-request')
-const graphqlEndpoint = 'https://c0d3.com/graphql'
+const graphqlEndpoint = `https://j2.jakarta.gs/graphql`
 
 // Get the root path of the git
 const path = __dirname
@@ -284,7 +284,7 @@ const main = () => {
         const enrollVariables = {
           input: {
             id: lessonId,
-            userId
+            userId: `${userId}`
           }
         }
         return request(graphqlEndpoint, enrollMutation, enrollVariables)
@@ -304,7 +304,7 @@ const main = () => {
           submission: {
             lessonId,
             challengeId,
-            userId,
+            userId: `${userId}`,
             diff
           }
         }

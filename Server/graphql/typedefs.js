@@ -96,41 +96,41 @@ type Mutation {
 
 input UserInput {
   username: String
-  userId: Int
+  userId: String
 }
   input SubmissionWhere{
     status: String
   }
 
 input LessonId {
-  id: Int
+  id: String
 
   "userId is used to obtain submissions to a specific user"
-  userId: Int
+  userId: String
 
   "challengeId is used to obtain submissions to a specific challenge"
-  challengeId: Int
+  challengeId: String
 }
 
 input ChallengeId {
-  id: Int
+  id: String
 }
 
 input LessonUserId {
-  lessonId: Int
-  userId: Int
+  lessonId: String
+  userId: String
 }
 
 input ChallengeInput {
-  id: Int
-  lessonId: Int
+  id: String
+  lessonId: String
   title: String
   description: String
   order: Int
 }
 
 input LessonInput {
-  id: Int
+  id: String
   description: String
   docUrl: String
   githubUrl: String
@@ -140,60 +140,60 @@ input LessonInput {
 }
 
 input SubmissionInput {
-  challengeId: Int
+  challengeId: String
   mrUrl: String
   order: Int
   diff: String
-  lessonId: Int
-  userId: Int
+  lessonId: String
+  userId: String
 }
 
 input SubmissionEdit {
-  challengeId: Int
+  challengeId: String
   mrUrl: String
   order: Int
   comment: String
   diff: String
-  lessonId: Int
-  userId: Int
-  reviewerId: Int
+  lessonId: String
+  userId: String
+  reviewerId: String
 }
 
 type Submission {
-  id: Int
+  id: String
   status: String
   mrUrl: String
   diff: String
   viewCount: Int
   comment: String
-  userId: Int
+  userId: String
   order: Int
-  lessonId: Int
-  challengeId: Int
+  lessonId: String
+  challengeId: String
   challenge: Challenge
   reviewer: User
   user: User
-  reviewerId: Int
+  reviewerId: String
   createdAt: String
   updatedAt: String
 }
 
 type AdoptedStudent {
-  userId: Int,
-  studentId: Int,
-  lessonId: Int,
+  userId: String,
+  studentId: String,
+  lessonId: String,
 }
 
 type User {
-  id: Int
+  id: String
   username: String
   userLesson: UserLesson
 }
 
 type UserLesson {
-  id: Int
-  userId: Int
-  lessonId: Int
+  id: String
+  userId: String
+  lessonId: String
   isPassed: String
   isTeaching: String
   isEnrolled: String
@@ -201,7 +201,7 @@ type UserLesson {
 }
 
 type Lesson {
-  id: Int
+  id: String
   description: String
   docUrl: String
   githubUrl: String
@@ -214,15 +214,15 @@ type Lesson {
 }
 
 type Challenge {
-  id: Int
+  id: String
   description: String
-  lessonId: Int
+  lessonId: String
   title: String
   order: Int
 }
 
 type Star {
-  lessonId: Int
+  lessonId: String
   student: User
   mentor: User
 }

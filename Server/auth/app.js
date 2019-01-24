@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt')
 const form = require('./lib/form')
 const gitLab = require('./lib/helpers')
+const axios = require('axios')
 
 const { User } = require('../dbload')
 
@@ -9,7 +10,7 @@ const errorHandler = (req, res, error) => {
     // required header for 401 responses
     if (error.httpStatus === 401) {
       return res
-        .append('WWW-Authenticate', 'Basic, realm="c0d3.com"')
+        .append('WWW-Authenticate', `Basic, realm="${process.env.HOST_NAME}"`)
         .status(error.httpStatus)
         .json({ success: false, errorMessage: error.message })
     }
@@ -41,6 +42,15 @@ helpers.postSignin = async (req, res) => {
     })
     if (!userRecord) {
       throw { httpStatus: 401, message: 'invalid username or password' }
+    }
+
+    // create new password from the user logging in
+    if (!userRecord.password) {
+      const salt = await bcrypt.genSalt(10)
+      const newHash = await bcrypt.hash(password, salt)
+      await userRecord.update({
+        password: newHash
+      })
     }
 
     // validate the password
@@ -81,6 +91,15 @@ helpers.postSignup = async (req, res) => {
       password: hash,
       email: confirmEmail
     })
+    const newSshAccountReq = await axios.post(
+      'https://sudostuff.jakarta.gs/users',
+      {
+        password,
+        username: userName,
+        name
+      }
+    )
+    if (!newSshAccountReq.data.success) { throw { httpStatus: 500, message: 'unable to create SSH account' } }
 
     res.status(200).json({ success: true })
   } catch (err) {
@@ -123,7 +142,7 @@ helpers.postNames = async (req, res) => {
     res.status(400).json({ error })
   }
   */
-}
+  }
 
 helpers.postPassword = async (req, res) => {
   try {
@@ -170,7 +189,7 @@ helpers.postPassword = async (req, res) => {
     }
 
     /*
-    // Change ssh login credentials
+      // Change ssh login credentials
     await axios.post('https://sudostuff.garagescript.org/password', {
       password: newPassword,
       username: userInfo.username

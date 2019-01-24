@@ -2,8 +2,6 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').load()
 }
 
-// Configuration imports
-const { session } = require(`./config.json`)
 const path = require('path')
 
 // Imports for requests
@@ -30,6 +28,12 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 // Middleware to set session cookies
+const session = {
+  "name": "session",
+  "secret": process.env.SESSION_SECRET,
+  "domain": process.env.HOST_NAME,
+  "maxAge": 2592000000
+}
 app.use(cookieSession(session), (req, res, next) => {
   req.user = req.session.userInfo || {}
   req.user.id = parseInt(req.user.id, 10)
@@ -72,8 +76,8 @@ app.post('/mobile-push-tokens', (req, res) => {
 })
 
 // Static content
-app.use(express.static(path.join(__dirname, '../../c0d3/build')))
-app.use(express.static(path.join(__dirname, '../../c0d3/public')))
+app.use(express.static(path.join(__dirname, '../build')))
+app.use(express.static(path.join(__dirname, '../public')))
 
 // Profile gitlab tracker
 app.post('/profile/merge_requests', gitTrackerHelper.getMergeRequests)

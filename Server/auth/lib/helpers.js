@@ -1,12 +1,10 @@
 const axios = require('axios')
 const { URL, URLSearchParams } = require('url')
-const gitLabConf = require('../../config.json').gitLab
 
-const private_token = process.env.PRIVATE_GITHUB || gitLabConf.private_token
+const private_token = process.env.GITLAB_PTOKEN
 const gitLab = {
   url: (extraPath = '') => {
-    const { baseUrl, path } = gitLabConf
-    const url = new URL(path + extraPath, baseUrl)
+    const url = new URL('/users/' + extraPath, process.env.GITLAB_BASE_URL)
     url.search = new URLSearchParams({ private_token })
     return url.toString()
   },
