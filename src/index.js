@@ -9,10 +9,6 @@ import chatdb from './db/chatdb'
 
 loadUserInfo(() => {
   const userInfo = { ...window.userInfo }
-  const rootContent = document.getElementById('rootContent')
-  if (rootContent) {
-    rootContent.style.display = 'block'
-  }
 
   if (userInfo && userInfo.id) {
     chatdb.startSocket(userInfo)
