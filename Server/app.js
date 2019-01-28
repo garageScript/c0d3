@@ -98,13 +98,13 @@ app.get('/ios', (req, res) => {
 })
 
 const noAuthRouter = (req, res) => {
-  return res.sendFile(path.join(__dirname, '../../c0d3/public/root.html'))
+  return res.sendFile(path.join(__dirname, '../public/root.html'))
 }
 app.get('/signup', noAuthRouter)
 app.get('/signin', noAuthRouter)
 
 app.get('/*', (req, res) => {
-  if (req.user && req.user.id) { return res.sendFile(path.join(__dirname, '../../c0d3/public/root.html')) }
+  if (req.user && req.user.id) { return res.sendFile(path.join(__dirname, '../public/root.html')) }
   return res.sendFile(path.join(__dirname, '../public/landing.html'))
 })
 
