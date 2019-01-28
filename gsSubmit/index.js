@@ -4,7 +4,7 @@ const simpleGit = require('simple-git')
 const { exec } = require('child_process')
 const prompt = require('prompt')
 const { request } = require('graphql-request')
-const graphqlEndpoint = `https://j2.jakarta.gs/graphql`
+const graphqlEndpoint = `https://c0d3.com/graphql`
 
 // Get the root path of the git
 const path = __dirname
