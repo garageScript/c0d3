@@ -21,12 +21,15 @@ deploy_staging:
   
 deploy_production:
   stage: deploy
+  variables:
+    NODE_ENV: production
   script:
     - rm -rf build
     - CI=false yarn build
     - mv build/index.html public/root.html && rm public/index.html
-    - CI=false forever stop -a -l /dev/null Server/app.js --silent
-    - forever start Server/app.js
+    - pm2 stop all
+    - pm2 delete all
+    - pm2 start Server/app.js
   environment:
     name: production
     url: https://c0d3.com
