@@ -25,8 +25,8 @@ deploy_production:
     - rm -rf build
     - CI=false yarn build
     - mv build/index.html public/root.html && rm public/index.html
-    - CI=false PORT=4444 forever stop -a -l /dev/null Server/app.js --silent
-    - PORT=4444 forever start Server/app.js
+    - CI=false forever stop -a -l /dev/null Server/app.js --silent
+    - forever start Server/app.js
   environment:
     name: production
     url: https://c0d3.com
