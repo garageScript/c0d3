@@ -29,10 +29,10 @@ app.use(bodyParser.json())
 
 // Middleware to set session cookies
 const session = {
-  "name": "session",
-  "secret": process.env.SESSION_SECRET,
-  "domain": process.env.HOST_NAME,
-  "maxAge": 2592000000
+  'name': 'session',
+  'secret': process.env.SESSION_SECRET,
+  'domain': process.env.HOST_NAME,
+  'maxAge': 2592000000
 }
 app.use(cookieSession(session), (req, res, next) => {
   req.user = req.session.userInfo || {}
@@ -97,8 +97,15 @@ app.get('/ios', (req, res) => {
   return res.redirect('https://testflight.apple.com/join/B8wZp83I')
 })
 
+const noAuthRouter = (req, res) => {
+  return res.sendFile(path.join(__dirname, '../public/root.html'))
+}
+app.get('/signup', noAuthRouter)
+app.get('/signin', noAuthRouter)
+
 app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../../c0d3/public/index.html'))
+  if (req.user && req.user.id) { return res.sendFile(path.join(__dirname, '../public/root.html')) }
+  return res.sendFile(path.join(__dirname, '../public/landing.html'))
 })
 
 // Send 404 to non-existing routes
