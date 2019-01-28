@@ -1,0 +1,35 @@
+image: node:10.14.1
+
+stages:
+  - deploy
+
+before_script:
+  - yarn
+
+deploy_staging:
+  stage: deploy
+  script:
+    - rm -rf c0d3/build
+    - CI=false yarn build
+    - PORT=9631 forever stop -a -l /dev/null Server/app.js --silent
+    - PORT=9631 forever start Server/app.js
+  environment:
+    name: staging
+    url: https://staging.c0d3.com
+  only:
+  - develop
+  
+deploy_production:
+  stage: deploy
+  script:
+    - rm -rf build
+    - CI=false yarn build
+    - mv build/index.html public/root.html && rm public/index.html
+    - CI=false forever stop -a -l /dev/null Server/app.js --silent
+    - forever start Server/app.js
+  environment:
+    name: production
+    url: https://c0d3.com
+  only:
+  - master
+

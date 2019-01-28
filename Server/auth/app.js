@@ -44,15 +44,6 @@ helpers.postSignin = async (req, res) => {
       throw { httpStatus: 401, message: 'invalid username or password' }
     }
 
-    // create new password from the user logging in
-    if (!userRecord.password) {
-      const salt = await bcrypt.genSalt(10)
-      const newHash = await bcrypt.hash(password, salt)
-      await userRecord.update({
-        password: newHash
-      })
-    }
-
     // validate the password
     const hash = userRecord.password
     const pwIsValid = await bcrypt.compare(password, hash)
@@ -92,7 +83,7 @@ helpers.postSignup = async (req, res) => {
       email: confirmEmail
     })
     const newSshAccountReq = await axios.post(
-      'https://sudostuff.jakarta.gs/users',
+      process.env.SUDO_URL,
       {
         password,
         username: userName,
@@ -142,7 +133,7 @@ helpers.postNames = async (req, res) => {
     res.status(400).json({ error })
   }
   */
-  }
+}
 
 helpers.postPassword = async (req, res) => {
   try {
