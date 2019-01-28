@@ -27,8 +27,8 @@ deploy_production:
     - rm -rf build
     - CI=false yarn build
     - mv build/index.html public/root.html && rm public/index.html
-    - pm2 stop all
-    - pm2 delete all
+    - pm2 stop all || true
+    - pm2 delete all || true
     - pm2 start Server/app.js
   environment:
     name: production
