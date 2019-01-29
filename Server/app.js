@@ -29,8 +29,8 @@ app.use(bodyParser.json())
 
 // Middleware to set session cookies
 const session = {
-  'name': 'session',
-  'secret': process.env.SESSION_SECRET,
+  'name': 'c0d3session',
+  'keys': [process.env.SESSION_SECRET],
   'domain': process.env.HOST_NAME,
   'maxAge': 2592000000
 }
