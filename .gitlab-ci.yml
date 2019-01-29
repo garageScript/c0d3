@@ -23,6 +23,9 @@ deploy_production:
   stage: deploy
   variables:
     NODE_ENV: production
+    REACT_APP_SERVER_URL: https://c0d3.com
+    HOST_NAME: c0d3.com
+    CLIENT_URL: https://c0d3.com
   script:
     - rm -rf build
     - CI=false yarn build
