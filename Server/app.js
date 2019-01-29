@@ -36,7 +36,11 @@ const session = {
 }
 app.use(cookieSession(session), (req, res, next) => {
   req.user = req.session.userInfo || {}
-  req.user.id = parseInt(req.user.id, 10)
+  if (!req.user.id) {
+    req.session = null
+  } else {
+    req.user.id = parseInt(req.user.id, 10)
+  }
   next()
 })
 
