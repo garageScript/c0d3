@@ -30,7 +30,7 @@ const GetUserRooms = ({ channelOnly, roomId, refetch }) => {
                 {roomName}
               </div>
             )
-          const badge = room.unread ? (
+          const badge = +room.unread ? (
             <span className='badge badge-primary badge-pill'>
               {room.unread}
             </span>
