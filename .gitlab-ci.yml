@@ -23,6 +23,7 @@ deploy_production:
   stage: deploy
   variables:
     NODE_ENV: production
+    TEST_LOG: 'hello world'
   script:
     - rm -rf build
     - CI=false yarn build
@@ -30,7 +31,6 @@ deploy_production:
     - pm2 stop all || true
     - pm2 delete all || true
     - pm2 start Server/app.js
-    - env | grep 'DB_HOST\|DB_NAME\|DB_USER\|DB_PW'
   environment:
     name: production
     url: https://c0d3.com
