@@ -23,7 +23,8 @@ deploy_production:
   stage: deploy
   variables:
     NODE_ENV: production
-    TEST_LOG: 'hello world'
+    CLIENT_URL: https://c0d3.com
+    HOST_NAME: c0d3.com
   script:
     - rm -rf build
     - CI=false yarn build

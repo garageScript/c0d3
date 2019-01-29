@@ -23,11 +23,6 @@ const authHelpers = require('./auth/app')
 const pushNotification = require('./lib/pushNotification')
 const gitTrackerHelper = require('./gitTracker/gitTracker')
 
-// Logging for information
-console.log('process environment', process.env.environment)
-console.log('process NODE_ENV', process.env.NODE_ENV)
-console.log('process test variable', process.env.TEST_LOG)
-
 // Middleware to process requests
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
