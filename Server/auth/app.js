@@ -10,7 +10,6 @@ const errorHandler = (req, res, error) => {
     // required header for 401 responses
     if (error.httpStatus === 401) {
       return res
-        .append('WWW-Authenticate', `Basic, realm="${process.env.HOST_NAME}"`)
         .status(error.httpStatus)
         .json({ success: false, errorMessage: error.message })
     }
@@ -23,7 +22,7 @@ const errorHandler = (req, res, error) => {
 const helpers = {}
 
 helpers.getSession = (req, res) => {
-  if (req.session.isPopulated) { return res.json({ success: true, userInfo: req.session.userInfo }) }
+  if (req.user.id) { return res.json({ success: true, userInfo: req.user }) }
   errorHandler(req, res, { httpStatus: 401, message: 'unauthorized' })
 }
 
@@ -138,7 +137,7 @@ helpers.postNames = async (req, res) => {
 helpers.postPassword = async (req, res) => {
   try {
     // get user id if session is active, else reject with 401
-    if (!req.session.isPopulated) { throw { httpStatus: 401, message: 'sign in required' } }
+    if (!req.user.id) { throw { httpStatus: 401, message: 'sign in required' } }
 
     // validate that inputs have been received
     const { currPassword, newPassword } = req.body

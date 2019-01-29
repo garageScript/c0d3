@@ -23,6 +23,10 @@ const authHelpers = require('./auth/app')
 const pushNotification = require('./lib/pushNotification')
 const gitTrackerHelper = require('./gitTracker/gitTracker')
 
+// Logging for information
+console.log('process environment', process.env.environment)
+console.log('process NODE_ENV', process.env.NODE_ENV)
+
 // Middleware to process requests
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -35,12 +39,9 @@ const session = {
   'maxAge': 2592000000
 }
 app.use(cookieSession(session), (req, res, next) => {
+  if (!req.session) req.session = {}
   req.user = req.session.userInfo || {}
-  if (!req.user.id) {
-    req.session = null
-  } else {
-    req.user.id = parseInt(req.user.id, 10)
-  }
+  if (req.user.id) { req.user.id = parseInt(req.user.id, 10) }
   next()
 })
 
