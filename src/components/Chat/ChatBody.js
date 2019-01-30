@@ -9,7 +9,6 @@ import { ROOM_INFO } from './queries'
 import { loadComponent } from '../shared/shared'
 
 const SCROLL_FETCH_BUFFER = 100
-const AUTO_SCROLL_BUTTOM_THRESHOLD = 500
 
 class Edit extends Component {
   constructor (props) {
@@ -149,53 +148,9 @@ class MessageContainer extends Component {
     this.handleScroll = this.handleScroll.bind(this)
   }
 
-  componentDidMount () {
-    //this.refs.chatBody.scrollTop = 0
-  }
-
-  /*
-  shouldComponentUpdate(nextProps) {
-    const isEqual = (cur, next, field, i = 0) => {
-      if (i >= cur.length) return true;
-      if (cur[i] && next[i] && cur[i][field] !== next[i][field]) return false;
-      return isEqual(cur, next, field, i + 1);
-    };
-
-    return (
-      this.props.messages.gsLength() !== nextProps.messages.gsLength() ||
-      !isEqual(
-        Object.values(this.props.messages),
-        Object.values(nextProps.messages),
-        'content'
-      ) ||
-      !isEqual(
-        Object.values(this.props.users),
-        Object.values(nextProps.users),
-        'is_active'
-      )
-    );
-  }
-    */
-
   componentDidUpdate (prevProps) {
     // Scroll to the bottom IF page first loaded OR distance scrolled is within threshold and no messages were added, i.e. an edit has occcured so don't scroll
     this.refs.chatBody.scrollTop = this.refs.chatBody.scrollHeight
-    /*
-    if (
-      this.state.scrollTop === -1 ||
-      (this.refs.chatBody.scrollTop + AUTO_SCROLL_BUTTOM_THRESHOLD >=
-        this.refs.chatBody.scrollHeight - this.refs.chatBody.clientHeight &&
-        this.props.roomInfo.messages.length !==
-          prevProps.roomInfo.messages.length)
-    ) { this.scrollToBottom() }
-    if (this.state.scrollHeight) {
-      this.refs.chatBody.scrollTop =
-        this.refs.chatBody.scrollHeight -
-        this.state.scrollHeight +
-        SCROLL_FETCH_BUFFER
-      this.setState({ scrollHeight: 0 })
-    }
-    */
   }
 
   scrollToBottom () {
