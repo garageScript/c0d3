@@ -150,7 +150,7 @@ class MessageContainer extends Component {
   }
 
   componentDidMount () {
-    this.refs.chatBody.scrollTop = 0
+    //this.refs.chatBody.scrollTop = 0
   }
 
   /*
@@ -179,6 +179,8 @@ class MessageContainer extends Component {
 
   componentDidUpdate (prevProps) {
     // Scroll to the bottom IF page first loaded OR distance scrolled is within threshold and no messages were added, i.e. an edit has occcured so don't scroll
+    this.refs.chatBody.scrollTop = this.refs.chatBody.scrollHeight
+    /*
     if (
       this.state.scrollTop === -1 ||
       (this.refs.chatBody.scrollTop + AUTO_SCROLL_BUTTOM_THRESHOLD >=
@@ -193,6 +195,7 @@ class MessageContainer extends Component {
         SCROLL_FETCH_BUFFER
       this.setState({ scrollHeight: 0 })
     }
+    */
   }
 
   scrollToBottom () {
