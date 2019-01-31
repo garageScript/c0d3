@@ -1,3 +1,5 @@
+# Rename this file to .env so that config.js is able to load the variables
+
 # Server side config 
 # Database Information
 DB_NAME=c0d3_dev
