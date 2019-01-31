@@ -1,7 +1,4 @@
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').load()
-}
-
+const config = require('./config.js');
 const path = require('path')
 
 // Imports for requests
@@ -30,8 +27,8 @@ app.use(bodyParser.json())
 // Middleware to set session cookies
 const session = {
   'name': 'c0d3session',
-  'keys': [process.env.SESSION_SECRET],
-  'domain': process.env.HOST_NAME,
+  'keys': [config.SESSION_SECRET],
+  'domain': config.HOST_NAME,
   'maxAge': 2592000000
 }
 app.use(cookieSession(session), (req, res, next) => {
@@ -61,7 +58,7 @@ const apolloServer = new ApolloServer({
 apolloServer.applyMiddleware({
   app,
   cors: {
-    origin: process.env.CLIENT_URL
+    origin: config.CLIENT_URL
   }
 })
 
@@ -115,7 +112,7 @@ app.get('*', (req, res) => {
 })
 
 // Configure ports
-const PORT = process.env.SERVER_PORT
+const PORT = config.SERVER_PORT
 server.listen(PORT, function () {
   console.log(`Server is listening on Port: ${PORT}`)
 })
