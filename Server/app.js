@@ -1,4 +1,4 @@
-const config = require('./config.js');
+const config = require('../config.js');
 const path = require('path')
 
 // Imports for requests
