@@ -14,10 +14,10 @@ This is the codebase for the website c0d3.com, which provides a platform for stu
    > For Example:
    > frontend code is https://trifrog.c0d3.com with port 9623
    > backend url is https://tri-serv.c0d3.com with port 9643
-5. Copy hidden file `.sample-env` and name it `.env`
+5. Copy hidden file `.env.example` and name it `.env`
    > Example: to see hidden files - `ls -a`
 
-   > $ cp .sample-env .env
+   > `$ cp .env.example .env`
 6. Change the environment file `.env` to map to your server url
    
 *  Server 
