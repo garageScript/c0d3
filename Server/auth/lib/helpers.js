@@ -4,7 +4,7 @@ const { URL, URLSearchParams } = require('url')
 const private_token = process.env.GITLAB_PTOKEN
 const gitLab = {
   url: (extraPath = '') => {
-    const url = new URL('/users/' + extraPath, process.env.GITLAB_BASE_URL)
+    const url = new URL('/api/v4/users/' + extraPath, process.env.GITLAB_BASE_URL)
     url.search = new URLSearchParams({ private_token })
     return url.toString()
   },
