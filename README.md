@@ -28,15 +28,9 @@ This is the codebase for the website c0d3.com, which provides a platform for stu
 *  Client
    - change client port: PORT=your-client-port
    - change client url: CLIENT_URL=https://your-client-url.c0d3.com
-7. Modify hidden file in home directory - `.gitconfig`
-*  Add:
-   - [user]
-   - name = your-name
-   - email = your-email
-   - username = your-username
-8. Start the frontend server on the correct port - `yarn start`
-9. Start the backend server on the correct port - `supervisor Server/app.js`
-10. On the front-end, add landing.html to url
+7. Start the frontend server on the correct port - `yarn start`
+8. Start the backend server on the correct port - `supervisor Server/app.js`
+9. On the front-end, add landing.html to url
    > For example: https://your-client-url.c0d3.com/landing.html
 
 ## Database Overview
