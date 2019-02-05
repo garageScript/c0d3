@@ -19,6 +19,7 @@ const errorHandler = (req, res, error) => {
   }
   return res.status(500).json({ success: false, errorMessage: error })
 }
+
 const helpers = {}
 
 helpers.getSession = (req, res) => {
@@ -81,15 +82,19 @@ helpers.postSignup = async (req, res) => {
       password: hash,
       email: confirmEmail
     })
-    const newSshAccountReq = await axios.post(
-      process.env.SUDO_URL,
-      {
-        password,
-        username: userName,
-        name
-      }
-    )
-    if (!newSshAccountReq.data.success) { throw { httpStatus: 500, message: 'unable to create SSH account' } }
+
+    // create SSH account if environment is in production
+    if (process.env.NODE_ENV === 'production') {
+      const newSshAccountReq = await axios.post(
+        process.env.SUDO_URL,
+        {
+          password,
+          username: userName,
+          name
+        }
+      )
+      if (!newSshAccountReq.data.success) { throw { httpStatus: 500, message: 'unable to create SSH account' } }
+    }
 
     res.status(200).json({ success: true })
   } catch (err) {
