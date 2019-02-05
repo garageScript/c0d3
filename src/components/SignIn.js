@@ -7,7 +7,7 @@ class SignInForm extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      userName: null,
+      username: '',
       password: null,
       formMessageClassName: 'alert',
       formMessageValue: ''
@@ -29,7 +29,7 @@ class SignInForm extends React.Component {
     event.preventDefault()
     event.stopPropagation()
     return authClient.session.start(
-      this.state.userName,
+      this.state.username,
       this.state.password,
       authResponse => {
         if (authResponse.success) {
@@ -61,10 +61,11 @@ class SignInForm extends React.Component {
             <input
               id='signin-user-name'
               className='form-control'
-              name='userName'
+              name='username'
               type='text'
               autoComplete='username'
               onChange={this.handleInputChange}
+              value={this.state.username}
             />
           </div>
           <div className='md-form'>
