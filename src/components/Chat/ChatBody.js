@@ -190,7 +190,6 @@ class MessageContainer extends Component {
               (edited {moment(new Date(message.updatedAt)).calendar()})
             </span>
           ) : null
-
           return (
             <div className='chat-message card' key={i}>
               <div className='card-body'>

@@ -105,8 +105,8 @@ type Message {
   user_id: String
   content: String
   userId: String
-  createdAt: String
-  updatedAt: String
+  createdAt: Long 
+  updatedAt: Long
   isEdited: Boolean
   edited_time: Long
 }
