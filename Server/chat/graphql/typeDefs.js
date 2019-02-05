@@ -45,7 +45,7 @@ type Room {
 }
 
 input DirectUserInput { 
-  id: String
+  id: Long
   username: String 
 }
 
