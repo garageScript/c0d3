@@ -62,7 +62,9 @@ const setupRoom = (io, r) => {
 }
 
 realtime.init = function (server) {
-  io = socketio(server)
+  io = socketio(server, {
+    pingTimeout: 60000
+  })
   general = io.of('/general')
   general.on('connection', socket => {
     const { userId, type } = socket.handshake.query
