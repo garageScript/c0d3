@@ -313,7 +313,7 @@ const MsgUser = ({ history, user, dismiss }) => (
     mutation={DIRECT_MESSAGE_ROOM}
     variables={{
       input: {
-        id: user.id,
+        id: String(user.id),
         username: user.username
       }
     }}
