@@ -8,8 +8,6 @@ import LinkRenderer from '../helpers/windowLink'
 import { ROOM_INFO } from './queries'
 import { loadComponent } from '../shared/shared'
 
-const SCROLL_FETCH_BUFFER = 100
-
 class Edit extends Component {
   constructor (props) {
     super(props)
@@ -142,30 +140,9 @@ export class Message extends Component {
 }
 
 class MessageContainer extends Component {
-  constructor (props) {
-    super(props)
-    this.state = { scrollTop: -1, scrollHeight: 0 }
-    this.handleScroll = this.handleScroll.bind(this)
-  }
 
   componentDidUpdate (prevProps) {
-    // Scroll to the bottom IF page first loaded OR distance scrolled is within threshold and no messages were added, i.e. an edit has occcured so don't scroll
     this.refs.chatBody.scrollTop = this.refs.chatBody.scrollHeight
-  }
-
-  scrollToBottom () {
-    const scrollHeight = this.refs.chatBody.scrollHeight
-    const height = this.refs.chatBody.clientHeight
-    const maxScrollTop = scrollHeight - height
-    this.refs.chatBody.scrollTop = Math.max(maxScrollTop, 0)
-  }
-
-  handleScroll () {
-    if (this.refs.chatBody.scrollTop <= SCROLL_FETCH_BUFFER) {
-      // TODO: get more messages
-      this.setState({ scrollHeight: this.refs.chatBody.scrollHeight })
-    }
-    this.setState({ scrollTop: this.refs.chatBody.scrollTop })
   }
 
   render () {
@@ -178,7 +155,6 @@ class MessageContainer extends Component {
       <div
         className='chat-body scrollbar-chat'
         ref='chatBody'
-        onScroll={this.handleScroll}
       >
         {roomInfo.messages.map((message, i) => {
           const user = users[message.userId] || {}

@@ -6,7 +6,6 @@ const location = window.location
 
 export const loadUserInfo = callback => {
   session.getInfo(({ userInfo }) => {
-    console.log('loading info...')
     window.userInfo = userInfo
       ? { ...defaultUserInfo, ...userInfo }
       : { ...defaultUserInfo }
