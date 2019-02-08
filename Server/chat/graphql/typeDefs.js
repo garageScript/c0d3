@@ -35,7 +35,7 @@ type Room {
   description: String
   isEditable: Boolean
   isPrivate: Boolean
-  unread: String
+  unread: Long
   userCount: String
   isLastRoom: Boolean
   is_editable: Boolean
