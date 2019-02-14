@@ -6,28 +6,36 @@ This is the codebase for the website c0d3.com, which provides a platform for stu
 
 1. Clone repository
    > SSH - `git clone git@git.c0d3.com:song/c0d3.git`
-   or
+   > or
    > HTTPS - `git clone https://git.c0d3.com/song/c0d3.git`
 2. Get updated changes from gitlab- `git pull`
 3. Install necessary libraries - `yarn`
 4. Create a frontend and backend url for your app (must be c0d3.com domain) at [apps.c0d3.com](https://apps.c0d3.com)
    > For Example:
-   > frontend code is https://trifrog.c0d3.com with port 9623
+   > frontend code is https://tri.c0d3.com with port 9623
    > backend url is https://tri-serv.c0d3.com with port 9643
 5. Copy hidden file `.env.example` and name it `.env`
+
    > Example: to see hidden files - `ls -a`
 
    > `$ cp .env.example .env`
-6. Change the environment file `.env` to map to your server url
-   
-*  Server 
-   - change server port: SERVER_PORT=your-server-port
-   - change server url: HOST_NAME=your-server-url.c0d3.com
-   - change server url: REACT_APP_SERVER_URL=https://your-server-url.c0d3.com
 
-*  Client
-   - change client port: PORT=your-client-port
-   - change client url: CLIENT_URL=https://your-client-url.c0d3.com
+6. Change the environment file `.env` to map to your server url
+7. Create a cypress.env.json file with `baseUrl` to be the same as the
+   CLIENT_URL environment variable.
+
+   > Example: `{ baseUrl: https://tri.c0d3.com }` or `{ baseUrl: http://localhost:9623 }`
+
+- Server
+
+  - change server port: SERVER_PORT=your-server-port
+  - change server url: HOST_NAME=your-server-url.c0d3.com
+  - change server url: REACT_APP_SERVER_URL=https://your-server-url.c0d3.com
+
+- Client
+  - change client port: PORT=your-client-port
+  - change client url: CLIENT_URL=https://your-client-url.c0d3.com
+
 7. Start the frontend server on the correct port - `yarn start`
 8. Start the backend server on the correct port - `supervisor Server/app.js`
 9. On the front-end, add landing.html to url

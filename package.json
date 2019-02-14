@@ -38,7 +38,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cypress:open": "cypress open"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -50,6 +51,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "cypress": "^3.1.5",
     "enzyme": "^3.8.0"
   }
 }
