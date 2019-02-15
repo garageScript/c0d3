@@ -23,3 +23,27 @@
 //
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+Cypress.Commands.add("login", (name = 'bot', password = 'letmein') => {
+  const url = Cypress.env('baseUrl')
+  const route = '/landing.html'
+  cy.visit(`${url}${route}`)
+
+  cy.contains(/^log in$/i).click()
+
+  cy.url().should('include', '/signin')
+
+  cy.get('#signin-user-name')
+    .type(name)
+    .should('have.value', name)
+
+  cy.get('#signin-password')
+    .type(password)
+    .should('have.value', password)
+
+  cy.get('form').submit()
+
+  cy.getCookies().then(cookies => {
+    cookies.forEach(cookie => expect(cookie).to.not.be.empty)
+  })
+})
