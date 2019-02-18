@@ -47,3 +47,9 @@ Cypress.Commands.add("login", (name = 'bot', password = 'letmein') => {
     cookies.forEach(cookie => expect(cookie).to.not.be.empty)
   })
 })
+
+Cypress.Commands.add("chat", () => {
+  const url = Cypress.env('baseUrl')
+  cy.contains('Chat').click()
+  cy.url().should('include', '/chat')
+})
