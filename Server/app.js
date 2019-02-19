@@ -1,4 +1,4 @@
-const config = require('../config.js');
+const config = require('../config.js')
 const path = require('path')
 
 // Imports for requests
@@ -23,6 +23,13 @@ const gitTrackerHelper = require('./gitTracker/gitTracker')
 // Middleware to process requests
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+
+// View functional tests results easily
+if (process.env.NODE_ENV !== 'production') {
+  const functionalPath = path.join(__dirname, '../cypress')
+  const serveIndex = require('serve-index')
+  app.use('/functional', express.static(functionalPath), serveIndex(functionalPath, { icons: true }))
+}
 
 // Middleware to set session cookies
 const session = {
