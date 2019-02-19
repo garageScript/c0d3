@@ -31,6 +31,7 @@
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.2",
     "sequelize": "^4.42.0",
+    "serve-index": "^1.9.1",
     "socket.io": "^2.2.0",
     "validate.js": "^0.12.0"
   },
@@ -39,7 +40,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "tf": "cypress run"
   },
   "eslintConfig": {
     "extends": "react-app"
