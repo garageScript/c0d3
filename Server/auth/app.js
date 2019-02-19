@@ -96,7 +96,24 @@ helpers.postSignup = async (req, res) => {
       if (!newSshAccountReq.data.success) { throw { httpStatus: 500, message: 'unable to create SSH account' } }
     }
 
-    res.status(200).json({ success: true })
+    // search for the user record with given email
+    const userRecord = await User.findOne({
+      where: { username: userName }
+    })
+
+    // respond with valid session cookie
+    const userInfo = {
+      auth: true,
+      name: userRecord.name,
+      email: userRecord.email,
+      userName: userRecord.username,
+      id: userRecord.id
+    }
+
+    // set session with userInfo
+    req.session.userInfo = userInfo
+
+    res.status(200).json({ success: true, userInfo })
   } catch (err) {
     errorHandler(req, res, err)
   }
@@ -114,7 +131,7 @@ helpers.getUsername = async (req, res) => {
       exists: !!userRecord
     })
   } catch (error) {
-    res.status(500).json({ userName, error })
+    res.status(500).json({ username, error })
   }
 }
 
