@@ -47,6 +47,8 @@ Cypress.Commands.add("login", (name = 'bot', password = 'letmein') => {
   cy.wait('@signin')
 
   cy.getCookies().then(cookies => {
+     const session = cookies.find(c => c.name === 'c0d3session')
+     expect(session.value).to.not.equal('')
      expect(cookies.length).to.be.greaterThan(0)
   })
 })
@@ -61,13 +63,14 @@ Cypress.Commands.add("logout", () => {
   const url = Cypress.env('baseUrl')
 
   cy.server()
-  cy.route('*signout').as('signout')
+  cy.route('/signout').as('signout')
   cy.contains(/^Tools$/i).click()
   cy.contains('Sign Out').click()
   cy.wait('@signout')
 
   cy.getCookies().then(cookies => {
-     expect(cookies.length).to.be.greaterThan(0)
+      const session = cookies.find(c => c.name === 'c0d3session')
+      expect(session.value).to.equal('')
   })
 
   cy.visit(`${url}/curriculum`)
