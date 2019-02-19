@@ -41,10 +41,13 @@ Cypress.Commands.add("login", (name = 'bot', password = 'letmein') => {
     .type(password)
     .should('have.value', password)
 
+  cy.server()
+  cy.route('POST', '*signin').as('signin')
   cy.get('form').submit()
+  cy.wait('@signin')
 
   cy.getCookies().then(cookies => {
-    cookies.forEach(cookie => expect(cookie).to.not.be.empty)
+     expect(cookies.length).to.be.eq(2)
   })
 })
 
@@ -52,4 +55,19 @@ Cypress.Commands.add("chat", () => {
   const url = Cypress.env('baseUrl')
   cy.contains('Chat').click()
   cy.url().should('include', '/chat')
+})
+
+Cypress.Commands.add("logout", () => {
+  const url = Cypress.env('baseUrl')
+  cy.server()
+  cy.route('/**').as('signout')
+  cy.contains(/^Tools$/i).click()
+  cy.url().should('include', '/')
+  cy.wait('@signout')
+  cy.contains('Sign Out').click()
+  cy.url().should('include', '/')
+  cy.wait('@signout')
+  cy.getCookies().then(cookies => {
+     expect(cookies.length).to.be.eq(3)
+  })
 })
