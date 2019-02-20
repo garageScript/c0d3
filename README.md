@@ -53,7 +53,7 @@ To run functional tests:
   - Run Specific: `yarn run tfs cypress/integration/filename.spec.js`
 
 After functional tests are ran, videos of browser UI interactions and failed test snapshots can be viewed at 
-`https://your-client-url.c0d3.com/functional` or `http://localhost:9643/functional`
+`https://your-server-url.c0d3.com/functional` or `http://localhost:<port#>/functional`
 
 #### Cypress Browser Mode
 If working on local computer, tests can be ran in the chrome browser by following the below steps:
