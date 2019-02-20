@@ -2,6 +2,7 @@
 
 This is the codebase for the website c0d3.com, which provides a platform for students to learn coding through solving challenges
 
+
 ## How to Start
 
 1. Clone repository
@@ -41,7 +42,37 @@ This is the codebase for the website c0d3.com, which provides a platform for stu
 9. On the front-end, add landing.html to url
    > For example: https://your-client-url.c0d3.com/landing.html
 
-## Database Overview
+
+## Tests
+
+### Functional Tests
+
+#### Cypress Headless Mode
+To run functional tests:
+  - Run All: `yarn run tf`
+  - Run Specific: `yarn run tfs cypress/integration/filename.spec.js`
+
+After functional tests are ran, videos of browser UI interactions and failed test snapshots can be viewed at 
+`https://your-server-url.c0d3.com/functional` or `http://localhost:<port#>/functional`
+
+#### Cypress Browser Mode
+If working on local computer, tests can be ran in the chrome browser by following the below steps:
+
+1.  Run express server `supervisor Server/app.js`
+2.  Run webpack server `yarn start`
+3.  Run cypress server `yarn run cypress:open`
+4.  Navigate to cypress pop-up window and click on the specific test
+5.  Watch/Interact with new chrome browser dedicated for functional testing
+
+
+## Databases
+
+### Migration
+
+If you make a copy of postgresdb, you might run into an issue where data is not auto-incrementing. To fix this, refer to this fix: 
+https://dba.stackexchange.com/questions/65662/postgres-how-to-insert-row-with-autoincrement-id
+
+### Database Overview
 
 - Lesson (description, docUrl, githubUrl, videoUrl, order, title)
   - hasMany Challenge
@@ -72,17 +103,3 @@ This is the codebase for the website c0d3.com, which provides a platform for stu
   - belongsTo User
 - UserRoom (unread, isLastRoom)
 
-## Tests
-
-### Functional Tests
-
-To run functional tests:
-  - Run All: `yarn run tf`
-  - Run Specific: `yarn run tfs cypress/integration/filename.spec.js`
-
-
-## Databases
-
-### Migration
-
-If you make a copy of postgresdb, you might run into an issue where data is not auto-incrementing. To fix this, refer to this fix: https://dba.stackexchange.com/questions/65662/postgres-how-to-insert-row-with-autoincrement-id
