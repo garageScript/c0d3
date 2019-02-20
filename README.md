@@ -1,6 +1,8 @@
 # C0D3.com
 
-This is the codebase for the website c0d3.com, which provides a platform for students to learn coding through solving challenges
+This is the codebase for the website c0d3.com, which provides a platform for 
+students to learn coding through solving challenges
+
 
 ## How to Start
 
@@ -10,7 +12,8 @@ This is the codebase for the website c0d3.com, which provides a platform for stu
    > HTTPS - `git clone https://git.c0d3.com/song/c0d3.git`
 2. Get updated changes from gitlab- `git pull`
 3. Install necessary libraries - `yarn`
-4. Create a frontend and backend url for your app (must be c0d3.com domain) at [apps.c0d3.com](https://apps.c0d3.com)
+4. Create a frontend and backend url for your app (must be c0d3.com domain) at 
+[apps.c0d3.com](https://apps.c0d3.com)
    > For Example:
    > frontend code is https://tri.c0d3.com with port 9623
    > backend url is https://tri-serv.c0d3.com with port 9643
@@ -24,7 +27,8 @@ This is the codebase for the website c0d3.com, which provides a platform for stu
 7. Create a cypress.env.json file with `baseUrl` to be the same as the
    CLIENT_URL environment variable.
 
-   > Example: `{ baseUrl: https://tri.c0d3.com }` or `{ baseUrl: http://localhost:9623 }`
+   > Example: `{ baseUrl: https://tri.c0d3.com }` or 
+   `{ baseUrl: http://localhost:9623 }`
 
 - Server
 
@@ -41,7 +45,29 @@ This is the codebase for the website c0d3.com, which provides a platform for stu
 9. On the front-end, add landing.html to url
    > For example: https://your-client-url.c0d3.com/landing.html
 
-## Database Overview
+
+## Tests
+
+### Functional Tests
+
+To run functional tests:
+  - Run All: `yarn run tf`
+  - Run Specific: `yarn run tfs cypress/integration/filename.spec.js`
+
+After functional tests are ran, videos of browser UI interactions and failed 
+test snapshots can be viewed at `https://your-client-url.c0d3.com/functional` or 
+`http://localhost:9643/functional`
+
+
+## Databases
+
+### Migration
+
+If you make a copy of postgresdb, you might run into an issue where data is not 
+auto-incrementing. To fix this, refer to this fix: 
+https://dba.stackexchange.com/questions/65662/postgres-how-to-insert-row-with-autoincrement-id
+
+### Database Overview
 
 - Lesson (description, docUrl, githubUrl, videoUrl, order, title)
   - hasMany Challenge
@@ -72,17 +98,3 @@ This is the codebase for the website c0d3.com, which provides a platform for stu
   - belongsTo User
 - UserRoom (unread, isLastRoom)
 
-## Tests
-
-### Functional Tests
-
-To run functional tests:
-  - Run All: `yarn run tf`
-  - Run Specific: `yarn run tfs cypress/integration/filename.spec.js`
-
-
-## Databases
-
-### Migration
-
-If you make a copy of postgresdb, you might run into an issue where data is not auto-incrementing. To fix this, refer to this fix: https://dba.stackexchange.com/questions/65662/postgres-how-to-insert-row-with-autoincrement-id
