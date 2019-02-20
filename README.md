@@ -1,7 +1,6 @@
 # C0D3.com
 
-This is the codebase for the website c0d3.com, which provides a platform for 
-students to learn coding through solving challenges
+This is the codebase for the website c0d3.com, which provides a platform for students to learn coding through solving challenges
 
 
 ## How to Start
@@ -12,8 +11,7 @@ students to learn coding through solving challenges
    > HTTPS - `git clone https://git.c0d3.com/song/c0d3.git`
 2. Get updated changes from gitlab- `git pull`
 3. Install necessary libraries - `yarn`
-4. Create a frontend and backend url for your app (must be c0d3.com domain) at 
-[apps.c0d3.com](https://apps.c0d3.com)
+4. Create a frontend and backend url for your app (must be c0d3.com domain) at [apps.c0d3.com](https://apps.c0d3.com)
    > For Example:
    > frontend code is https://tri.c0d3.com with port 9623
    > backend url is https://tri-serv.c0d3.com with port 9643
@@ -27,8 +25,7 @@ students to learn coding through solving challenges
 7. Create a cypress.env.json file with `baseUrl` to be the same as the
    CLIENT_URL environment variable.
 
-   > Example: `{ baseUrl: https://tri.c0d3.com }` or 
-   `{ baseUrl: http://localhost:9623 }`
+   > Example: `{ baseUrl: https://tri.c0d3.com }` or `{ baseUrl: http://localhost:9623 }`
 
 - Server
 
@@ -55,13 +52,11 @@ To run functional tests:
   - Run All: `yarn run tf`
   - Run Specific: `yarn run tfs cypress/integration/filename.spec.js`
 
-After functional tests are ran, videos of browser UI interactions and failed 
-test snapshots can be viewed at `https://your-client-url.c0d3.com/functional` or 
-`http://localhost:9643/functional`
+After functional tests are ran, videos of browser UI interactions and failed test snapshots can be viewed at 
+`https://your-client-url.c0d3.com/functional` or `http://localhost:9643/functional`
 
 #### Cypress Browser Mode
-If working on local computer, tests can be ran in the chrome browser by 
-following the below steps:
+If working on local computer, tests can be ran in the chrome browser by following the below steps:
 
 1.  Run express server `supervisor Server/app.js`
 2.  Run webpack server `yarn start`
@@ -74,8 +69,7 @@ following the below steps:
 
 ### Migration
 
-If you make a copy of postgresdb, you might run into an issue where data is not 
-auto-incrementing. To fix this, refer to this fix: 
+If you make a copy of postgresdb, you might run into an issue where data is not auto-incrementing. To fix this, refer to this fix: 
 https://dba.stackexchange.com/questions/65662/postgres-how-to-insert-row-with-autoincrement-id
 
 ### Database Overview
