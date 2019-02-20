@@ -24,7 +24,7 @@
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-Cypress.Commands.add("login", (name = 'bot', password = 'letmein') => {
+Cypress.Commands.add('login', (name = 'bot', password = 'letmein') => {
   const url = Cypress.env('baseUrl')
   const route = '/landing.html'
   cy.visit(`${url}${route}`)
@@ -47,19 +47,31 @@ Cypress.Commands.add("login", (name = 'bot', password = 'letmein') => {
   cy.wait('@signin')
 
   cy.getCookies().then(cookies => {
-     const session = cookies.find(c => c.name === 'c0d3session')
-     expect(session.value).to.not.equal('')
-     expect(cookies.length).to.be.greaterThan(0)
+    const session = cookies.find(c => c.name === 'c0d3session')
+    expect(session.value).to.not.equal('')
+    expect(cookies.length).to.be.greaterThan(0)
   })
 })
 
-Cypress.Commands.add("chat", () => {
+Cypress.Commands.add('chat', () => {
   const url = Cypress.env('baseUrl')
   cy.contains('Chat').click()
   cy.url().should('include', '/chat')
 })
 
-Cypress.Commands.add("logout", () => {
+Cypress.Commands.add('curriculum', () => {
+  const url = Cypress.env('baseUrl')
+  cy.contains('Curriculum').click()
+  cy.url().should('include', '/curriculum')
+})
+
+Cypress.Commands.add('teacher', () => {
+  const url = Cypress.env('baseUrl')
+  cy.get('.card-body').find('a').contains('Review student submissions').first().click()
+  cy.url().should('include', '/teacher')
+})
+
+Cypress.Commands.add('logout', () => {
   const url = Cypress.env('baseUrl')
 
   cy.server()
@@ -69,8 +81,8 @@ Cypress.Commands.add("logout", () => {
   cy.wait('@signout')
 
   cy.getCookies().then(cookies => {
-      const session = cookies.find(c => c.name === 'c0d3session')
-      expect(session.value).to.equal('')
+    const session = cookies.find(c => c.name === 'c0d3session')
+    expect(session.value).to.equal('')
   })
 
   cy.visit(`${url}/curriculum`)
