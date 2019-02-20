@@ -76,42 +76,10 @@ This is the codebase for the website c0d3.com, which provides a platform for stu
 
 ### Functional Tests
 
-Profiles:
+To run functional tests:
+  - Run All: `yarn run tf`
+  - Run Specific: `yarn run tfs cypress/integration/filename.spec.js`
 
-```
-    "profiles": {
-        "base": {
-            "tests": "path:./*.js",
-//            "env": {
-//                 these only get set when running in parallel (child processes from main process)
-//                "DEBUG": "nemo*"
-//            },
-```
-
-Capabilities:
-
-```
-    "profiles": {
-        "base": {
-            "tests": "path:./*.js",
-            "driver": {
-                "browser": "chrome"
-// Use the below "builders" pattern to use the selenium-webdriver Builder class:
-// see: http://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_Builder.html
-//                "builders": {
-//                    "withCapabilities": [
-//                        {
-//                            "browserName": "chrome",
-//                            "chromeOptions": {
-//                                "args": [
-//                                    "headless",
-//                                    "window-size=1200,800"
-//                                ]
-//                            }
-//                        }
-//                    ]
-//                }
-```
 
 ## Databases
 
