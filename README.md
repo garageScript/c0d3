@@ -50,6 +50,7 @@ students to learn coding through solving challenges
 
 ### Functional Tests
 
+#### Cypress Headless Mode
 To run functional tests:
   - Run All: `yarn run tf`
   - Run Specific: `yarn run tfs cypress/integration/filename.spec.js`
@@ -57,6 +58,16 @@ To run functional tests:
 After functional tests are ran, videos of browser UI interactions and failed 
 test snapshots can be viewed at `https://your-client-url.c0d3.com/functional` or 
 `http://localhost:9643/functional`
+
+#### Cypress Browser Mode
+If working on local computer, tests can be ran in the chrome browser by 
+following the below steps:
+
+1.  Run express server `supervisor Server/app.js`
+2.  Run webpack server `yarn start`
+3.  Run cypress server `yarn run cypress:open`
+4.  Navigate to cypress pop-up window and click on the specific test
+5.  Watch/Interact with new chrome browser dedicated for functional testing
 
 
 ## Databases
