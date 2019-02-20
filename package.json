@@ -41,7 +41,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "cypress:open": "cypress open",
-    "tf": "cypress run"
+    "tf": "cypress run",
+    "tfs": "cypress run --spec"
   },
   "eslintConfig": {
     "extends": "react-app"
