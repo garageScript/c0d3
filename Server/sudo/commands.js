@@ -1,10 +1,9 @@
 const express = require('express')
-const bodyParser = require('body-parser')
 const { exec } = require('child_process')
 const app = express()
 app.listen(process.env.SUDO_PORT) // to run: sudo SUDO_PORT=# supervisor command.js
-app.use(bodyParser.urlencoded())
-app.use(bodyParser.json())
+app.use(express.urlencoded())
+app.use(express.json())
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*')
   res.header(

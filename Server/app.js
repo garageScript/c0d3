@@ -2,7 +2,6 @@ const config = require('../config.js')
 const path = require('path')
 
 // Imports for requests
-const bodyParser = require('body-parser')
 const cookieSession = require('cookie-session')
 
 // Imports for Apollo Graphql
@@ -21,8 +20,8 @@ const pushNotification = require('./lib/pushNotification')
 const gitTrackerHelper = require('./gitTracker/gitTracker')
 
 // Middleware to process requests
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json())
+app.use(express.urlencoded())
+app.use(express.json())
 
 // View functional tests results easily
 if (process.env.NODE_ENV !== 'production') {
