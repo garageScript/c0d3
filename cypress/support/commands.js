@@ -24,7 +24,7 @@
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-Cypress.Commands.add('login', (name = 'bot', password = 'letmein') => {
+Cypress.Commands.add('login', (name = 'albertoe', password = 'ronaldo') => {
   const url = Cypress.env('baseUrl')
   const route = '/landing.html'
   cy.visit(`${url}${route}`)
@@ -69,6 +69,10 @@ Cypress.Commands.add('teacher', () => {
   const url = Cypress.env('baseUrl')
   cy.get('.card-body').find('a').contains('Review student submissions').first().click()
   cy.url().should('include', '/teacher')
+})
+
+Cypress.Commands.add('student',()=>{
+  cy.get('.card-body').find('a').contains('Continue').first().click()
 })
 
 Cypress.Commands.add('logout', () => {
