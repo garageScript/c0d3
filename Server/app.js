@@ -25,6 +25,9 @@ app.use(express.json())
 
 // View functional tests results easily
 if (process.env.NODE_ENV !== 'production') {
+  app.get('/deleteUser', (req, res) => {
+    res.send(req.query.name)
+  })
   const functionalPath = path.join(__dirname, '../cypress')
   const serveIndex = require('serve-index')
   app.use('/functional', express.static(functionalPath), serveIndex(functionalPath, { icons: true }))
