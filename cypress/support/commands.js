@@ -62,7 +62,6 @@ Cypress.Commands.add('chat', () => {
 Cypress.Commands.add('profile', () => {
   const url = Cypress.env('baseUrl')
   cy.contains('Profile').click()
-  cy.url().should('include', '/profile')
 })
 
 Cypress.Commands.add('curriculum', () => {
