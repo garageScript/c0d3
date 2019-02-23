@@ -20,7 +20,7 @@ const pushNotification = require('./lib/pushNotification')
 const gitTrackerHelper = require('./gitTracker/gitTracker')
 
 // Middleware to process requests
-app.use(express.urlencoded())
+app.use(express.urlencoded({extended: true}))
 app.use(express.json())
 
 // View functional tests results easily
