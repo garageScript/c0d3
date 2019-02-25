@@ -76,6 +76,10 @@ Cypress.Commands.add('teacher', () => {
   cy.url().should('include', '/teacher')
 })
 
+Cypress.Commands.add('student',()=>{
+  cy.get('.card-body').find('a').contains('Continue').first().click()
+})
+
 Cypress.Commands.add('logout', () => {
   const url = Cypress.env('baseUrl')
 
