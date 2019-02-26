@@ -66,9 +66,6 @@ type Mutation {
   "Update user lesson"
   rejectSubmission(input: SubmissionEdit): Submission
 
-  "Update submission view count"
-  viewSubmission(input: SubmissionEdit): Submission
-
   "Update student to mentor"
   makeTeacher(input: LessonId): String
 

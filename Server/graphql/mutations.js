@@ -19,19 +19,6 @@ module.exports = {
       return d
     })
   },
-  viewSubmission: (obj, args, context) => {
-    return Submission.findOne({
-      where: {
-        lessonId: args.input.lessonId,
-        challengeId: args.input.challengeId,
-        userId: args.input.userId
-      }
-    }).then(d => {
-      return d.update({
-        viewCount: d.viewCount + 1
-      })
-    })
-  },
   rejectSubmission: (obj, args, context) => {
     return Submission.findOne({
       where: {
