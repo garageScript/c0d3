@@ -22,7 +22,7 @@ module.exports = {
     if (userId) {
       variablesToMatch.id = userId
     }
-    return User.all({
+    return User.findAll({
       where: variablesToMatch
     })
   },
@@ -46,7 +46,7 @@ module.exports = {
   },
 
   lessons: (obj, args, context) => {
-    return Lesson.all({
+    return Lesson.findAll({
       include: [
         'challenges',
         {
@@ -60,7 +60,7 @@ module.exports = {
   },
 
   curriculumStatus: (obj, args, context) => {
-    return Lesson.all({
+    return Lesson.findAll({
       include: [
         {
           model: User,
@@ -188,7 +188,7 @@ module.exports = {
     valuesToMatch.lessonId = args.input.id
     delete valuesToMatch.id
 
-    return Submission.all({
+    return Submission.findAll({
       where: valuesToMatch,
       include: ['user', 'challenge', { model: User, as: 'reviewer' }]
     })
