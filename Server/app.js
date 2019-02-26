@@ -1,7 +1,6 @@
 const config = require('../config.js')
 const path = require('path')
 const { User } = require('./dbload.js')
-console.log(User)
 
 // Imports for requests
 const cookieSession = require('cookie-session')
