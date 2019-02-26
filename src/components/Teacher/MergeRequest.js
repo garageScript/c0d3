@@ -5,7 +5,6 @@ import moment from 'moment'
 import Markdown from 'react-markdown'
 
 import {
-  VIEW_SUBMISSION,
   APPROVE_SUBMISSION,
   REJECT_SUBMISSION,
   SUBMISSIONS,
@@ -72,19 +71,7 @@ const MergeRequest = ({ lid, mrInfo }) => {
               <Link to={`/profile/${mrInfo.user.id}`}>
                 {mrInfo.user.username}
               </Link>{' '}
-              submitted challenge:
-              <Mutation mutation={VIEW_SUBMISSION} variables={submissionVar}>
-                {execute => (
-                  <a
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    href={mrInfo.mrUrl}
-                    onClick={execute}
-                  >
-                    {mrInfo.challenge.title}
-                  </a>
-                )}
-              </Mutation>
+              submitted challenge: {mrInfo.challenge.title}
             </span>
             <Undo mrInfo={mrInfo} submissionVar={submissionVar} lid={lid} />
           </div>
@@ -103,64 +90,65 @@ const MergeRequest = ({ lid, mrInfo }) => {
             ) : null}
 
             {mrInfo.status !== 'passed' && (
-              <div className='form-group'>
-                <label htmlFor='submission-comment'>
+              <>
+                <div className='form-group'>
+                  <label htmlFor='submission-comment'>
                   Add your comments to address here
-                </label>
-                <textarea
-                  className='form-control rounded-0'
-                  id='submission-comment'
-                  rows='10'
-                  ref={node => (comment = node)}
-                />
-              </div>
+                  </label>
+                  <textarea
+                    className='form-control rounded-0'
+                    id='submission-comment'
+                    rows='10'
+                    ref={node => (comment = node)}
+                  />
+                </div>
+
+                <div style={{ marginBottom: '1rem' }}>
+                  <Mutation
+                    mutation={APPROVE_SUBMISSION}
+                    variables={submissionVar}
+                    update={(cache, { data: { approveSubmission: { id } } }) => {
+                      const { submissions } = cache.readQuery({
+                        query: SUBMISSIONS,
+                        variables: { in: { id: lid } }
+                      })
+                      submissions.forEach(sub => {
+                        if (sub['id'] === id) sub['status'] = 'passed'
+                      })
+                      cache.writeQuery({
+                        query: SUBMISSIONS,
+                        data: {
+                          submissions
+                        }
+                      })
+                    }}
+                  >
+                    {execute => (
+                      <button className='btn btn-sm btn-success' onClick={execute}>
+                        <i className='fa fa-thumbs-up mr-2' />
+                        Approve Challenge
+                      </button>
+                    )}
+                  </Mutation>
+                  <Mutation mutation={REJECT_SUBMISSION}>
+                    {execute => (
+                      <button
+                        className='btn btn-sm btn-dark'
+                        onClick={() => {
+                          submissionVar.in.comment = comment.value
+                          execute({ variables: submissionVar })
+                        }}
+                      >
+                        <i className='fa fa-comment mr-2' />
+                            Suggest Revision
+                      </button>
+                    )}
+                  </Mutation>
+                </div>
+              </>
             )}
           </div>
         </div>
-        {mrInfo.status !== 'passed' && (
-          <span className='pl-3 pb-3'>
-            <Mutation
-              mutation={APPROVE_SUBMISSION}
-              variables={submissionVar}
-              update={(cache, { data: { approveSubmission: { id } } }) => {
-                const { submissions } = cache.readQuery({
-                  query: SUBMISSIONS,
-                  variables: { in: { id: lid } }
-                })
-                submissions.forEach(sub => {
-                  if (sub['id'] === id) sub['status'] = 'passed'
-                })
-                cache.writeQuery({
-                  query: SUBMISSIONS,
-                  data: {
-                    submissions
-                  }
-                })
-              }}
-            >
-              {execute => (
-                <button className='btn btn-sm btn-success' onClick={execute}>
-                  <i className='fa fa-thumbs-up mr-2' />
-                  Approve Challenge
-                </button>
-              )}
-            </Mutation>
-            <Mutation mutation={REJECT_SUBMISSION}>
-              {execute => (
-                <button
-                  className='btn btn-sm btn-dark'
-                  onClick={() => {
-                    submissionVar.in.comment = comment.value
-                    execute({ variables: submissionVar })
-                  }}
-                >
-                  <i className='fa fa-comment mr-2' />
-                  Suggest Revision
-                </button>
-              )}
-            </Mutation>
-          </span>
-        )}
       </div>
     </div>
   )

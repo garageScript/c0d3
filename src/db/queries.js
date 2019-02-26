@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from 'graphql-tag'
 
 export const LESSON_STATUS = gql`
   query lessonStatus($in: LessonId) {
@@ -14,7 +14,7 @@ export const LESSON_STATUS = gql`
       }
     }
   }
-`;
+`
 
 export const USERS = gql`
   query users($in: UserInput) {
@@ -22,7 +22,7 @@ export const USERS = gql`
       username
     }
   }
-`;
+`
 
 export const ENROLL_STUDENT = gql`
   mutation enrollStudent($in: LessonId) {
@@ -32,13 +32,13 @@ export const ENROLL_STUDENT = gql`
       isEnrolled
     }
   }
-`;
+`
 
 export const GIVE_STAR = gql`
   mutation giveStar($in: LessonUserId) {
     giveStar(input: $in)
   }
-`;
+`
 
 export const LESSON_INFO = gql`
   query lessonInfo($in: LessonId) {
@@ -67,7 +67,7 @@ export const LESSON_INFO = gql`
       }
     }
   }
-`;
+`
 
 export const TEACHERS = gql`
   query teachers($in: LessonId) {
@@ -76,24 +76,24 @@ export const TEACHERS = gql`
       username
     }
   }
-`;
+`
 
 export const STAR_RECIPIENT = gql`
   {
     starRecipent @client
   }
-`;
+`
 export const STUDENT_CHALLENGE_DATA = gql`
   {
     mrUrl @client
   }
-`;
+`
 
 export const CHALLENGE_INDEX = gql`
   {
     challengeIndex @client
   }
-`;
+`
 
 export const ADMIN_STATE = gql`
   {
@@ -101,14 +101,14 @@ export const ADMIN_STATE = gql`
     addNew @client
     componentType @client
   }
-`;
+`
 
 export const ADOPTED_STUDENT_FILTER = gql`
   {
     adoptedStudentFilter @client
     mrFilter @client
   }
-`;
+`
 
 export const STUDENTS = gql`
   query student($in: LessonId) {
@@ -122,7 +122,7 @@ export const STUDENTS = gql`
       }
     }
   }
-`;
+`
 
 export const CHALLENGE_STATUS = gql`
   query challengeStatus($in: ChallengeId) {
@@ -145,7 +145,7 @@ export const CHALLENGE_STATUS = gql`
       reviewerId
     }
   }
-`;
+`
 
 export const LESSONS = gql`
   {
@@ -169,7 +169,7 @@ export const LESSONS = gql`
       }
     }
   }
-`;
+`
 
 export const RECEIVED_STARS = gql`
   query receivedStars($in: UserInput) {
@@ -180,7 +180,7 @@ export const RECEIVED_STARS = gql`
       }
     }
   }
-`;
+`
 
 export const CURRICULUM_STATUS = gql`
   {
@@ -198,7 +198,7 @@ export const CURRICULUM_STATUS = gql`
       }
     }
   }
-`;
+`
 
 export const SUBMISSIONS = gql`
   query submissions($in: LessonId, $where: SubmissionWhere) {
@@ -221,7 +221,7 @@ export const SUBMISSIONS = gql`
       updatedAt
     }
   }
-`;
+`
 
 export const USER_SUBMISSIONS = gql`
   query userSubmissions($in: LessonUserId) {
@@ -241,15 +241,7 @@ export const USER_SUBMISSIONS = gql`
       }
     }
   }
-`;
-
-export const VIEW_SUBMISSION = gql`
-  mutation viewSubmission($in: SubmissionEdit) {
-    viewSubmission(input: $in) {
-      viewCount
-    }
-  }
-`;
+`
 
 export const APPROVE_SUBMISSION = gql`
   mutation approveSubmission($in: SubmissionEdit) {
@@ -257,19 +249,19 @@ export const APPROVE_SUBMISSION = gql`
       id
     }
   }
-`;
+`
 
 export const MAKE_TEACHER = gql`
   mutation makeTeacher($in: LessonId) {
     makeTeacher(input: $in)
   }
-`;
+`
 
 export const UN_MAKE_TEACHER = gql`
   mutation unMakeTeacher($in: LessonId) {
     unMakeTeacher(input: $in)
   }
-`;
+`
 
 export const UNAPPROVE_SUBMISSION = gql`
   mutation unapproveSubmission($in: SubmissionEdit) {
@@ -277,7 +269,7 @@ export const UNAPPROVE_SUBMISSION = gql`
       id
     }
   }
-`;
+`
 
 export const REJECT_SUBMISSION = gql`
   mutation rejectSubmission($in: SubmissionEdit) {
@@ -285,7 +277,7 @@ export const REJECT_SUBMISSION = gql`
       id
     }
   }
-`;
+`
 
 export const CREATE_SUBMISSION = gql`
   mutation createSubmission($in: SubmissionInput) {
@@ -293,19 +285,19 @@ export const CREATE_SUBMISSION = gql`
       id
     }
   }
-`;
+`
 
 export const ADOPT_STUDENT = gql`
   mutation adoptStudent($input: LessonUserId) {
     adoptStudent(input: $input)
   }
-`;
+`
 
 export const UNADOPT_STUDENT = gql`
   mutation unAdoptStudent($input: LessonUserId) {
     unAdoptStudent(input: $input)
   }
-`;
+`
 
 export const SAVE_LESSON = gql`
   mutation saveLesson($input: LessonInput) {
@@ -319,7 +311,7 @@ export const SAVE_LESSON = gql`
       title
     }
   }
-`;
+`
 
 export const CREATE_LESSON = gql`
   mutation createLesson($input: LessonInput) {
@@ -333,7 +325,7 @@ export const CREATE_LESSON = gql`
       title
     }
   }
-`;
+`
 
 export const SAVE_CHALLENGE = gql`
   mutation saveChallenge($input: ChallengeInput) {
@@ -345,7 +337,7 @@ export const SAVE_CHALLENGE = gql`
       order
     }
   }
-`;
+`
 
 export const CREATE_CHALLENGE = gql`
   mutation createChallenge($input: ChallengeInput) {
@@ -357,16 +349,16 @@ export const CREATE_CHALLENGE = gql`
       order
     }
   }
-`;
+`
 
 export const DELETE_LESSON = gql`
   mutation deleteLesson($input: LessonId) {
     deleteLesson(input: $input)
   }
-`;
+`
 
 export const DELETE_CHALLENGE = gql`
   mutation deleteChallenge($input: ChallengeId) {
     deleteChallenge(input: $input)
   }
-`;
+`
