@@ -1,5 +1,6 @@
 const config = require('../config.js')
 const path = require('path')
+const { User } = require('./dbload.js')
 
 // Imports for requests
 const cookieSession = require('cookie-session')
@@ -20,13 +21,16 @@ const pushNotification = require('./lib/pushNotification')
 const gitTrackerHelper = require('./gitTracker/gitTracker')
 
 // Middleware to process requests
-app.use(express.urlencoded({extended: true}))
+app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
 // View functional tests results easily
 if (process.env.NODE_ENV !== 'production') {
   app.get('/deleteUser', (req, res) => {
-    res.send(req.query.name)
+    User.destroy({ where: {
+      username: req.query.username
+    } })
+    res.send(req.query.username)
   })
   const functionalPath = path.join(__dirname, '../cypress')
   const serveIndex = require('serve-index')
