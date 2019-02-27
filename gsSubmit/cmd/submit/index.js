@@ -1,38 +1,26 @@
-#!/usr/bin/env node
-
-const simpleGit = require('simple-git')
+const git = require('simple-git')()
 const { exec } = require('child_process')
 const prompt = require('prompt')
 const { request } = require('graphql-request')
-const graphqlEndpoint = `https://c0d3.com/graphql`
 
-// Get the root path of the git
-const path = __dirname
-  .split('/')
-  .slice(0, this.length - 1)
-  .join('/')
-const git = simpleGit(path)
+let diff
+let username
+let userId
+let lessons
+let lessonsByOrder
+let lessonOrder
+let lessonId
+let challengesByOrder
+let challengeOrder
+let challengeId
+let current
 
-/* This contains the main pipeline
- * Use git to create a diff
- * Send a graphql request
- */
-
-const main = () => {
-  let diff
-  let username
-  let userId
-  let lessons
-  let lessonsByOrder
-  let lessonOrder
-  let lessonId
-  let challengesByOrder
-  let challengeOrder
-  let challengeId
-  let current
+module.exports = (inputs) => {
+  const graphqlEndpoint = getGraphqlEndpoint(inputs)
 
   return (
     new Promise((resolve, reject) => {
+
       // Check current branch
       git.branch((error, stdout, stderr) => {
         if (error || stderr) return reject(error || stderr)
@@ -73,6 +61,8 @@ const main = () => {
       .then(() => {
         // Get the username on the server
         return new Promise((resolve, reject) => {
+          if (username) return resolve()
+
           exec('whoami', (error, stdout, stderr) => {
             if (error || stderr) return reject(error || stderr)
             // Removes the new line piped through stdout
@@ -317,5 +307,14 @@ const main = () => {
   )
 }
 
-main()
+function getGraphqlEndpoint(inputs) {
+  if (process.env.TEST) {
+    username = inputs.username || inputs.u
 
+    if (inputs.url) {
+      return (inputs.url.includes('/graphql', -8)) ?
+        inputs.url : `${inputs.url}/graphql`
+    }
+  }
+  return 'https://c0d3.com/graphql'
+}

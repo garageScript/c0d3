@@ -17,7 +17,7 @@
   ],
   "preferGlobal": true,
   "bin": {
-    "c0d3": "./bin/c0d3",
+    "c0d3": "./bin/c0d3"
   },
   "scripts": {
     "test": "jest"
