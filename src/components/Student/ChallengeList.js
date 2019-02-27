@@ -209,7 +209,7 @@ const ChallengeNav = ({
 }) => (
   <div className='col-12'>
     <nav>
-      <ul className='pagination pg-blue justify-content-center'>
+      <ul className='pagination pg-blue justify-content-center' style={{ marginTop: '10px' }}>
         {challenges.map((challenge, i) => (
           <li
             key={`challenge-${i}`}

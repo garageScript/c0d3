@@ -25,7 +25,7 @@ const StudentPage = ({ match }) => {
             <div className='gs-container-1'>
               <div className='container'>
                 <CongratsModal lessonInfo={data.lessonInfo} />
-                <div className='row'>
+                <div className='row' style={{ marginTop: '10px' }} >
                   <h2 className='page-menu-title'>{title}</h2>
                   <nav className='breadcrumb'>
                     <TeacherMode lid={match.params.lid} />
