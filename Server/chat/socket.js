@@ -87,7 +87,7 @@ realtime.init = function (server) {
       delete mobileUsers[userId]
     })
   })
-  Room.all().then(rooms =>
+  Room.findAll().then(rooms =>
     rooms.forEach(r => {
       setupRoom(io, r.id)
     })
