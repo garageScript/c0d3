@@ -39,7 +39,7 @@ const gitLab = {
     const url = gitLab.url(`/${userId}`)
     const response = await axios.put(`${url}`, {
       password,
-      skip_confirmation: true
+      skip_reconfirmation: true
     })
     return (response.data || [])[0]
   },
