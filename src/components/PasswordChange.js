@@ -31,11 +31,12 @@ class pwChangeForm extends React.Component {
   render() {
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmit} style={{width: '300px'}}>
           <p className="h5 mb-4">Change Your Password</p>
           <div className="md-form">
             <label htmlFor="pw-change-current-password">Current Password</label>
             <input
+              className="form-control"
               id="pw-change-current-password"
               name="currentPassword"
               type="password"
@@ -47,6 +48,7 @@ class pwChangeForm extends React.Component {
           <div className="md-form">
             <label htmlFor="pw-change-new-password">New Password</label>
             <input
+              className="form-control"
               id="pw-change-new-password"
               name="newPassword"
               type="password"
@@ -60,6 +62,7 @@ class pwChangeForm extends React.Component {
               Confirm New Password
             </label>
             <input
+              className="form-control"
               id="pw-change-confirm-password"
               name="confirmPassword"
               type="password"
