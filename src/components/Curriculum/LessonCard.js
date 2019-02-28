@@ -53,7 +53,6 @@ const LessonCard = ({
     ? loggedInUser.userLesson
     : { isTeaching: null, isPassed: null }
   const { isTeaching, isPassed } = lessonStatus
-  console.log(lessonStatus)
   let log = <Query
     query={SUBMISSIONS}
     variables={{
