@@ -18,7 +18,7 @@ import NotFound from './components/NotFound'
 import PrivateRoute from './components/PrivateRoute'
 import NavBar from './components/NavBar'
 import LessonListAdmin from './components/Admin/LessonList'
-
+import Admin from './components/Admin/Announcements'
 import chatdb from './db/chatdb'
 
 const Home = () => {
@@ -146,6 +146,7 @@ const AppElement = () => (
             <PrivateRoute path='/chat/:id' component={Chat} />
             <PrivateRoute exact path='/profile' component={Profile} />
             <PrivateRoute exact path='/profile/:userId' component={Profile} />
+            <PrivateRoute path='/admin/announcements' component={Admin} />
             <PrivateRoute path='/admin' component={LessonListAdmin} />
             <PrivateRoute
               path='/admin/lessons/new'
