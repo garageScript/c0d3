@@ -1,3 +1,4 @@
+const chalk = require('chalk')
 const git = require('simple-git')()
 const { exec } = require('child_process')
 const prompt = require('prompt')
@@ -13,14 +14,13 @@ let lessonId
 let challengesByOrder
 let challengeOrder
 let challengeId
-let current
 
 module.exports = async (inputs) => {
   const graphqlEndpoint = getGraphqlEndpoint(inputs)
 
   try {
-    await checkCurrentBranch()
-    await getDiffAgainstMaster()
+    const currentBranch = await checkCurrentBranch()
+    await getDiffAgainstMaster(currentBranch)
     // Get the username on the server
     return new Promise((resolve, reject) => {
       if (username) return resolve()
@@ -236,27 +236,24 @@ function checkCurrentBranch() {
   return new Promise((resolve, reject) => {
     git.branch((error, stdout, stderr) => {
       if (error || stderr) return reject(error || stderr)
-      if (stdout.current === 'master') return reject(`
-        You are currently on master. Submissions must come from
-        branches that are not master.
-        Please make sure that you branch, add, commit, and submit
-        correctly.
-      `)
-      console.log(`You are currently on branch ${stdout.current}`)
-      resolve()
+      console.log('\nYou are currently on branch ' +
+        chalk.bold.blue(stdout.current))
+      if (stdout.current === 'master') return reject('Submissions ' +
+        'must come from branches that are ' + chalk.bold.red('not master. ') +
+        'Please make sure that you branch, add, commit, and submit correctly.')
+      resolve(stdout.current)
     })
   })
 }
 
-function getDiffAgainstMaster() {
+function getDiffAgainstMaster(current) {
   return new Promise((resolve, reject) => {
     git.diff([`--color`, `master..${current}`], (error, stdout, stderr) => {
       if (error || stderr) return reject(error || stderr)
-      console.log('Differences from your current branch to master\n', stdout)
       if (stdout.length === 0 || stdout === '\n') return reject(
-        `Make sure you have committed changes in a different branch. ` +
-        `Otherwise, there are no differences in your current branch ` +
-        `from your master branch`)
+        'There are ' + chalk.bold.red('no differences ') +
+        'in your current branch from your master branch.')
+      console.log(`Differences from your current branch to master\n\n`, stdout)
       return resolve()
     })
   })
