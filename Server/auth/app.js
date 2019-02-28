@@ -2,8 +2,10 @@ const bcrypt = require('bcrypt')
 const form = require('./lib/form')
 const gitLab = require('./lib/helpers')
 const axios = require('axios')
-
 const { User } = require('../dbload')
+const accessToken = process.env.ACCESS_TOKEN
+const headers = { Authorization: `Bearer ${accessToken}` }
+let url = process.env.NODE_ENV === 'production' ? 'https://chat.c0d3.com/api/v4' : 'https://chat-dev.c0d3.com/api/v4'
 
 const errorHandler = (req, res, error) => {
   if (error.httpStatus && error.message) {
@@ -22,15 +24,10 @@ const errorHandler = (req, res, error) => {
 
 const createMattermostUser = async (username, password, email) => {
   try {
-    const accessToken = '7iymhbz9b7y45c7cpakid9xt7w'
-    let url = process.env.NODE_ENV === 'production' ? 'https://chat.c0d3.com/api/v4' : 'https://chat-dev.c0d3.com/api/v4'
-    const header = { Authorization: `Bearer ${accessToken}` }
-    const users = await axios.get(`${url}/users/usernames`)
-    const user = users.filter((user) => user[username] === username)
-    if (user.includes(username)) return
-    await axios.post(`${url}/users`, { username, password, email }, { header })
+    await axios.get(`${url}/users/username/${username}`, { headers })
   } catch (error) {
-    console.log('error', error)
+    await axios.post(`${url}/users`, { username, password, email }, { headers })
+    console.log('Sign up user to MatterMost', error)
   }
 }
 
@@ -124,8 +121,8 @@ helpers.postSignup = async (req, res) => {
       userName: userRecord.username,
       id: userRecord.id
     }
-
     createMattermostUser(userName, password, userRecord.email)
+
     // set session with userInfo
     req.session.userInfo = userInfo
 
