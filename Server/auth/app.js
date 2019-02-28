@@ -20,6 +20,20 @@ const errorHandler = (req, res, error) => {
   return res.status(500).json({ success: false, errorMessage: error })
 }
 
+const createMattermostUser = async (username, password, email) => {
+  try {
+    const accessToken = '7iymhbz9b7y45c7cpakid9xt7w'
+    let url = process.env.NODE_ENV === 'production' ? 'https://chat.c0d3.com/api/v4' : 'https://chat-dev.c0d3.com/api/v4'
+    const header = { Authorization: `Bearer ${accessToken}` }
+    const users = await axios.get(`${url}/users/usernames`)
+    const user = users.filter((user) => user[username] === username)
+    if (user.includes(username)) return
+    await axios.post(`${url}/users`, { username, password, email }, { header })
+  } catch (error) {
+    console.log('error', error)
+  }
+}
+
 const helpers = {}
 
 helpers.getSession = (req, res) => {
@@ -57,6 +71,7 @@ helpers.postSignin = async (req, res) => {
       userName: userRecord.username,
       id: userRecord.id
     }
+    createMattermostUser(userName, password, userRecord.email)
     req.session.userInfo = userInfo
     res.status(200).json({ success: true, userInfo })
   } catch (error) {
@@ -110,6 +125,7 @@ helpers.postSignup = async (req, res) => {
       id: userRecord.id
     }
 
+    createMattermostUser(userName, password, userRecord.email)
     // set session with userInfo
     req.session.userInfo = userInfo
 
