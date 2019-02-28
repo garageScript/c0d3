@@ -53,7 +53,7 @@ const LessonCard = ({
     ? loggedInUser.userLesson
     : { isTeaching: null, isPassed: null }
   const { isTeaching, isPassed } = lessonStatus
-  let log = <Query
+  const log = !isPassed ? '' : <Query
     query={SUBMISSIONS}
     variables={{
       in: { id },
@@ -64,7 +64,6 @@ const LessonCard = ({
       <div> {`${data.submissions.length} pending`} </div>
     ))}
   </Query>
-  if (!isPassed) log = ''
   return (
     <div
       className={`card gs-lesson-card ${cardType} ${isPassed ? 'passed' : ''}`}
