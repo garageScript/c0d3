@@ -13,3 +13,5 @@ const Admin = () => (
     <div className='previousAnnouncements' />
   </div>
 )
+
+export default Admin
