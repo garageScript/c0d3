@@ -146,6 +146,7 @@ const AppElement = () => (
             <PrivateRoute path='/chat/:id' component={Chat} />
             <PrivateRoute exact path='/profile' component={Profile} />
             <PrivateRoute exact path='/profile/:userId' component={Profile} />
+            <PrivateRoute path='/admin/announcement' component={Admin} />
             <PrivateRoute path='/admin' component={LessonListAdmin} />
             <PrivateRoute
               path='/admin/lessons/new'
