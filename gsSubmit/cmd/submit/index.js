@@ -20,26 +20,7 @@ module.exports = async (inputs) => {
 
   try {
     await checkCurrentBranch()
-    // Create a diff against master
-    return new Promise((resolve, reject) => {
-      git.diff(
-        [`--color`, `master..${current}`],
-        (error, stdout, stderr) => {
-          if (error || stderr) return reject(error || stderr)
-          console.log('Differences from your current branch to master')
-          const colorizedDiff = stdout
-          console.log(colorizedDiff)
-          if (colorizedDiff.length === 0 || colorizedDiff === '\n') {
-            return reject(
-              `Make sure you have committed changes in a different branch. ` +
-                `Otherwise, there are no differences in your current branch from your master branch`
-            )
-          }
-          return resolve()
-        }
-      )
-    })
-  .then(() => {
+    await getDiffAgainstMaster()
     // Get the username on the server
     return new Promise((resolve, reject) => {
       if (username) return resolve()
@@ -54,7 +35,6 @@ module.exports = async (inputs) => {
         return resolve()
       })
     })
-  })
   .then(() => {
     // Query for the user's id
     const usersQuery = `
@@ -264,6 +244,20 @@ function checkCurrentBranch() {
       `)
       console.log(`You are currently on branch ${stdout.current}`)
       resolve()
+    })
+  })
+}
+
+function getDiffAgainstMaster() {
+  return new Promise((resolve, reject) => {
+    git.diff([`--color`, `master..${current}`], (error, stdout, stderr) => {
+      if (error || stderr) return reject(error || stderr)
+      console.log('Differences from your current branch to master\n', stdout)
+      if (stdout.length === 0 || stdout === '\n') return reject(
+        `Make sure you have committed changes in a different branch. ` +
+        `Otherwise, there are no differences in your current branch ` +
+        `from your master branch`)
+      return resolve()
     })
   })
 }
