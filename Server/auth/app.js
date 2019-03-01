@@ -1,8 +1,8 @@
 const bcrypt = require('bcrypt')
 const form = require('./lib/form')
 const gitLab = require('./lib/helpers')
+const matterMostService = require('./lib/matterMostService')
 const axios = require('axios')
-
 const { User } = require('../dbload')
 
 const errorHandler = (req, res, error) => {
@@ -57,6 +57,7 @@ helpers.postSignin = async (req, res) => {
       userName: userRecord.username,
       id: userRecord.id
     }
+    matterMostService.signupUser(userName, password, userRecord.email)
     req.session.userInfo = userInfo
     res.status(200).json({ success: true, userInfo })
   } catch (error) {
@@ -109,6 +110,7 @@ helpers.postSignup = async (req, res) => {
       userName: userRecord.username,
       id: userRecord.id
     }
+    matterMostService.signupUser(userName, password, userRecord.email)
 
     // set session with userInfo
     req.session.userInfo = userInfo
