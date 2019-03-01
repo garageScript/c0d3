@@ -1,6 +1,6 @@
 const axios = require('axios')
-const MATTERMOST_ACCESS_TOKEN = process.env.ACCESS_TOKEN
-const chatServiceHeader = { Authorization: `Bearer ${MATTERMOST_ACCESS_TOKEN}` }
+const accessToken = process.env.MATTERMOST_ACCESS_TOKEN
+const chatServiceHeader = { Authorization: `Bearer ${accessToken}` }
 let chatServiceUrl = process.env.NODE_ENV === 'production' ? 'https://chat.c0d3.com/api/v4' : 'https://chat-dev.c0d3.com/api/v4'
 
 const matterMostService = {
