@@ -24,7 +24,7 @@
   },
   "author": "c0d3.com",
   "dependencies": {
-    "async": "^2.6.1",
+    "chalk": "^2.4.2",
     "child_process": "^1.0.2",
     "graphql-request": "^1.6.0",
     "minimist": "^1.2.0",

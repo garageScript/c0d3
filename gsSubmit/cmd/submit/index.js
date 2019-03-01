@@ -1,10 +1,10 @@
+const chalk = require('chalk')
 const git = require('simple-git')()
-const { exec } = require('child_process')
 const prompt = require('prompt')
 const { request } = require('graphql-request')
+const credService = require('../util/credentials.js')
 
 let diff
-let username
 let userId
 let lessons
 let lessonsByOrder
@@ -13,68 +13,27 @@ let lessonId
 let challengesByOrder
 let challengeOrder
 let challengeId
-let current
 
 module.exports = async (inputs) => {
-  const graphqlEndpoint = getGraphqlEndpoint(inputs)
 
   try {
-    await checkCurrentBranch()
-    // Create a diff against master
-    return new Promise((resolve, reject) => {
-      git.diff(
-        [`--color`, `master..${current}`],
-        (error, stdout, stderr) => {
-          if (error || stderr) return reject(error || stderr)
-          console.log('Differences from your current branch to master')
-          const colorizedDiff = stdout
-          console.log(colorizedDiff)
-          if (colorizedDiff.length === 0 || colorizedDiff === '\n') {
-            return reject(
-              `Make sure you have committed changes in a different branch. ` +
-                `Otherwise, there are no differences in your current branch from your master branch`
-            )
-          }
-          return resolve()
-        }
-      )
-    })
-  .then(() => {
-    // Get the username on the server
-    return new Promise((resolve, reject) => {
-      if (username) return resolve()
+    const credentials = await credService.getCredentials()
+    const url = inputs.url ? `${inputs.url}/signin` : 'https://c0d3.com/signin'
 
-      exec('whoami', (error, stdout, stderr) => {
-        if (error || stderr) return reject(error || stderr)
-        // Removes the new line piped through stdout
-        username = stdout
-          .split('')
-          .slice(0, -1)
-          .join('')
-        return resolve()
+    if (!credentials.token) {
+      const success = await credService.validate(credentials, url)
+      if (!success) return console.error('Invalid Credentials')
+      credService.save(credentials)
+    }
+
+    const currentBranch = await checkCurrentBranch()
+    await getDiffAgainstMaster(currentBranch)
+
+    const graphqlEndpoint = getGraphqlEndpoint(inputs)
+    const userId = await getUserId(credentials.username, graphqlEndpoint)
+
+    return new Promise((resolve, reject) => {
       })
-    })
-  })
-  .then(() => {
-    // Query for the user's id
-    const usersQuery = `
-  query Users($userInfo: UserInput) {
-    users(input: $userInfo) {
-      id
-    }
-  } `
-    const usersQueryVar = {
-      userInfo: {
-        username
-      }
-    }
-    return request(graphqlEndpoint, usersQuery, usersQueryVar).then(
-      ({ users }) => {
-        const [user] = users
-        userId = user.id
-      }
-    )
-  })
   .then(() => {
     // Query for the lessons
     const lessonsQuery = `
@@ -91,6 +50,7 @@ module.exports = async (inputs) => {
      }
   }`
     return request(graphqlEndpoint, lessonsQuery).then(res => {
+      console.log('got lessons: ', lessons)
       lessons = res.lessons
     })
   })
@@ -237,18 +197,10 @@ module.exports = async (inputs) => {
   } catch(e) {
     console.error(e)
   }
-
 }
 
 function getGraphqlEndpoint(inputs) {
-  if (process.env.TEST) {
-    username = inputs.username || inputs.u
-
-    if (inputs.url) {
-      return (inputs.url.includes('/graphql', -8)) ?
-        inputs.url : `${inputs.url}/graphql`
-    }
-  }
+  if (process.env.TEST && inputs.url) return `${inputs.url}/graphql`
   return 'https://c0d3.com/graphql'
 }
 
@@ -256,14 +208,47 @@ function checkCurrentBranch() {
   return new Promise((resolve, reject) => {
     git.branch((error, stdout, stderr) => {
       if (error || stderr) return reject(error || stderr)
-      if (stdout.current === 'master') return reject(`
-        You are currently on master. Submissions must come from
-        branches that are not master.
-        Please make sure that you branch, add, commit, and submit
-        correctly.
-      `)
-      console.log(`You are currently on branch ${stdout.current}`)
-      resolve()
+      console.log('\nYou are currently on branch ' +
+        chalk.bold.blue(stdout.current))
+      if (stdout.current === 'master') return reject('Submissions ' +
+        'must come from branches that are ' + chalk.bold.red('not master. ') +
+        'Please make sure that you branch, add, commit, and submit correctly.')
+      resolve(stdout.current)
     })
   })
+}
+
+function getDiffAgainstMaster(current) {
+  return new Promise((resolve, reject) => {
+    git.diff([`--color`, `master..${current}`], (error, stdout, stderr) => {
+      if (error || stderr) return reject(error || stderr)
+      if (stdout.length === 0 || stdout === '\n') return reject(
+        'There are ' + chalk.bold.red('no differences ') +
+        'in your current branch from your master branch.')
+      console.log(`Differences from your current branch to master\n\n`, stdout)
+      return resolve()
+    })
+  })
+}
+
+function getUserId(username, graphqlEndpoint) {
+  const usersQuery = `
+  query Users($userInfo: UserInput) {
+    users(input: $userInfo) {
+      id
+    }
+  }`
+
+  const usersQueryVar = {
+    userInfo: {
+      username,
+    }
+  }
+  return request(graphqlEndpoint, usersQuery, usersQueryVar)
+    .then(({ users }) => {
+      console.log('got users', users)
+      const [user] = users
+      userId = user.id
+      }
+    )
 }
