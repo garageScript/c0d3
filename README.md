@@ -64,6 +64,16 @@ If working on local computer, tests can be ran in the chrome browser by followin
 4.  Navigate to cypress pop-up window and click on the specific test
 5.  Watch/Interact with new chrome browser dedicated for functional testing
 
+## Mattermost
+
+### Setup
+1. Ask admin for mattermost access token and add it to .env file
+2. Run express server `supervisor Server/app.js`
+3. Run webpack server `yarn start`
+
+### Chatroom
+1. Development `https://chat-dev.c0d3.com`
+2. Production `https://chat.c0d3.com`
 
 ## Databases
 
@@ -102,4 +112,3 @@ https://dba.stackexchange.com/questions/65662/postgres-how-to-insert-row-with-au
   - belongsTo Room
   - belongsTo User
 - UserRoom (unread, isLastRoom)
-
