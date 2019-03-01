@@ -1,11 +1,10 @@
 const chalk = require('chalk')
 const git = require('simple-git')()
-const { exec } = require('child_process')
 const prompt = require('prompt')
 const { request } = require('graphql-request')
+const credService = require('../util/credentials.js')
 
 let diff
-let username
 let userId
 let lessons
 let lessonsByOrder
@@ -16,45 +15,25 @@ let challengeOrder
 let challengeId
 
 module.exports = async (inputs) => {
-  const graphqlEndpoint = getGraphqlEndpoint(inputs)
 
   try {
+    const credentials = await credService.getCredentials()
+    const url = inputs.url ? `${inputs.url}/signin` : 'https://c0d3.com/signin'
+
+    if (!credentials.token) {
+      const success = await credService.validate(credentials, url)
+      if (!success) return console.error('Invalid Credentials')
+      credService.save(credentials)
+    }
+
     const currentBranch = await checkCurrentBranch()
     await getDiffAgainstMaster(currentBranch)
-    // Get the username on the server
-    return new Promise((resolve, reject) => {
-      if (username) return resolve()
 
-      exec('whoami', (error, stdout, stderr) => {
-        if (error || stderr) return reject(error || stderr)
-        // Removes the new line piped through stdout
-        username = stdout
-          .split('')
-          .slice(0, -1)
-          .join('')
-        return resolve()
+    const graphqlEndpoint = getGraphqlEndpoint(inputs)
+    const userId = await getUserId(credentials.username, graphqlEndpoint)
+
+    return new Promise((resolve, reject) => {
       })
-    })
-  .then(() => {
-    // Query for the user's id
-    const usersQuery = `
-  query Users($userInfo: UserInput) {
-    users(input: $userInfo) {
-      id
-    }
-  } `
-    const usersQueryVar = {
-      userInfo: {
-        username
-      }
-    }
-    return request(graphqlEndpoint, usersQuery, usersQueryVar).then(
-      ({ users }) => {
-        const [user] = users
-        userId = user.id
-      }
-    )
-  })
   .then(() => {
     // Query for the lessons
     const lessonsQuery = `
@@ -71,6 +50,7 @@ module.exports = async (inputs) => {
      }
   }`
     return request(graphqlEndpoint, lessonsQuery).then(res => {
+      console.log('got lessons: ', lessons)
       lessons = res.lessons
     })
   })
@@ -217,18 +197,10 @@ module.exports = async (inputs) => {
   } catch(e) {
     console.error(e)
   }
-
 }
 
 function getGraphqlEndpoint(inputs) {
-  if (process.env.TEST) {
-    username = inputs.username || inputs.u
-
-    if (inputs.url) {
-      return (inputs.url.includes('/graphql', -8)) ?
-        inputs.url : `${inputs.url}/graphql`
-    }
-  }
+  if (process.env.TEST && inputs.url) return `${inputs.url}/graphql`
   return 'https://c0d3.com/graphql'
 }
 
@@ -257,4 +229,26 @@ function getDiffAgainstMaster(current) {
       return resolve()
     })
   })
+}
+
+function getUserId(username, graphqlEndpoint) {
+  const usersQuery = `
+  query Users($userInfo: UserInput) {
+    users(input: $userInfo) {
+      id
+    }
+  }`
+
+  const usersQueryVar = {
+    userInfo: {
+      username,
+    }
+  }
+  return request(graphqlEndpoint, usersQuery, usersQueryVar)
+    .then(({ users }) => {
+      console.log('got users', users)
+      const [user] = users
+      userId = user.id
+      }
+    )
 }
