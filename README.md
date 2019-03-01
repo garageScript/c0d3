@@ -66,14 +66,17 @@ If working on local computer, tests can be ran in the chrome browser by followin
 
 ## Mattermost
 
-### Setup
+#### Setup
 1. Ask admin for mattermost access token and add it to .env file
 2. Run express server `supervisor Server/app.js`
 3. Run webpack server `yarn start`
 
-### Chatroom
+#### Chatroom
 1. Development `https://chat-dev.c0d3.com`
 2. Production `https://chat.c0d3.com`
+
+#### API Link
+link `https://api.mattermost.com/#tag/users`
 
 ## Databases
 
