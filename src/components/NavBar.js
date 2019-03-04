@@ -27,7 +27,7 @@ const NavBarComponent = ({ location }) => {
         </Link>
       </li>
       <li className='nav-item nb-space'>
-        <a href='https://chat.c0d3.com/c0d3/channels/town-square' className='nav-link'>
+        <a href='https://chat.c0d3.com' className='nav-link'>
                 Chat
         </a>
       </li>
