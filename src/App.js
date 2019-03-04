@@ -64,16 +64,18 @@ const Home = () => {
           </h5>
           <Query className='announcements' query={gql`
                   query {
-                    announcements
+                    announcements {
+                      id, 
+                      description
+                    }
                   }
                 `}
           >
             {(params) => {
               if (params.loading) return <h1>Loading...</h1>
               if (params.error) return <h1>Error</h1>
-              console.log(params.data)
               return params.data.announcements.map((v, i) => {
-                return <Markdown key={i} source={v} />
+                return <Markdown key={i} source={v.description} />
               })
             }}
           </Query>

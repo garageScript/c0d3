@@ -41,7 +41,7 @@ type Query {
   receivedStars(input: UserInput):[Star]
 
   "Get Announcements"
-  announcements: [String] 
+  announcements: [Announcement] 
 }
 
 type Mutation {
@@ -228,5 +228,10 @@ type Star {
   lessonId: String
   student: User
   mentor: User
+}
+
+type Announcement {
+  id: String
+  description: String
 }
 `

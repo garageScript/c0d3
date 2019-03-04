@@ -196,11 +196,6 @@ module.exports = {
   },
 
   announcements: (obj, args, context) => {
-    return Announcement.findAll().then((data) => {
-      console.log('data', data)
-      return data.map((announcement) => {
-        return announcement.description
-      })
-    })
+    return Announcement.findAll()
   }
 }

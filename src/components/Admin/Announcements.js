@@ -40,7 +40,10 @@ class Announcements extends React.Component {
         </Mutation>
         <Query query={gql`
               query {
-                announcements
+                announcements {
+                  id, 
+                  description
+                }
               }
             `}
         >
@@ -48,7 +51,7 @@ class Announcements extends React.Component {
             if (params.loading) return <h1>Loading...</h1>
             if (params.error) return <h1>Error</h1>
             return params.data.announcements.map((v, i) => {
-              return <Markdown key={i} source={v} />
+              return <Markdown key={i} source={v.description} />
             })
           }}
         </Query>

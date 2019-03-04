@@ -215,6 +215,6 @@ module.exports = {
     Announcement.create({
       description: args.value
     })
-    return 'Rahul was here'
+    return [Announcement]
   }
 }
