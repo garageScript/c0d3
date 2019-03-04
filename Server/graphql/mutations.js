@@ -215,6 +215,6 @@ module.exports = {
     Announcement.create({
       description: args.value
     })
-    return [Announcement]
+    return Announcement.findAll()
   }
 }

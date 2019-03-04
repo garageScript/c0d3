@@ -22,8 +22,11 @@ class Announcements extends React.Component {
         }} />
         <Mutation mutation={gql`
            mutation create($input :String){
-              createAnnouncement(value: $input) 
-           } 
+              createAnnouncement(value: $input) {
+                id,
+                description
+              } 
+           }  
             `}>
           {(execute) => {
             return <button className='updateAnnouncement' onClick={() => {
