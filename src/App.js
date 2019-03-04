@@ -23,6 +23,7 @@ import chatdb from './db/chatdb'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import Markdown from 'react-markdown'
+import { GET_ANNOUNCEMENTS } from './db/queries.js'
 
 const Home = () => {
   return (
@@ -62,14 +63,7 @@ const Home = () => {
               </small>
             </div>
           </h5>
-          <Query className='announcements' query={gql`
-                  query {
-                    announcements {
-                      id, 
-                      description
-                    }
-                  }
-                `}
+          <Query className='announcements' query={GET_ANNOUNCEMENTS}
           >
             {(params) => {
               if (params.loading) return <h1>Loading...</h1>
