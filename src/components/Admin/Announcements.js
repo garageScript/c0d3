@@ -1,5 +1,5 @@
 import React from 'react'
-import { Mutation } from 'react-apollo'
+import { Query, Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 
 class Announcements extends React.Component {
@@ -37,6 +37,20 @@ class Announcements extends React.Component {
             }}>SUBMIT</button>
           }}
         </Mutation>
+        <Query query={gql`
+              query {
+                announcements
+              }
+            `}
+        >
+          {(params) => {
+            if (params.loading) return <h1>Loading...</h1>
+            if (params.error) return <h1>Error</h1>
+            return params.data.announcements.map((v, i) => {
+              return <div key={i}>{v}</div>
+            })
+          }}
+        </Query>
       </div>
     )
   }

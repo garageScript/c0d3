@@ -1,4 +1,6 @@
+
 const {
+  Announcement,
   AdoptedStudent,
   Challenge,
   Lesson,
@@ -210,7 +212,9 @@ module.exports = {
     return 'Success'
   },
   createAnnouncement: (obj, args, context) => {
-    console.log(args)
+    Announcement.create({
+      description: args.value
+    })
     return 'Rahul was here'
   }
 }
