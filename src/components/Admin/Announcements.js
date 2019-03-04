@@ -1,6 +1,7 @@
 import React from 'react'
 import { Query, Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
+import Markdown from 'react-markdown'
 
 class Announcements extends React.Component {
   constructor (props) {
@@ -47,7 +48,7 @@ class Announcements extends React.Component {
             if (params.loading) return <h1>Loading...</h1>
             if (params.error) return <h1>Error</h1>
             return params.data.announcements.map((v, i) => {
-              return <div key={i}>{v}</div>
+              return <Markdown key={i} source={v} />
             })
           }}
         </Query>
