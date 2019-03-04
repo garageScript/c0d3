@@ -24,6 +24,7 @@ import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import Markdown from 'react-markdown'
 import { GET_ANNOUNCEMENTS } from './db/queries.js'
+import { loadComponent } from './components/shared/shared.js'
 
 const Home = () => {
   return (
@@ -66,7 +67,7 @@ const Home = () => {
           <Query className='announcements' query={GET_ANNOUNCEMENTS}
           >
             {(params) => {
-              if (params.loading) return <h1>Loading...</h1>
+              if (params.loading) return <h1>{loadComponent}</h1>
               if (params.error) return <h1>Error</h1>
               return params.data.announcements.map((v, i) => {
                 return <Markdown key={i} source={v.description} />
