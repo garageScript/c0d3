@@ -1,50 +1,45 @@
 import React from 'react'
-const generalUpdates = []
-const announcements = []
-let update = ''
-let newAnnouncement = ''
-const Admin = () => (
-  <div className='admin'>
-    <h1>Admin Page</h1>
-    <textarea className='update'onChange={(v) => {
-      update = v.target.value
-      generalUpdates.push(update)
-    }} />
-    <button className='updateButton' onClick={() => {
-      /*
-      fetch('/graphql', {
-        method: 'POST'.
-        headers: {
-          'Content-Type' : 'application/json'
-        },
-        body: JSON.stringify({
-          update,
-          generalUpdates,
-        })
-      })
-      */
-    }}>UPDATE</button>
-    <h1>New Announcements</h1>
-    <textarea className='newAnnouncements' onChange={(input) => {
-      newAnnouncement = input.target.value
-      announcements.push(newAnnouncement)
-    }} />
-    <button className='submitAnnouncement' onClick={() => {
-      /* fetch('/graphql', {
-        method: 'POST'.
-        headers: {
-          'Content-Type' : 'application/json'
-        },
-        body: JSON.stringify({
-          newAnnouncement,
-          announcements
-        })
-      })
-      */
-    }}>SUBMIT</button>
-    <h1>Previous Announcements</h1>
-    <div className='previousAnnouncements' />
-  </div>
-)
+import { Mutation } from 'react-apollo'
+import gql from 'graphql-tag'
 
-export default Admin
+class Announcements extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      announcement: ''
+    }
+  }
+  render () {
+    return (
+      <div>
+        <h1>Admin Page</h1>
+        <h1>New Announcements</h1>
+        <textarea className='newAnnouncement' value={this.state.announcement} onChange={(v) => {
+          this.setState({
+            announcement: v.target.value
+          })
+        }} />
+        <Mutation mutation={gql`
+           mutation create($input :String){
+              createAnnouncement(value: $input) 
+           } 
+            `}>
+          {(execute) => {
+            return <button className='updateAnnouncement' onClick={() => {
+              execute({
+                variables: {
+                  input: this.state.announcement
+                }
+              })
+              this.setState({
+                announcement: ''
+              })
+            }}>SUBMIT</button>
+          }}
+        </Mutation>
+      </div>
+    )
+  }
+}
+
+export default Announcements

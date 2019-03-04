@@ -89,6 +89,9 @@ type Mutation {
 
   "Updates the selected challenge"
   saveChallenge(input: ChallengeInput): Challenge
+
+  "Create a new announcement"
+  createAnnouncement(value: String): String
 }
 
 input UserInput {

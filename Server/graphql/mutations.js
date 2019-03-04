@@ -208,5 +208,9 @@ module.exports = {
       mentorId: args.input.userId || context.user.id
     })
     return 'Success'
+  },
+  createAnnouncement: (obj, args, context) => {
+    console.log(args)
+    return 'Rahul was here'
   }
 }
