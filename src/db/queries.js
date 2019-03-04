@@ -362,3 +362,11 @@ export const DELETE_CHALLENGE = gql`
     deleteChallenge(input: $input)
   }
 `
+export const GET_ANNOUNCEMENTS = gql`
+  query {
+    announcements {
+      id,
+      description
+    }
+  }
+`

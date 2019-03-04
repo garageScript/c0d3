@@ -2,6 +2,7 @@ import React from 'react'
 import { Query, Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 import Markdown from 'react-markdown'
+import { GET_ANNOUNCEMENTS } from '../../db/queries.js'
 
 class Announcements extends React.Component {
   constructor (props) {
@@ -41,14 +42,7 @@ class Announcements extends React.Component {
             }}>SUBMIT</button>
           }}
         </Mutation>
-        <Query query={gql`
-              query {
-                announcements {
-                  id, 
-                  description
-                }
-              }
-            `}
+        <Query query={GET_ANNOUNCEMENTS}
         >
           {(params) => {
             if (params.loading) return <h1>Loading...</h1>
