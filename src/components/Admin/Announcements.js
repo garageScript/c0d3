@@ -44,8 +44,8 @@ class Announcements extends React.Component {
           }}
         </Mutation>
         <Query query={GET_ANNOUNCEMENTS} >
-          { loadComponent((data) => {
-            return data.announcements.map((v, i) => {
+          { loadComponent(({ announcements }) => {
+            return announcements.map((v, i) => {
               return <Markdown key={i} source={v.description} />
             })
           })}
