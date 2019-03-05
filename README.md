@@ -5,7 +5,8 @@ This is the codebase for the website c0d3.com, which provides a platform for stu
 
 The following will describe how to setup your own development server.  You have the option to setup your development server on either your local machine, or within c0d3's server. The process described below works for both cases.  
 
-NOTE: If you choose to setup your development server locally, you must install the following on your local machine BEFORE proceeding:
+NOTE: If you choose to setup your development server locally, you must install the following on your local machine BEFORE proceeding:  
+
       a. install node.js 
       b. install git
       c. install secure shell(only if you are working with an older version of windows.  Windows 10 will have secure shell pre-installed)
