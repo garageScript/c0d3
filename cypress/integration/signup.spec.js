@@ -8,6 +8,7 @@ describe('c0d3.com', () => {
     const password = 'letmein2'
     const url = Cypress.env('baseUrl')
     const serverURL = Cypress.env('serverUrl')
+    cy.visit(`${serverURL}/deleteUser?username=${username}`)
     cy.visit(`${url}/signup`)
     cy.get('#full-name')
       .type(name)
@@ -41,9 +42,6 @@ describe('c0d3.com', () => {
     })
     cy.getCookies().then(cookies => {
       expect(cookies.length).to.be.greaterThan(0)
-    })
-    cy.request(`${serverURL}/deleteUser?username=${username}`).then((response) => {
-      expect(response.status).to.eq(200)
     })
   })
 })

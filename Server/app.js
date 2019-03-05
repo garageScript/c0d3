@@ -2,8 +2,10 @@ const config = require('../config.js')
 const path = require('path')
 const { User } = require('./dbload.js')
 
-// Imports for requests
-const cookieSession = require('cookie-session')
+const bcrypt = require('bcrypt')
+const passport = require('passport')
+const LocalStrategy = require('passport-local')
+const session = require('express-session')
 
 // Imports for Apollo Graphql
 const { ApolloServer } = require('apollo-server-express')
@@ -19,6 +21,7 @@ realtime.init(server)
 const authHelpers = require('./auth/app')
 const pushNotification = require('./lib/pushNotification')
 const gitTrackerHelper = require('./gitTracker/gitTracker')
+const matterMostService = require('./auth/lib/matterMostService')
 
 // Middleware to process requests
 app.use(express.urlencoded({ extended: true }))
@@ -37,19 +40,26 @@ if (process.env.NODE_ENV !== 'production') {
   app.use('/functional', express.static(functionalPath), serveIndex(functionalPath, { icons: true }))
 }
 
-// Middleware to set session cookies
-const session = {
-  'name': 'c0d3session',
-  'keys': [config.SESSION_SECRET],
-  'domain': config.HOST_NAME,
-  'maxAge': 2592000000
-}
-app.use(cookieSession(session), (req, res, next) => {
-  if (!req.session) req.session = {}
-  req.user = req.session.userInfo || {}
-  if (req.user.id) { req.user.id = parseInt(req.user.id, 10) }
-  next()
+// By default, LocalStrategy expects to find credentials in parameters named username and password
+passport.serializeUser((user, done) => {
+  done(null, user)
 })
+passport.deserializeUser((user, done) => {
+  done(null, user)
+})
+passport.use(new LocalStrategy(async (username, password, done) => {
+  const user = await User.findOne({ where: { username } })
+  if (!user) { return done(null, false) }
+  const pwIsValid = await bcrypt.compare(password, user.password)
+  if (!pwIsValid) { return done(null, false) }
+
+  matterMostService.signupUser(username, password, user.email)
+  return done(null, user.dataValues)
+}))
+
+app.use(session({ secret: config.SESSION_SECRET, maxAge: 2592000000, domain: config.HOST_NAME }))
+app.use(passport.initialize())
+app.use(passport.session()) // persistent login session
 
 // For CORS. Must be placed at the top so this handles
 // cors request first before propagating to other middlewares
@@ -66,7 +76,9 @@ app.use((req, res, next) => {
 
 const apolloServer = new ApolloServer({
   schema: gqlSchema,
-  context: ({ req }) => ({ user: req.user })
+  context: ({ req }) => {
+    return { user: req.user }
+  }
 })
 apolloServer.applyMiddleware({
   app,
@@ -97,12 +109,20 @@ app.post('/profile/merge_requests', gitTrackerHelper.getMergeRequests)
 app.get('/session', authHelpers.getSession)
 app.get('/signout', authHelpers.getSignout)
 app.get('/usernames/:username', authHelpers.getUsername)
-app.post('/signin', authHelpers.postSignin)
+app.post('/signin', passport.authenticate('local', {
+  failureRedirect: '/signin'
+}), (req, res) => {
+  res.status(200).json({ success: true, userInfo: req.user })
+})
+app.post('/signup', authHelpers.postSignup, passport.authenticate('local', {
+  failureRedirect: '/signup'
+}), (req, res) => {
+  res.status(200).json({ success: true, userInfo: req.user })
+})
 app.post('/validate', authHelpers.postValidate)
 app.post('/password', authHelpers.postPassword) // untested
 app.post('/clientForm', authHelpers.postClientForm) // untested
 app.post('/names', authHelpers.postNames) // untested
-app.post('/signup', authHelpers.postSignup)
 
 app.get('/ios', (req, res) => {
   return res.redirect('https://testflight.apple.com/join/B8wZp83I')

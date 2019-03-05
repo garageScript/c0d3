@@ -7,7 +7,7 @@ const PrivateRoute = ({
   ...otherProps
 }) => {
   const renderRoute = props =>
-    window.userInfo.auth ? <Component {...props} /> : <Redirect to='/signin' />
+    window.userInfo.id ? <Component {...props} /> : <Redirect to='/signin' />
   return <Route {...otherProps} render={renderRoute} />
 }
 

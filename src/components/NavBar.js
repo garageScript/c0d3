@@ -136,7 +136,7 @@ const NavBarComponent = ({ location }) => {
         className='collapse navbar-collapse justify-content-end'
         id='navbarSupportedContent'
       >
-        {window.userInfo.auth ? authUserNavLinks : nonAuthUserNavLinks}
+        {window.userInfo.id ? authUserNavLinks : nonAuthUserNavLinks}
       </div>
     </nav>
   )
