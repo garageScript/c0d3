@@ -27,27 +27,9 @@ const NavBarComponent = ({ location }) => {
         </Link>
       </li>
       <li className='nav-item nb-space'>
-        <Query query={CHAT}>
-          {({ loading, error, data = {}, client }) => {
-            const chatInfo = data.chat || {}
-            const user = chatInfo.user || {}
-            const badgeNum = (chatInfo.rooms || []).reduce((acc, room) => {
-              return acc + (+room.unread || 0)
-            }, 0)
-            const badge = badgeNum ? (
-              <span className='badge badge-primary badge-pill'>
-                {' '}
-                {badgeNum > 10 ? '10+' : badgeNum}{' '}
-              </span>
-            ) : null
-            return (
-              <Link to={`/chat/${user.lastroomId || 1}`} className='nav-link'>
+        <a href='https://chat.c0d3.com' className='nav-link'>
                 Chat
-                {badge}
-              </Link>
-            )
-          }}
-        </Query>
+        </a>
       </li>
       <li className='nav-item dropdown'>
         <a
