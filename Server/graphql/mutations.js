@@ -212,9 +212,8 @@ module.exports = {
     return 'Success'
   },
   createAnnouncement: (obj, args, context) => {
-    Announcement.create({
+    return Announcement.create({
       description: args.value
     })
-    return Announcement.findAll()
   }
 }

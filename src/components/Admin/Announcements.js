@@ -22,7 +22,15 @@ class Announcements extends React.Component {
             announcement: v.target.value
           })
         }} />
-        <Mutation mutation={gql`
+        <Mutation update={(cache, { data: { createAnnouncement } }) => {
+          const { announcements } = cache.readQuery({ query: GET_ANNOUNCEMENTS })
+          cache.writeQuery({
+            query: GET_ANNOUNCEMENTS,
+            data: {
+              announcements: [createAnnouncement].concat(announcements)
+            }
+          })
+        }} mutation={gql`
            mutation create($input :String){
               createAnnouncement(value: $input) {
                 id,
