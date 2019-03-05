@@ -23,46 +23,13 @@ const errorHandler = (req, res, error) => {
 const helpers = {}
 
 helpers.getSession = (req, res) => {
-  if (req.user.id) { return res.json({ success: true, userInfo: req.user }) }
+  if (req.user && req.user.id) { return res.json({ success: true, userInfo: req.user }) }
   errorHandler(req, res, { httpStatus: 401, message: 'unauthorized' })
 }
 
 helpers.getSignout = (req, res) => {
   req.session = null
   res.status(200).end()
-}
-
-// handle sign in requests
-helpers.postSignin = async (req, res) => {
-  const { userName, password } = req.body
-  try {
-    // search for the user record with given email
-    const userRecord = await User.findOne({
-      where: { username: userName }
-    })
-    if (!userRecord) {
-      throw { httpStatus: 401, message: 'invalid username or password' }
-    }
-
-    // validate the password
-    const hash = userRecord.password
-    const pwIsValid = await bcrypt.compare(password, hash)
-    if (!pwIsValid) { throw { httpStatus: 401, message: 'invalid username or password' } }
-
-    // respond with valid session cookie
-    const userInfo = {
-      auth: pwIsValid,
-      name: userRecord.name,
-      email: userRecord.email,
-      userName: userRecord.username,
-      id: userRecord.id
-    }
-    matterMostService.signupUser(userName, password, userRecord.email)
-    req.session.userInfo = userInfo
-    res.status(200).json({ success: true, userInfo })
-  } catch (error) {
-    errorHandler(req, res, error)
-  }
 }
 
 // handle registration requests
