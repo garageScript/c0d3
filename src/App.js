@@ -66,6 +66,7 @@ const Home = () => {
           </h5>
           <Query className='announcements' query={GET_ANNOUNCEMENTS}>
             { loadComponent(({ announcements }) => {
+              console.log(announcements)
               return announcements.map((v, i) => {
                 return <Markdown key={i} source={v.description} />
               })

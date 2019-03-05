@@ -95,6 +95,10 @@ type Mutation {
 
   "Create a new announcement"
   createAnnouncement(value: String): Announcement
+
+  "Delete an announcement"
+  deleteAnnouncement(value: String): Announcement
+
 }
 
 input UserInput {
