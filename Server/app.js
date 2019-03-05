@@ -114,11 +114,15 @@ app.post('/signin', passport.authenticate('local', {
 }), (req, res) => {
   res.status(200).json({ success: true, userInfo: req.user })
 })
+app.post('/signup', authHelpers.postSignup, passport.authenticate('local', {
+  failureRedirect: '/signup'
+}), (req, res) => {
+  res.status(200).json({ success: true, userInfo: req.user })
+})
 app.post('/validate', authHelpers.postValidate)
 app.post('/password', authHelpers.postPassword) // untested
 app.post('/clientForm', authHelpers.postClientForm) // untested
 app.post('/names', authHelpers.postNames) // untested
-app.post('/signup', authHelpers.postSignup)
 
 app.get('/ios', (req, res) => {
   return res.redirect('https://testflight.apple.com/join/B8wZp83I')

@@ -33,20 +33,19 @@ helpers.getSignout = (req, res) => {
 }
 
 // handle registration requests
-helpers.postSignup = async (req, res) => {
-  const { fieldInputs } = req.body
+helpers.postSignup = async (req, res, next) => {
   try {
     // validate inputs
-    const validation = await form.isValid('signUp', fieldInputs, 'server')
+    const validation = await form.isValid('signUp', req.body, 'server')
     if (validation.errors) { throw { httpStatus: 401, message: validation.errors } }
 
     // add new user info to the database
-    const { name, userName, confirmEmail, password } = fieldInputs
+    const { name, username, confirmEmail, password } = req.body
     const salt = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(password, salt)
-    await User.create({
+    const userRecord = await User.create({
       name,
-      username: userName,
+      username,
       password: hash,
       email: confirmEmail
     })
@@ -57,32 +56,16 @@ helpers.postSignup = async (req, res) => {
         process.env.SUDO_URL,
         {
           password,
-          username: userName,
+          username,
           name
         }
       )
       if (!newSshAccountReq.data.success) { throw { httpStatus: 500, message: 'unable to create SSH account' } }
     }
 
-    // search for the user record with given email
-    const userRecord = await User.findOne({
-      where: { username: userName }
-    })
-
-    // respond with valid session cookie
-    const userInfo = {
-      auth: true,
-      name: userRecord.name,
-      email: userRecord.email,
-      userName: userRecord.username,
-      id: userRecord.id
-    }
-    matterMostService.signupUser(userName, password, userRecord.email)
-
-    // set session with userInfo
-    req.session.userInfo = userInfo
-
-    res.status(200).json({ success: true, userInfo })
+    matterMostService.signupUser(username, password, userRecord.email)
+    req.user = userRecord.dataValues
+    next()
   } catch (err) {
     errorHandler(req, res, err)
   }

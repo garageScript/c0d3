@@ -39,7 +39,10 @@ const client = {
     create: async (fieldInputs, callback) => {
       try {
         const url = `${client.authServer}/signup`
-        const response = await axios.post(url, { fieldInputs }, client.reqConf)
+
+        // TODO: Hack. Eventually need to move signup component to use username instead of userName
+        fieldInputs.username = fieldInputs.userName
+        const response = await axios.post(url, fieldInputs, client.reqConf)
         callback(response.data)
       } catch (err) {
         console.log(err)
