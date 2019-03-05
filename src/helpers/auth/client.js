@@ -14,10 +14,10 @@ const client = {
         callback(err)
       }
     },
-    start: async (userName, password, callback) => {
+    start: async (username, password, callback) => {
       try {
         const url = `${client.authServer}/signin`
-        const data = { userName, password }
+        const data = { username, password }
         const response = await axios.post(url, data, client.reqConf)
         callback(response.data)
       } catch (err) {
