@@ -3,6 +3,7 @@ import { Query, Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 import Markdown from 'react-markdown'
 import { GET_ANNOUNCEMENTS } from '../../db/queries.js'
+import { loadComponent } from '../shared/shared.js'
 
 class Announcements extends React.Component {
   constructor (props) {
@@ -42,15 +43,12 @@ class Announcements extends React.Component {
             }}>SUBMIT</button>
           }}
         </Mutation>
-        <Query query={GET_ANNOUNCEMENTS}
-        >
-          {(params) => {
-            if (params.loading) return <h1>Loading...</h1>
-            if (params.error) return <h1>Error</h1>
-            return params.data.announcements.map((v, i) => {
+        <Query query={GET_ANNOUNCEMENTS} >
+          { loadComponent((data) => {
+            return data.announcements.map((v, i) => {
               return <Markdown key={i} source={v.description} />
             })
-          }}
+          })}
         </Query>
       </div>
     )
