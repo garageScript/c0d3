@@ -196,6 +196,8 @@ module.exports = {
   },
 
   announcements: (obj, args, context) => {
-    return Announcement.findAll()
+    return Announcement.findAll({
+      order: [ ['id', 'DESC'] ]
+    })
   }
 }
