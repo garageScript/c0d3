@@ -12,6 +12,9 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
   }
 })
 
+const Announcement = sequelize.define('announcement', {
+  description: Sequelize.TEXT
+})
 const Lesson = sequelize.define('lesson', {
   description: Sequelize.TEXT,
   docUrl: Sequelize.STRING,
@@ -109,9 +112,10 @@ Message.belongsTo(Room)
 Message.belongsTo(User)
 Room.hasMany(Message)
 
-// sequelize.sync({alter: true});
+sequelize.sync({ alter: true })
 
 module.exports = {
+  Announcement,
   Lesson,
   Challenge,
   Submission,

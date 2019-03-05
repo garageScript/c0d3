@@ -20,6 +20,11 @@ import NavBar from './components/NavBar'
 import LessonListAdmin from './components/Admin/LessonList'
 import AdminAnnouncements from './components/Admin/Announcements'
 import chatdb from './db/chatdb'
+import { Query } from 'react-apollo'
+import gql from 'graphql-tag'
+import Markdown from 'react-markdown'
+import { GET_ANNOUNCEMENTS } from './db/queries.js'
+import { loadComponent } from './components/shared/shared.js'
 
 const Home = () => {
   return (
@@ -59,72 +64,13 @@ const Home = () => {
               </small>
             </div>
           </h5>
-          <table className='table gs-table'>
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Announcements</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Monday, 12/04</td>
-                <td>
-                  Added new Vim plugins! If you have questions or want to know
-                  more, join the vim channel
-                  <br />
-                  Added iOS app! To download, please go to{' '}
-                  <a href='https://c0d3.com/ios'>https://c0d3.com/ios</a>
-                  <br />
-                  Added Android app! To download, please go to{' '}
-                  <a href='https://expo.io/@songz/C0D3'>
-                    https://expo.io/@songz/C0D3
-                  </a>
-                </td>
-              </tr>
-              <tr>
-                <td>Monday, 11/12</td>
-                <td>
-                  Fix Chat Bugs
-                  <br />
-                  Edit Curriculum Page UI
-                  <br />
-                  Add Chat Notifications
-                  <br />
-                  (Internal) Remove unused code
-                </td>
-              </tr>
-              <tr>
-                <td>Monday, 10/29</td>
-                <td>
-                  All lessons are complete.
-                  <br />
-                  ChatRoom: Notifications and direct messages available
-                  <br />
-                  Code repository for c0d3.com now available under tools -> Apps
-                  <br />
-                  (Internal) Code servers consolidated to one server
-                </td>
-              </tr>
-              <tr>
-                <td>Monday, 9/17</td>
-                <td>
-                  All lessons (with the exception of React/GraphQL) are
-                  complete, along with their respective chat rooms.
-                </td>
-              </tr>
-              <tr>
-                <td>Monday, 8/30</td>
-                <td>
-                  Chat is ready for beta. Try to use the chat as much as
-                  possible.
-                  <br />
-                  Click on Join Room to join a ChatRoom. Currently, you are only
-                  able to join chatrooms pertaining to each lesson.
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <Query className='announcements' query={GET_ANNOUNCEMENTS}>
+            { loadComponent(({ announcements }) => {
+              return announcements.map((v, i) => {
+                return <Markdown key={i} source={v.description} />
+              })
+            })}
+          </Query>
         </div>
       </div>
     </div>

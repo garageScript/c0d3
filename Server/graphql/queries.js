@@ -9,7 +9,8 @@ const {
   User,
   Challenge,
   Submission,
-  AdoptedStudent
+  AdoptedStudent,
+  Announcement
 } = require('../dbload')
 
 module.exports = {
@@ -191,6 +192,12 @@ module.exports = {
     return Submission.findAll({
       where: valuesToMatch,
       include: ['user', 'challenge', { model: User, as: 'reviewer' }]
+    })
+  },
+
+  announcements: (obj, args, context) => {
+    return Announcement.findAll({
+      order: [ ['id', 'DESC'] ]
     })
   }
 }

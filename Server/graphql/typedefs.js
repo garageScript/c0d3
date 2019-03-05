@@ -39,6 +39,9 @@ type Query {
 
  "Recieved Stars"
   receivedStars(input: UserInput):[Star]
+
+  "Get Announcements"
+  announcements: [Announcement] 
 }
 
 type Mutation {
@@ -89,6 +92,9 @@ type Mutation {
 
   "Updates the selected challenge"
   saveChallenge(input: ChallengeInput): Challenge
+
+  "Create a new announcement"
+  createAnnouncement(value: String): Announcement
 }
 
 input UserInput {
@@ -222,5 +228,10 @@ type Star {
   lessonId: String
   student: User
   mentor: User
+}
+
+type Announcement {
+  id: String
+  description: String
 }
 `

@@ -1,4 +1,6 @@
+
 const {
+  Announcement,
   AdoptedStudent,
   Challenge,
   Lesson,
@@ -208,5 +210,10 @@ module.exports = {
       mentorId: args.input.userId || context.user.id
     })
     return 'Success'
+  },
+  createAnnouncement: (obj, args, context) => {
+    return Announcement.create({
+      description: args.value
+    })
   }
 }
