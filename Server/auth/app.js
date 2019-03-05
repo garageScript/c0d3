@@ -28,7 +28,7 @@ helpers.getSession = (req, res) => {
 }
 
 helpers.getSignout = (req, res) => {
-  req.session = null
+  req.logout()
   res.status(200).end()
 }
 
