@@ -5,6 +5,23 @@ import Markdown from 'react-markdown'
 import { GET_ANNOUNCEMENTS } from '../../db/queries.js'
 import { loadComponent, cacheUpdate } from '../shared/shared.js'
 
+const DELETE_ANNOUNCEMENT = gql`
+                      mutation delete($input: String){
+                        deleteAnnouncement(value: $input) {
+                          id,
+                          description
+                        }
+                      }
+                    `
+const CREATE_ANNOUNCEMENT = gql`
+           mutation create($input: String){
+              createAnnouncement(value: $input) {
+                id,
+                description
+              } 
+           }  
+            `
+
 class Announcements extends React.Component {
   constructor (props) {
     super(props)
@@ -26,14 +43,7 @@ class Announcements extends React.Component {
           return {
             announcements: [createAnnouncement].concat(announcements)
           }
-        })} mutation={gql`
-           mutation create($input: String){
-              createAnnouncement(value: $input) {
-                id,
-                description
-              } 
-           }  
-            `}>
+        })} mutation={CREATE_ANNOUNCEMENT}>
           {(execute) => {
             return <button className='updateAnnouncement' onClick={() => {
               execute({
@@ -50,32 +60,27 @@ class Announcements extends React.Component {
         <Query query={GET_ANNOUNCEMENTS} >
           { loadComponent(({ announcements }) => {
             return announcements.map((v, i) => {
-              return <div>
-                <Markdown key={i} source={v.description} />
-                <Mutation update={cacheUpdate(GET_ANNOUNCEMENTS, ({ deleteAnnouncement }) => {
-                  return {
-                    announcements: deleteAnnouncement
-                  }
-                })} mutation={gql`
-                      mutation delete($input: String){
-                        deleteAnnouncement(value: $input) {
-                          id,
-                          description
-                        }
-                      }
-                    `}>
-                  {(execute) => {
-                    return <button className='deleteAnnouncement' onClick={() => {
-                      execute({
-                        variables: {
-                          input: v.id
-                        }
-                      })
-                    }}>DELETE</button>
-                  }}
-                </Mutation>
-                <hr />
-              </div>
+              return (
+                <div>
+                  <Markdown key={i} source={v.description} />
+                  <Mutation update={cacheUpdate(GET_ANNOUNCEMENTS, ({ deleteAnnouncement }) => {
+                    return {
+                      announcements: deleteAnnouncement
+                    }
+                  })} mutation={DELETE_ANNOUNCEMENT}>
+                    {(execute) => {
+                      return <button className='deleteAnnouncement' onClick={() => {
+                        execute({
+                          variables: {
+                            input: v.id
+                          }
+                        })
+                      }}>DELETE</button>
+                    }}
+                  </Mutation>
+                  <hr />
+                </div>
+              )
             })
           })}
         </Query>
