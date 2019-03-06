@@ -97,7 +97,7 @@ type Mutation {
   createAnnouncement(value: String): Announcement
 
   "Delete an announcement"
-  deleteAnnouncement(value: String): Announcement
+  deleteAnnouncement(value: String): [Announcement]
 
 }
 

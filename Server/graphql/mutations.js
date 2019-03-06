@@ -217,7 +217,6 @@ module.exports = {
     })
   },
   deleteAnnouncement: (obj, args, conext) => {
-    console.log(args.value)
     Announcement.destroy({ where: { id: args.value } })
     return { id: 'Rahul' }
   }
