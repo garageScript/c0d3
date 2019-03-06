@@ -56,7 +56,16 @@ class Announcements extends React.Component {
             return announcements.map((v, i) => {
               return <div>
                 <Markdown key={i} source={v.description} />
-                <Mutation mutation={gql`
+                <Mutation update={(cache, {
+                  data: { deleteAnnouncement }
+                }) => {
+                  cache.writeQuery({
+                    query: GET_ANNOUNCEMENTS,
+                    data: {
+                      announcements: deleteAnnouncement
+                    }
+                  })
+                }} mutation={gql`
                       mutation delete($input: String){
                         deleteAnnouncement(value: $input) {
                           id,

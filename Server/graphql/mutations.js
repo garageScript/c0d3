@@ -222,7 +222,9 @@ module.exports = {
         id: args.value
       }
     }).then(() => {
-      return Announcement.findAll()
+      return Announcement.findAll({
+        order: [ ['id', 'DESC' ] ]
+      })
     })
   }
 }
