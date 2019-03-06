@@ -7,12 +7,12 @@ const axios = require('axios')
 module.exports = {
   getCredentials,
   validate,
-  save,
+  save
 }
 
 const credentialsPath = path.join(homeDir, '.c0d3', 'credentials.json')
 
-function getCredentials(dir = credentialsPath) {
+function getCredentials (dir = credentialsPath) {
   try {
     return Promise.resolve(require(dir))
   } catch (e) {
@@ -20,18 +20,18 @@ function getCredentials(dir = credentialsPath) {
   }
 }
 
-function askForUsernamePassword() {
+function askForUsernamePassword () {
   return new Promise((resolve, reject) => {
     const schema = [
       {
         name: 'username',
-        required: true,
+        required: true
       },
       {
         name: 'password',
         hidden: true,
-        replace: '*',
-      },
+        replace: '*'
+      }
     ]
 
     prompt.message = ''
@@ -43,11 +43,11 @@ function askForUsernamePassword() {
   })
 }
 
-async function validate(credentials, url) {
+async function validate (credentials, url) {
   try {
     await axios.post(url, {
-      userName: credentials.username,
-      password: credentials.password,
+      username: credentials.username,
+      password: credentials.password
     })
     return true
   } catch (e) {
@@ -55,7 +55,7 @@ async function validate(credentials, url) {
   }
 }
 
-async function save(credentials) {
+async function save (credentials) {
   try {
     createHiddenDir()
     await createCredentialsFile(credentialsPath, credentials.username)
@@ -64,14 +64,14 @@ async function save(credentials) {
   }
 }
 
-function createHiddenDir() {
+function createHiddenDir () {
   const hiddenDir = path.join(homeDir, '.c0d3')
   if (!fs.existsSync(hiddenDir)) {
     fs.mkdirSync(hiddenDir)
   }
 }
 
-function createCredentialsFile(dir = credentialsPath, username) {
+function createCredentialsFile (dir = credentialsPath, username) {
   return new Promise((resolve, reject) => {
     fs.writeFile(dir, JSON.stringify({ username, token: 'c0d3' }), err => {
       if (err) return reject('Unable to save credentials')
