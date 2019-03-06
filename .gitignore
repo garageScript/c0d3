@@ -8,6 +8,7 @@
 # dev
 .env
 cypress.env.json
+cypress/videos
 
 # testing
 /coverage

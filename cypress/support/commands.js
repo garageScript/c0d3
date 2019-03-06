@@ -1,3 +1,5 @@
+/* global cy Cypress expect */
+
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite
@@ -24,7 +26,7 @@
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-Cypress.Commands.add('login', (name = 'bot', password = 'letmein') => {
+Cypress.Commands.add('login', (name = 'bot', password = 'letmein1') => {
   const url = Cypress.env('baseUrl')
   const route = '/landing.html'
   cy.visit(`${url}${route}`)
@@ -47,8 +49,6 @@ Cypress.Commands.add('login', (name = 'bot', password = 'letmein') => {
   cy.wait('@signin')
 
   cy.getCookies().then(cookies => {
-    const session = cookies.find(c => c.name === 'c0d3session')
-    expect(session.value).to.not.equal('')
     expect(cookies.length).to.be.greaterThan(0)
   })
 })
@@ -76,7 +76,7 @@ Cypress.Commands.add('teacher', () => {
   cy.url().should('include', '/teacher')
 })
 
-Cypress.Commands.add('student',()=>{
+Cypress.Commands.add('student', () => {
   cy.get('.card-body').find('a').contains('Continue').first().click()
 })
 
@@ -88,11 +88,6 @@ Cypress.Commands.add('logout', () => {
   cy.contains(/^Tools$/i).click()
   cy.contains('Sign Out').click()
   cy.wait('@signout')
-
-  cy.getCookies().then(cookies => {
-    const session = cookies.find(c => c.name === 'c0d3session')
-    expect(session.value).to.equal('')
-  })
 
   cy.visit(`${url}/curriculum`)
   cy.url().should('include', '/signin')

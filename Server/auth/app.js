@@ -23,63 +23,29 @@ const errorHandler = (req, res, error) => {
 const helpers = {}
 
 helpers.getSession = (req, res) => {
-  if (req.user.id) { return res.json({ success: true, userInfo: req.user }) }
+  if (req.user && req.user.id) { return res.json({ success: true, userInfo: req.user }) }
   errorHandler(req, res, { httpStatus: 401, message: 'unauthorized' })
 }
 
 helpers.getSignout = (req, res) => {
-  req.session = null
+  req.logout()
   res.status(200).end()
 }
 
-// handle sign in requests
-helpers.postSignin = async (req, res) => {
-  const { userName, password } = req.body
-  try {
-    // search for the user record with given email
-    const userRecord = await User.findOne({
-      where: { username: userName }
-    })
-    if (!userRecord) {
-      throw { httpStatus: 401, message: 'invalid username or password' }
-    }
-
-    // validate the password
-    const hash = userRecord.password
-    const pwIsValid = await bcrypt.compare(password, hash)
-    if (!pwIsValid) { throw { httpStatus: 401, message: 'invalid username or password' } }
-
-    // respond with valid session cookie
-    const userInfo = {
-      auth: pwIsValid,
-      name: userRecord.name,
-      email: userRecord.email,
-      userName: userRecord.username,
-      id: userRecord.id
-    }
-    matterMostService.signupUser(userName, password, userRecord.email)
-    req.session.userInfo = userInfo
-    res.status(200).json({ success: true, userInfo })
-  } catch (error) {
-    errorHandler(req, res, error)
-  }
-}
-
 // handle registration requests
-helpers.postSignup = async (req, res) => {
-  const { fieldInputs } = req.body
+helpers.postSignup = async (req, res, next) => {
   try {
     // validate inputs
-    const validation = await form.isValid('signUp', fieldInputs, 'server')
+    const validation = await form.isValid('signUp', req.body, 'server')
     if (validation.errors) { throw { httpStatus: 401, message: validation.errors } }
 
     // add new user info to the database
-    const { name, userName, confirmEmail, password } = fieldInputs
+    const { name, username, confirmEmail, password } = req.body
     const salt = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(password, salt)
-    await User.create({
+    const userRecord = await User.create({
       name,
-      username: userName,
+      username,
       password: hash,
       email: confirmEmail
     })
@@ -90,32 +56,16 @@ helpers.postSignup = async (req, res) => {
         process.env.SUDO_URL,
         {
           password,
-          username: userName,
+          username,
           name
         }
       )
       if (!newSshAccountReq.data.success) { throw { httpStatus: 500, message: 'unable to create SSH account' } }
     }
 
-    // search for the user record with given email
-    const userRecord = await User.findOne({
-      where: { username: userName }
-    })
-
-    // respond with valid session cookie
-    const userInfo = {
-      auth: true,
-      name: userRecord.name,
-      email: userRecord.email,
-      userName: userRecord.username,
-      id: userRecord.id
-    }
-    matterMostService.signupUser(userName, password, userRecord.email)
-
-    // set session with userInfo
-    req.session.userInfo = userInfo
-
-    res.status(200).json({ success: true, userInfo })
+    matterMostService.signupUser(username, password, userRecord.email)
+    req.user = userRecord.dataValues
+    next()
   } catch (err) {
     errorHandler(req, res, err)
   }
