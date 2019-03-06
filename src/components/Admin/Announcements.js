@@ -31,7 +31,7 @@ class Announcements extends React.Component {
             }
           })
         }} mutation={gql`
-           mutation create($input :String){
+           mutation create($input: String){
               createAnnouncement(value: $input) {
                 id,
                 description
@@ -54,7 +54,28 @@ class Announcements extends React.Component {
         <Query query={GET_ANNOUNCEMENTS} >
           { loadComponent(({ announcements }) => {
             return announcements.map((v, i) => {
-              return <Markdown key={i} source={v.description} />
+              return <div>
+                <Markdown key={i} source={v.description} />
+                <Mutation mutation={gql`
+                      mutation delete($input: String){
+                        deleteAnnouncement(value: $input) {
+                          id,
+                          description
+                        }
+                      }
+                    `}>
+                  {(execute) => {
+                    return <button className='deleteAnnouncement' onClick={() => {
+                      execute({
+                        variables: {
+                          input: v.id
+                        }
+                      })
+                    }}>DELETE</button>
+                  }}
+                </Mutation>
+                <hr />
+              </div>
             })
           })}
         </Query>
