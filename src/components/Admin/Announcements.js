@@ -3,7 +3,7 @@ import { Query, Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 import Markdown from 'react-markdown'
 import { GET_ANNOUNCEMENTS } from '../../db/queries.js'
-import { loadComponent } from '../shared/shared.js'
+import { loadComponent, cacheUpdate } from '../shared/shared.js'
 
 class Announcements extends React.Component {
   constructor (props) {
@@ -22,15 +22,11 @@ class Announcements extends React.Component {
             announcement: v.target.value
           })
         }} />
-        <Mutation update={(cache, { data: { createAnnouncement } }) => {
-          const { announcements } = cache.readQuery({ query: GET_ANNOUNCEMENTS })
-          cache.writeQuery({
-            query: GET_ANNOUNCEMENTS,
-            data: {
-              announcements: [createAnnouncement].concat(announcements)
-            }
-          })
-        }} mutation={gql`
+        <Mutation update={cacheUpdate(GET_ANNOUNCEMENTS, ({ createAnnouncement }, { announcements }) => {
+          return {
+            announcements: [createAnnouncement].concat(announcements)
+          }
+        })} mutation={gql`
            mutation create($input: String){
               createAnnouncement(value: $input) {
                 id,
@@ -56,16 +52,11 @@ class Announcements extends React.Component {
             return announcements.map((v, i) => {
               return <div>
                 <Markdown key={i} source={v.description} />
-                <Mutation update={(cache, {
-                  data: { deleteAnnouncement }
-                }) => {
-                  cache.writeQuery({
-                    query: GET_ANNOUNCEMENTS,
-                    data: {
-                      announcements: deleteAnnouncement
-                    }
-                  })
-                }} mutation={gql`
+                <Mutation update={cacheUpdate(GET_ANNOUNCEMENTS, ({ deleteAnnouncement }) => {
+                  return {
+                    announcements: deleteAnnouncement
+                  }
+                })} mutation={gql`
                       mutation delete($input: String){
                         deleteAnnouncement(value: $input) {
                           id,
