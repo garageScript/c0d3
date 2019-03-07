@@ -27,6 +27,10 @@ const matterMostService = require('./auth/lib/matterMostService')
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
+// Logging Middleware
+const networkLogger = require('./log/networkLogger')
+app.use(networkLogger)
+
 // View functional tests results easily
 if (process.env.NODE_ENV !== 'production') {
   app.get('/deleteUser', (req, res) => {
