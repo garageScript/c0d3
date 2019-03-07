@@ -28,7 +28,7 @@ const curriculumSchema = makeExecutableSchema({
 
 const linkTypeDefs = `
   type User {
-    id: Int,
+    id: String,
     username: String,
     name: String,
     userLesson: UserLesson,
