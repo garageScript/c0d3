@@ -53,6 +53,11 @@ NOTE: If you choose to setup your development server locally, you must install t
 
    > Example: `{ baseUrl: https://tri.c0d3.com }` or `{ baseUrl: http://localhost:9623 }`
 
+10. (Optional) For CLI tool
+  > `cd into gsSubmit folder`
+  > `yarn (add required dependencies)`
+  > `node bin/c0d3 submit --url "https://your-server-url"`
+
 ## Tests
 
 ### Functional Tests
