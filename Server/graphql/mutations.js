@@ -103,7 +103,8 @@ module.exports = {
         submissionToApprove = d
         return d.update({
           status: 'passed',
-          reviewerId: context.user.id
+          reviewerId: context.user.id,
+          comment: args.input.comment || ''
         })
       })
       .then(() => {

@@ -104,7 +104,6 @@ const MergeRequest = ({ lid, mrInfo }) => {
             <div style={{ marginBottom: '1rem' }}>
               <Mutation
                 mutation={APPROVE_SUBMISSION}
-                variables={submissionVar}
                 update={(cache, { data: { approveSubmission: { id } } }) => {
                   const { submissions } = cache.readQuery({
                     query: SUBMISSIONS,
@@ -122,7 +121,10 @@ const MergeRequest = ({ lid, mrInfo }) => {
                 }}
               >
                 {execute => (
-                  <button className='btn btn-sm btn-success' onClick={execute}>
+                  <button className='btn btn-sm btn-success' onClick={() => {
+                    submissionVar.in.comment = comment.value
+                    execute({ variables: submissionVar })
+                  }}>
                     <i className='fa fa-thumbs-up mr-2' />
                         Approve Challenge
                   </button>
