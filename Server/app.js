@@ -1,3 +1,4 @@
+const log = require('./log')(__filename)
 const config = require('../config.js')
 const path = require('path')
 const { User } = require('./dbload.js')
@@ -157,5 +158,5 @@ app.get('*', (req, res) => {
 // Configure ports
 const PORT = config.SERVER_PORT
 server.listen(PORT, function () {
-  console.log(`Server is listening on Port: ${PORT}`)
+  log.info(`Server is listening on Port: ${PORT}`)
 })
