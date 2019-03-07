@@ -113,18 +113,9 @@ module.exports = {
 
   teachers: (obj, args, context) => {
     return User.findAll({
-      include: {
-        model: User,
-        as: 'student',
-        through: {
-          model: AdoptedStudent,
-          where: {
-            lessonId: args.input.id
-          }
-        },
-        where: {
-          id: context.user.id
-        }
+      order: [ ['updatedAt', 'DESC'] ],
+      where: {
+        id: { [Op.not]: context.user.id }
       }
     })
   },
