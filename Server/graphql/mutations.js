@@ -215,5 +215,14 @@ module.exports = {
     return Announcement.create({
       description: args.value
     })
+  },
+  deleteAnnouncement: (obj, args, conext) => {
+    return Announcement.destroy({
+      where: {
+        id: args.value
+      }
+    }).then(() => {
+      return Announcement.findAll()
+    })
   }
 }
