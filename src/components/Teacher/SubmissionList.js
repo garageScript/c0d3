@@ -1,6 +1,5 @@
 import React from 'react'
 import MergeRequest from './MergeRequest'
-import FilterControl from './FilterControl'
 
 const SubmissionList = ({
   lid,
@@ -30,7 +29,6 @@ const SubmissionList = ({
   return (
     <div>
       <h4>Submissions</h4>
-      <FilterControl />
       {MergeRequestList}
     </div>
   )
