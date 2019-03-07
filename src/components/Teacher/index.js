@@ -68,14 +68,13 @@ const TeacherPage = ({ match }) => {
               {loadComponent(({ submissions }) => {
                 return (
                   <Query query={ADOPTED_STUDENT_FILTER}>
-                    {loadComponent(({ adoptedStudentFilter, mrFilter }) => {
+                    {loadComponent(({ adoptedStudentFilter }) => {
                       return (
                         <div className='row'>
                           <div className='col-7'>
                             <SubmissionList
                               lid={lid}
                               adoptedStudentFilter={adoptedStudentFilter}
-                              mrFilter={mrFilter}
                               students={students}
                               submissions={submissions}
                             />

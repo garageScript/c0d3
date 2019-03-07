@@ -3,7 +3,6 @@ import MergeRequest from './MergeRequest'
 
 const SubmissionList = ({
   lid,
-  mrFilter,
   adoptedStudentFilter,
   students,
   submissions
@@ -20,7 +19,7 @@ const SubmissionList = ({
 
   submissionsToShow = submissionsToShow.filter(
     mrInfo =>
-      mrInfo.status === mrFilter && mrInfo.user.id !== window.userInfo.id
+      mrInfo.status === 'open' && mrInfo.user.id !== window.userInfo.id
   )
   const MergeRequestList = submissionsToShow.map((mrInfo, index) => {
     return <MergeRequest key={index} lid={lid} mrInfo={mrInfo} />

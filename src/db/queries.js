@@ -106,7 +106,6 @@ export const ADMIN_STATE = gql`
 export const ADOPTED_STUDENT_FILTER = gql`
   {
     adoptedStudentFilter @client
-    mrFilter @client
   }
 `
 

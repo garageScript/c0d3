@@ -21,7 +21,6 @@ const stateLink = withClientState({
   defaults: {
     starRecipent: '',
     adoptedStudentFilter: false,
-    mrFilter: 'open',
     lessonIndex: 0,
     addNew: false,
     componentType: '',
