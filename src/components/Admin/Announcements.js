@@ -52,7 +52,7 @@ class Announcements extends React.Component {
             }
           })} mutation={CREATE_ANNOUNCEMENT}>
             {(execute) => {
-              return <button className='updateAnnouncement' onClick={() => {
+              return <button className='btn btn-success' onClick={() => {
                 execute({
                   variables: {
                     input: this.state.announcement
