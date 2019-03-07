@@ -1,13 +1,13 @@
 # C0D3.com
-This is the codebase for the website c0d3.com, which provides a platform for students to learn coding through solving challenges. 
+This is the codebase for the website c0d3.com, which provides a platform for students to learn coding through solving challenges.
 
 ## How to Start
 
-The following will describe how to setup your own development server.  You have the option to setup your development server on either your local machine, or within c0d3's server. The process described below works for both cases.  
+The following will describe how to setup your own development server.  You have the option to setup your development server on either your local machine, or within c0d3's server. The process described below works for both cases.
 
-NOTE: If you choose to setup your development server locally, you must install the following on your local machine BEFORE proceeding:  
+NOTE: If you choose to setup your development server locally, you must install the following on your local machine BEFORE proceeding:
 
-      a. install node.js 
+      a. install node.js
       b. install git
       c. install secure shell(only if you are working with an older version of windows.  Windows 10 will have secure shell pre-installed)
 
@@ -53,12 +53,14 @@ NOTE: If you choose to setup your development server locally, you must install t
 
    > Example: `{ baseUrl: https://tri.c0d3.com }` or `{ baseUrl: http://localhost:9623 }`
 
-10. (Optional) For CLI tool
-  > `cd into gsSubmit folder`
+10. (Optional) For CLI tool  
+  - Change to the gsSubmit directory: `cd gsSubmit`  
+  - Install dependencies: `npm install`  
+  - Link the c0d3 cli tool to be ran anywhere: `npm link`
+  - Submit challenges from git directory: `c0d3 submit --url "https://your-server-url"`
+  - You can also submit as another user: `TEST=true c0d3 submit --url "https://your-server-url" --username "another_user"`
 
-  > `yarn (add required dependencies)`
 
-  > `node bin/c0d3 submit --url "https://your-server-url"`
 
 ## Tests
 
@@ -69,7 +71,7 @@ To run functional tests:
   - Run All: `yarn run tf`
   - Run Specific: `yarn run tfs cypress/integration/filename.spec.js`
 
-After functional tests are ran, videos of browser UI interactions and failed test snapshots can be viewed at 
+After functional tests are ran, videos of browser UI interactions and failed test snapshots can be viewed at
 `https://your-server-url.c0d3.com/functional` or `http://localhost:<port#>/functional`
 
 #### Cypress Browser Mode
@@ -95,11 +97,28 @@ If working on local computer, tests can be ran in the chrome browser by followin
 #### API Link
 link `https://api.mattermost.com/#tag/users`
 
+## Logging
+The c0d3 codebase uses winston.js for application level logging.  In order to import the logger, use the following technique.
+
+```javascript
+const log = require('path/to/log')(__filename)
+
+// use the following levels accordingly
+log.error('log level 0 message')
+log.warn('log level 1 message')
+log.info('log level 2 message')
+log.verbose('log level 3 message')
+log.debug('log level 4 message')
+log.silly('log level 5 message')
+```
+In production, only level 2 (i.e. info) and below will be logged.  In other environments, log level 4 (i.e. debug) and below will be displayed.
+
+
 ## Databases
 
 ### Migration
 
-If you make a copy of postgresdb, you might run into an issue where data is not auto-incrementing. To fix this, refer to this fix: 
+If you make a copy of postgresdb, you might run into an issue where data is not auto-incrementing. To fix this, refer to this fix:
 https://dba.stackexchange.com/questions/65662/postgres-how-to-insert-row-with-autoincrement-id
 
 ### Database Overview
