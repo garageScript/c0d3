@@ -89,64 +89,60 @@ const MergeRequest = ({ lid, mrInfo }) => {
               </div>
             ) : null}
 
-            {mrInfo.status !== 'passed' && (
-              <>
-                <div className='form-group'>
-                  <label htmlFor='submission-comment'>
+            <div className='form-group'>
+              <label htmlFor='submission-comment'>
                   Add your comments to address here
-                  </label>
-                  <textarea
-                    className='form-control rounded-0'
-                    id='submission-comment'
-                    rows='10'
-                    ref={node => (comment = node)}
-                  />
-                </div>
+              </label>
+              <textarea
+                className='form-control rounded-0'
+                id='submission-comment'
+                rows='10'
+                ref={node => (comment = node)}
+              />
+            </div>
 
-                <div style={{ marginBottom: '1rem' }}>
-                  <Mutation
-                    mutation={APPROVE_SUBMISSION}
-                    variables={submissionVar}
-                    update={(cache, { data: { approveSubmission: { id } } }) => {
-                      const { submissions } = cache.readQuery({
-                        query: SUBMISSIONS,
-                        variables: { in: { id: lid } }
-                      })
-                      submissions.forEach(sub => {
-                        if (sub['id'] === id) sub['status'] = 'passed'
-                      })
-                      cache.writeQuery({
-                        query: SUBMISSIONS,
-                        data: {
-                          submissions
-                        }
-                      })
+            <div style={{ marginBottom: '1rem' }}>
+              <Mutation
+                mutation={APPROVE_SUBMISSION}
+                variables={submissionVar}
+                update={(cache, { data: { approveSubmission: { id } } }) => {
+                  const { submissions } = cache.readQuery({
+                    query: SUBMISSIONS,
+                    variables: { in: { id: lid } }
+                  })
+                  submissions.forEach(sub => {
+                    if (sub['id'] === id) sub['status'] = 'passed'
+                  })
+                  cache.writeQuery({
+                    query: SUBMISSIONS,
+                    data: {
+                      submissions
+                    }
+                  })
+                }}
+              >
+                {execute => (
+                  <button className='btn btn-sm btn-success' onClick={execute}>
+                    <i className='fa fa-thumbs-up mr-2' />
+                        Approve Challenge
+                  </button>
+                )}
+              </Mutation>
+              <Mutation mutation={REJECT_SUBMISSION}>
+                {execute => (
+                  <button
+                    className='btn btn-sm btn-dark'
+                    onClick={() => {
+                      submissionVar.in.comment = comment.value
+                      execute({ variables: submissionVar })
                     }}
                   >
-                    {execute => (
-                      <button className='btn btn-sm btn-success' onClick={execute}>
-                        <i className='fa fa-thumbs-up mr-2' />
-                        Approve Challenge
-                      </button>
-                    )}
-                  </Mutation>
-                  <Mutation mutation={REJECT_SUBMISSION}>
-                    {execute => (
-                      <button
-                        className='btn btn-sm btn-dark'
-                        onClick={() => {
-                          submissionVar.in.comment = comment.value
-                          execute({ variables: submissionVar })
-                        }}
-                      >
-                        <i className='fa fa-comment mr-2' />
+                    <i className='fa fa-comment mr-2' />
                             Suggest Revision
-                      </button>
-                    )}
-                  </Mutation>
-                </div>
-              </>
-            )}
+                  </button>
+                )}
+              </Mutation>
+            </div>
           </div>
         </div>
       </div>
