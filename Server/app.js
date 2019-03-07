@@ -54,7 +54,13 @@ passport.use(new LocalStrategy(async (username, password, done) => {
   if (!pwIsValid) { return done(null, false) }
 
   matterMostService.signupUser(username, password, user.email)
-  return done(null, user.dataValues)
+  const userData = {
+    id: user.dataValues.id,
+    name: user.dataValues.name,
+    username: user.dataValues.username,
+    createdAt: user.dataValues.createdAt
+  }
+  return done(null, userData)
 }))
 
 app.use(session({ secret: config.SESSION_SECRET, maxAge: 2592000000, domain: config.HOST_NAME }))
