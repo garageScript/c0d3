@@ -51,7 +51,7 @@ const Undo = ({ mrInfo, submissionVar, lid }) => {
   return null
 }
 
-const MergeRequest = ({ lid, mrInfo }) => {
+const MergeRequestBody = ({ mrInfo, lid }) => {
   let submissionVar = {
     in: {
       challengeId: `${mrInfo.challenge.id}`,
@@ -59,9 +59,135 @@ const MergeRequest = ({ lid, mrInfo }) => {
       userId: `${mrInfo.user.id}`
     }
   }
+  if (mrInfo.status.includes('-')) {
+    const status = mrInfo.status.split('-')[1]
+    return (
+      <div className='card-text'>
+        <p>You have {status} this submission</p>
+        <Mutation mutation={UNAPPROVE_SUBMISSION}
+          variables={submissionVar}
+          update={(cache, { data: { unapproveSubmission: { id } } }) => {
+            const { submissions } = cache.readQuery({
+              query: SUBMISSIONS,
+              variables: { in: { id: lid } }
+            })
+            submissions.forEach(sub => {
+              if (sub['id'] === id) sub['status'] = 'open'
+            })
+            cache.writeQuery({
+              query: SUBMISSIONS,
+              data: {
+                submissions
+              }
+            })
+          }}
+        >
+          {(execute) => {
+            return (
+              <a onClick={() => {
+                execute()
+              }}>UNDO</a>
+            )
+          }}
+        </Mutation>
+      </div>
+    )
+  }
   let comment
   const formattedCreatedAt = moment(+mrInfo.createdAt).format('MMM Do h:mma')
   const formattedUpdatedAt = moment(+mrInfo.updatedAt).fromNow()
+  return (
+    <div className='card-text'>
+      <h6 className='mt-2'>
+        {` on ${formattedCreatedAt} | updated ${formattedUpdatedAt} `}
+      </h6>
+      <StudentDiff diff={mrInfo.diff} />
+      <hr />
+      {mrInfo.comment ? (
+        <div>
+          <h6>Comments</h6>
+          <Markdown source={mrInfo.comment} />
+          <hr />
+        </div>
+      ) : null}
+
+      <div className='form-group'>
+        <label htmlFor='submission-comment'>
+                  Add your comments to address here
+        </label>
+        <textarea
+          className='form-control rounded-0'
+          id='submission-comment'
+          rows='10'
+          ref={node => (comment = node)}
+        />
+      </div>
+
+      <div style={{ marginBottom: '1rem' }}>
+        <Mutation
+          mutation={APPROVE_SUBMISSION}
+          update={(cache, { data: { approveSubmission: { id } } }) => {
+            const { submissions } = cache.readQuery({
+              query: SUBMISSIONS,
+              variables: { in: { id: lid } }
+            })
+            submissions.forEach(sub => {
+              if (sub['id'] === id) sub['status'] = 'open-approved'
+            })
+            cache.writeQuery({
+              query: SUBMISSIONS,
+              data: {
+                submissions
+              }
+            })
+          }}
+        >
+          {execute => (
+            <button className='btn btn-sm btn-success' onClick={() => {
+              submissionVar.in.comment = comment.value
+              execute({ variables: submissionVar })
+            }}>
+              <i className='fa fa-thumbs-up mr-2' />
+                        Approve Challenge
+            </button>
+          )}
+        </Mutation>
+        <Mutation mutation={REJECT_SUBMISSION}
+          update={(cache, { data: { rejectSubmission: { id } } }) => {
+            const { submissions } = cache.readQuery({
+              query: SUBMISSIONS,
+              variables: { in: { id: lid } }
+            })
+            submissions.forEach(sub => {
+              if (sub['id'] === id) sub['status'] = 'open-rejected'
+            })
+            cache.writeQuery({
+              query: SUBMISSIONS,
+              data: {
+                submissions
+              }
+            })
+          }}
+        >
+          {execute => (
+            <button
+              className='btn btn-sm btn-dark'
+              onClick={() => {
+                submissionVar.in.comment = comment.value
+                execute({ variables: submissionVar })
+              }}
+            >
+              <i className='fa fa-comment mr-2' />
+                            Suggest Revision
+            </button>
+          )}
+        </Mutation>
+      </div>
+    </div>
+  )
+}
+
+const MergeRequest = ({ lid, mrInfo }) => {
   return (
     <div className='card-deck'>
       <div className='card mb-2 mt-1'>
@@ -73,79 +199,8 @@ const MergeRequest = ({ lid, mrInfo }) => {
               </Link>{' '}
               submitted challenge: {mrInfo.challenge.title}
             </span>
-            <Undo mrInfo={mrInfo} submissionVar={submissionVar} lid={lid} />
           </div>
-          <div className='card-text'>
-            <h6 className='mt-2'>
-              {` on ${formattedCreatedAt} | updated ${formattedUpdatedAt} `}
-            </h6>
-            <StudentDiff diff={mrInfo.diff} />
-            <hr />
-            {mrInfo.comment ? (
-              <div>
-                <h6>Comments</h6>
-                <Markdown source={mrInfo.comment} />
-                <hr />
-              </div>
-            ) : null}
-
-            <div className='form-group'>
-              <label htmlFor='submission-comment'>
-                  Add your comments to address here
-              </label>
-              <textarea
-                className='form-control rounded-0'
-                id='submission-comment'
-                rows='10'
-                ref={node => (comment = node)}
-              />
-            </div>
-
-            <div style={{ marginBottom: '1rem' }}>
-              <Mutation
-                mutation={APPROVE_SUBMISSION}
-                update={(cache, { data: { approveSubmission: { id } } }) => {
-                  const { submissions } = cache.readQuery({
-                    query: SUBMISSIONS,
-                    variables: { in: { id: lid } }
-                  })
-                  submissions.forEach(sub => {
-                    if (sub['id'] === id) sub['status'] = 'passed'
-                  })
-                  cache.writeQuery({
-                    query: SUBMISSIONS,
-                    data: {
-                      submissions
-                    }
-                  })
-                }}
-              >
-                {execute => (
-                  <button className='btn btn-sm btn-success' onClick={() => {
-                    submissionVar.in.comment = comment.value
-                    execute({ variables: submissionVar })
-                  }}>
-                    <i className='fa fa-thumbs-up mr-2' />
-                        Approve Challenge
-                  </button>
-                )}
-              </Mutation>
-              <Mutation mutation={REJECT_SUBMISSION}>
-                {execute => (
-                  <button
-                    className='btn btn-sm btn-dark'
-                    onClick={() => {
-                      submissionVar.in.comment = comment.value
-                      execute({ variables: submissionVar })
-                    }}
-                  >
-                    <i className='fa fa-comment mr-2' />
-                            Suggest Revision
-                  </button>
-                )}
-              </Mutation>
-            </div>
-          </div>
+          <MergeRequestBody mrInfo={mrInfo} lid={lid} />
         </div>
       </div>
     </div>
