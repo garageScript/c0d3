@@ -1,26 +1,3 @@
-### Project Roadmap - c0d3 submit module
-
-- [x] Initiate Roadmap
-#### Frontend Work
-- [ ] Setup cli menu
-- [ ] Setup signin functionality in cli
-- [ ] Setup signout functionality in cli
-- [ ] Setup submit functionality in cli
-#### Backend Work
-- [ ] Setup API Gateway login endpoint for cli
-- [ ] Setup API Gateway signout endpoint for cli
-- [ ] Setup API Gateway submit endpoint for cli
-- [ ] Setup graphQL lambda
-- [ ] Setup signin resolver lambda
-- [ ] Setup signout resolver lambda
-- [ ] Setup submit resolver lambda
-- [ ] Setup c0d3.com to database connection
-#### Publish
-- [ ] Publish completed README.md
-- [ ] Publish npm module to npm
-- [ ] Delete Roadmap
-
----
 
 <h1 align="center">
   <br>

@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize')
+const log = require('./log')(__filename)
 
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PW, {
   host: process.env.DB_HOST,
@@ -10,7 +11,7 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
     acquire: 30000,
     idle: 10000
   },
-  logging: (process.env.NODE_ENV === 'production') ? false : console.log
+  logging: log.verbose
 })
 
 const Announcement = sequelize.define('announcement', {
