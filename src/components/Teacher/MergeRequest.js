@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Mutation } from 'react-apollo'
 import moment from 'moment'
 import Markdown from 'react-markdown'
+import { cacheUpdate } from '../shared/shared'
 
 import {
   APPROVE_SUBMISSION,
@@ -12,43 +13,11 @@ import {
 } from '../../db/queries'
 import StudentDiff from '../Student/StudentDiff'
 
-const Undo = ({ mrInfo, submissionVar, lid }) => {
-  if (mrInfo.status === 'passed') {
-    return (
-      <Mutation
-        mutation={UNAPPROVE_SUBMISSION}
-        variables={submissionVar}
-        update={(cache, { data: { unapproveSubmission: { id } } }) => {
-          const { submissions } = cache.readQuery({
-            query: SUBMISSIONS,
-            variables: { in: { id: lid } }
-          })
-          submissions.forEach(sub => {
-            if (sub['id'] === id) sub['status'] = 'open'
-          })
-          cache.writeQuery({
-            query: SUBMISSIONS,
-            data: {
-              submissions
-            }
-          })
-        }}
-      >
-        {execute => (
-          <h5>
-            Reviewed
-            <a target='_blank' rel='noopener noreferrer' onClick={execute}>
-              {' '}
-              Undo
-            </a>
-          </h5>
-        )}
-      </Mutation>
-    )
-  } else if (mrInfo.status === 'needMoreWork') {
-    return <h5>Reviewed</h5>
-  }
-  return null
+const updateSubmissions = (submissions, status, { id }) => {
+  submissions.forEach(sub => {
+    if (sub.id === id) sub.status = status
+  })
+  return submissions
 }
 
 const MergeRequestBody = ({ mrInfo, lid }) => {
@@ -66,21 +35,9 @@ const MergeRequestBody = ({ mrInfo, lid }) => {
         <p>You have {status} this submission</p>
         <Mutation mutation={UNAPPROVE_SUBMISSION}
           variables={submissionVar}
-          update={(cache, { data: { unapproveSubmission: { id } } }) => {
-            const { submissions } = cache.readQuery({
-              query: SUBMISSIONS,
-              variables: { in: { id: lid } }
-            })
-            submissions.forEach(sub => {
-              if (sub['id'] === id) sub['status'] = 'open'
-            })
-            cache.writeQuery({
-              query: SUBMISSIONS,
-              data: {
-                submissions
-              }
-            })
-          }}
+          update={cacheUpdate(SUBMISSIONS, ({ unapproveSubmission }, { submissions }) => {
+            return updateSubmissions(submissions, 'open', unapproveSubmission)
+          }, { in: { id: lid } })}
         >
           {(execute) => {
             return (
@@ -126,21 +83,9 @@ const MergeRequestBody = ({ mrInfo, lid }) => {
       <div style={{ marginBottom: '1rem' }}>
         <Mutation
           mutation={APPROVE_SUBMISSION}
-          update={(cache, { data: { approveSubmission: { id } } }) => {
-            const { submissions } = cache.readQuery({
-              query: SUBMISSIONS,
-              variables: { in: { id: lid } }
-            })
-            submissions.forEach(sub => {
-              if (sub['id'] === id) sub['status'] = 'open-approved'
-            })
-            cache.writeQuery({
-              query: SUBMISSIONS,
-              data: {
-                submissions
-              }
-            })
-          }}
+          update={cacheUpdate(SUBMISSIONS, ({ approveSubmission }, { submissions }) => {
+            return updateSubmissions(submissions, 'open-approved', approveSubmission)
+          }, { in: { id: lid } })}
         >
           {execute => (
             <button className='btn btn-sm btn-success' onClick={() => {
@@ -153,21 +98,9 @@ const MergeRequestBody = ({ mrInfo, lid }) => {
           )}
         </Mutation>
         <Mutation mutation={REJECT_SUBMISSION}
-          update={(cache, { data: { rejectSubmission: { id } } }) => {
-            const { submissions } = cache.readQuery({
-              query: SUBMISSIONS,
-              variables: { in: { id: lid } }
-            })
-            submissions.forEach(sub => {
-              if (sub['id'] === id) sub['status'] = 'open-rejected'
-            })
-            cache.writeQuery({
-              query: SUBMISSIONS,
-              data: {
-                submissions
-              }
-            })
-          }}
+          update={cacheUpdate(SUBMISSIONS, ({ rejectSubmission }, { submissions }) => {
+            return updateSubmissions(submissions, 'open-rejected', rejectSubmission)
+          }, { in: { id: lid } })}
         >
           {execute => (
             <button
