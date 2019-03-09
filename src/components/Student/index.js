@@ -32,6 +32,7 @@ const StudentPage = ({ match }) => {
                     <a
                       href={docUrl}
                       target='_blank'
+                      rel='noopener noreferrer'
                       className='breadcrumb-item'
                     >
                       Lesson Doc
@@ -39,6 +40,7 @@ const StudentPage = ({ match }) => {
                     <a
                       href={videoUrl}
                       target='_blank'
+                      rel='noopener noreferrer'
                       className='breadcrumb-item'
                     >
                       Lecture Video

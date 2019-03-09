@@ -10,15 +10,10 @@ const LessonListPage = () => (
   <Query query={CURRICULUM_STATUS}>
     {loadComponent(({ curriculumStatus: lessons }) => {
       const allLessons = [...lessons].sort((a, b) => a.order - b.order)
-      const firstLesson = allLessons.reduce((acc, lesson) => {
-        if (acc) return acc
+      const firstLesson = allLessons.find((lesson) => {
         const loggedInUser = lesson.currentUser
-        if (
-          !loggedInUser ||
-          !loggedInUser.userLesson ||
-          !loggedInUser.userLesson.isPassed
-        ) { return lesson }
-      }, null)
+        return !loggedInUser || !loggedInUser.userLesson || !loggedInUser.userLesson.isPassed
+      })
       return (
         <div>
           <div className='gs-container-1'>

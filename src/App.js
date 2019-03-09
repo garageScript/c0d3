@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import { ApolloProvider } from 'react-apollo'
+import { ApolloProvider, Query } from 'react-apollo'
 
 import './css/App.css'
 // components
@@ -20,8 +20,6 @@ import NavBar from './components/NavBar'
 import LessonListAdmin from './components/Admin/LessonList'
 import AdminAnnouncements from './components/Admin/Announcements'
 import chatdb from './db/chatdb'
-import { Query } from 'react-apollo'
-import gql from 'graphql-tag'
 import Markdown from 'react-markdown'
 import { GET_ANNOUNCEMENTS } from './db/queries.js'
 import { loadComponent } from './components/shared/shared.js'

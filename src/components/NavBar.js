@@ -1,8 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
-import { Query } from 'react-apollo'
-import { CHAT } from './Chat/queries'
 import '../css/NavBar.css'
 import smallLogo from '../assets/smallLogo.png'
 import authClient from '../helpers/auth/client'
@@ -32,15 +30,16 @@ const NavBarComponent = ({ location }) => {
         </a>
       </li>
       <li className='nav-item dropdown'>
-        <a
-          className='nav-link dropdown-toggle'
+        <div
+          role='link'
+          className='nav-link dropdown-toggle div-link'
           id='navbarDropdownMenuLink'
           data-toggle='dropdown'
           aria-haspopup='true'
           aria-expanded='false'
         >
           Tools
-        </a>
+        </div>
         <div
           className='dropdown-menu dropdown-menu-right'
           aria-labelledby='navbarDropdownMenuLink'

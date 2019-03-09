@@ -37,10 +37,15 @@ const Undo = ({ mrInfo, submissionVar, lid }) => {
         {execute => (
           <h5>
             Reviewed
-            <a target='_blank' rel='noopener noreferrer' onClick={execute}>
+            <div
+              role='link'
+              className='div-link'
+              target='_blank'
+              rel='noopener noreferrer'
+              onClick={execute}>
               {' '}
               Undo
-            </a>
+            </div>
           </h5>
         )}
       </Mutation>
