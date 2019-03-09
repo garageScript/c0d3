@@ -31,8 +31,8 @@ const MergeRequestBody = ({ mrInfo, lid }) => {
   if (mrInfo.status.includes('-')) {
     const status = mrInfo.status.split('-')[1]
     return (
-      <div className='card-text'>
-        <p>You have {status} this submission</p>
+      <div>
+        <p className='card-text'>You have {status} this submission</p>
         <Mutation mutation={UNAPPROVE_SUBMISSION}
           variables={submissionVar}
           update={cacheUpdate(SUBMISSIONS, ({ unapproveSubmission }, { submissions }) => {
@@ -41,9 +41,9 @@ const MergeRequestBody = ({ mrInfo, lid }) => {
         >
           {(execute) => {
             return (
-              <a onClick={() => {
+              <button className='btn btn-outline-danger waves-effect btn-sm' onClick={() => {
                 execute()
-              }}>UNDO</a>
+              }}>UNDO</button>
             )
           }}
         </Mutation>
@@ -124,7 +124,7 @@ const MergeRequest = ({ lid, mrInfo }) => {
   return (
     <div className='card-deck'>
       <div className='card mb-2 mt-1'>
-        <div className='card-body pb-0 pl-4'>
+        <div className='card-body'>
           <div className='card-title'>
             <span className='h5'>
               <Link to={`/profile/${mrInfo.user.id}`}>
