@@ -1,6 +1,6 @@
 {
   "name": "c0d3",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Command Line Interface (CLI) for c0d3.com",
   "license": "MIT",
   "homepage": "https://c0d3.com",
@@ -24,6 +24,7 @@
   },
   "author": "c0d3.com",
   "dependencies": {
+    "axios": "^0.18.0",
     "chalk": "^2.4.2",
     "child_process": "^1.0.2",
     "graphql-request": "^1.6.0",

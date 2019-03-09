@@ -23,7 +23,7 @@ const NewLessonPage = () => {
               const lessonLinks = data.lessons.map((lesson, index) => {
                 return (
                   <div key={index}>
-                    <a
+                    <button
                       onClick={() => {
                         res.client.writeData({
                           data: {
@@ -35,7 +35,7 @@ const NewLessonPage = () => {
                       className='list-group-item list-group-item-action waves-effect'
                     >
                       {lesson.title}
-                    </a>
+                    </button>
                   </div>
                 )
               })

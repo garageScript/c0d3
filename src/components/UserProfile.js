@@ -5,9 +5,8 @@ import moment from 'moment';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import '../css/UserProfile.css';
-import { STUDENTS, LESSONS, USERS, RECEIVED_STARS } from '../db/queries';
+import { LESSONS, USERS, RECEIVED_STARS } from '../db/queries';
 import PwChangeForm from './PasswordChange';
-import ChallengeBar from './ChallengeBar';
 import { loadComponent } from './shared/shared';
 import gitLabMR from '../helpers/gitlabMrs';
 
@@ -115,7 +114,7 @@ class UserProfile extends React.Component {
         <div className="container" key={index}>
           <div className="row">
             <div className="col-lg-6">
-              <a href={mrequests.web_url} target="_blank">
+              <a href={mrequests.web_url} target="_blank" rel="noopener noreferrer">
                 {mrequests.title}
               </a>
             </div>
