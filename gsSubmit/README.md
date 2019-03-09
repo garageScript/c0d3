@@ -26,6 +26,10 @@
   $ c0d3 submit
 ```
 
+## Help Menu
+```bash
+  $ c0d3 help
+```
 ## License
 
 MIT
