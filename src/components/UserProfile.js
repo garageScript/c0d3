@@ -60,20 +60,30 @@ class UserProfile extends React.Component {
     super(props)
   }
   render () {
-    return (<div className='container'>
-      <h1>PROFILE</h1>
-      <hr />
-      <div>
-        <h3>Rahul Kalra</h3>
-        <p>I started coding in July of 2018. I know that it was in demand and it will resolve all my financial problems if I had this skillset but it was always challenging for me from day 1. I had to work very hard in understanding the syntax and constantly repeating the process every day to retain my understanding of what I was learning. I am very happy I started this journey because I have seen myself grow so much and continue to grow with every merge request that gets in merged in C0d3.com. I am very grateful for this opportuity, this has been a great adventure. I am aiming for full stack role after we launch the website, hope to give back by building more useful features for our students. Thank you and continue grinding #hustleNeverSleeps</p>
-      </div>
-      <hr />
-      <h3>Stars Ratings</h3>
-      <hr />
-      <h3>SUBMISSIONS</h3>
-      <hr />
-      <h3>Student Stats</h3>
-    </div>
+    return (
+      <Query query={USERS} variables={{ in: { username: this.props.match.params.userId } }}>
+        {loadComponent(({ users }) => {
+          const { name, createdAt } = users[0]
+          return (
+            <div className='container'>
+              <h1>PROFILE</h1>
+              <hr />
+              <div>
+                <h3>{ name }</h3>
+                <p>I started coding on { moment(parseInt(createdAt)).calendar() }. I know that it was in demand and it will resolve all my financial problems if I had this skillset but it was always challenging for me from day 1. I had to work very hard in understanding the syntax and constantly repeating the process every day to retain my understanding of what I was learning. I am very happy I started this journey because I have seen myself grow so much and continue to grow with every merge request that gets in merged in C0d3.com. I am very grateful for this opportuity, this has been a great adventure. I am aiming for full stack role after we launch the website, hope to give back by building more useful features for our students. Thank you and continue grinding #hustleNeverSleeps</p>
+              </div>
+              <hr />
+              <h3>Stars Ratings</h3>
+              <hr />
+              <h3>SUBMISSIONS</h3>
+              <hr />
+              <h3>Student Stats</h3>
+            </div>
+          )
+        }
+        )
+        }
+      </Query>
     )
   }
 }
