@@ -19,7 +19,7 @@ const SubmissionList = ({
 
   submissionsToShow = submissionsToShow.filter(
     mrInfo =>
-      mrInfo.status === 'open' && mrInfo.user.id !== window.userInfo.id
+      mrInfo.status.includes('open') && mrInfo.user.id !== window.userInfo.id
   )
   const MergeRequestList = submissionsToShow.map((mrInfo, index) => {
     return <MergeRequest key={index} lid={lid} mrInfo={mrInfo} />
