@@ -19,9 +19,7 @@ export const LESSON_STATUS = gql`
 export const USERS = gql`
   query users($in: UserInput) {
     users(input: $in) {
-      username,
-      name, 
-      createdAt
+      username
     }
   }
 `
@@ -368,6 +366,14 @@ export const GET_ANNOUNCEMENTS = gql`
     announcements {
       id,
       description
+    }
+  }
+`
+export const USER_DATA = gql`
+  query userInfo($in: UserInput){
+    userInfo(input: $in){
+      name, 
+      createdAt
     }
   }
 `
