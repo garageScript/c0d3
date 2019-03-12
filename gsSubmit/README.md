@@ -1,7 +1,5 @@
 <h1 align="center">
   <br>
-  <a href="https://c0d3.com"><img src="https://cdn.dribbble.com/users/255/screenshots/4988932/artboard_1_copy_3.png" alt="c0d3.com" width="200"></a>
-  <br>
   c0d3.com
   <br>
 </h1>

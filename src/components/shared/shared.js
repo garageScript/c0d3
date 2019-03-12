@@ -6,10 +6,11 @@ export const loadComponent = fn => {
     return fn(data, client, refetch)
   }
 }
-export const cacheUpdate = (query, cb) => {
+export const cacheUpdate = (query, cb, variables) => {
   return (cache, { data }) => {
     const cacheData = cache.readQuery({
-      query
+      query,
+      variables
     })
     cache.writeQuery({
       query,
