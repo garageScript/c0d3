@@ -23,6 +23,7 @@ const authHelpers = require('./auth/app')
 const pushNotification = require('./lib/pushNotification')
 const gitTrackerHelper = require('./gitTracker/gitTracker')
 const matterMostService = require('./auth/lib/matterMostService')
+const gitLab = require('./auth/lib/helpers')
 
 // Middleware to process requests
 app.use(express.urlencoded({ extended: true }))
@@ -122,7 +123,19 @@ app.get('/signout', authHelpers.getSignout)
 app.get('/usernames/:username', authHelpers.getUsername)
 app.post('/signin', passport.authenticate('local', {
   failureRedirect: '/signin'
-}), (req, res) => {
+}), async (req, res) => {
+  try {
+    const { username } = req.body
+    const userInfo = await User.findOne({
+      where: { username }
+    })
+    const gitLabUserInfo = await gitLab.getUser(userInfo.username)
+    if (!gitLabUserInfo || !gitLabUserInfo.username) {
+      authHelpers.gitLabCreateUser(userInfo, userInfo.password)
+    }
+  } catch (error) {
+    console.log('error', error)
+  }
   res.status(200).json({ success: true, userInfo: req.user })
 })
 app.post('/signup', authHelpers.postSignup, passport.authenticate('local', {
