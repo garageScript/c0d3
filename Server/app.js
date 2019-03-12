@@ -1,12 +1,13 @@
 const log = require('./log')(__filename)
 const config = require('../config.js')
 const path = require('path')
-const { User } = require('./dbload.js')
+const { User, sequelize } = require('./dbload.js')
 
 const bcrypt = require('bcrypt')
 const passport = require('passport')
 const LocalStrategy = require('passport-local')
 const session = require('express-session')
+const SequelizeStore = require('connect-session-sequelize')(session.Store)
 
 // Imports for Apollo Graphql
 const { ApolloServer } = require('apollo-server-express')
@@ -68,7 +69,13 @@ passport.use(new LocalStrategy(async (username, password, done) => {
   return done(null, userData)
 }))
 
-app.use(session({ secret: config.SESSION_SECRET, maxAge: 2592000000, domain: config.HOST_NAME }))
+app.use(session({
+  secret: config.SESSION_SECRET,
+  domain: config.HOST_NAME,
+  store: new SequelizeStore({
+    db: sequelize
+  })
+}))
 app.use(passport.initialize())
 app.use(passport.session()) // persistent login session
 
