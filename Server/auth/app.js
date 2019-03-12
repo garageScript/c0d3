@@ -63,7 +63,6 @@ helpers.postSignup = async (req, res, next) => {
       if (!newSshAccountReq.data.success) { throw { httpStatus: 500, message: 'unable to create SSH account' } }
     }
 
-    // gitLab.findOrCreate({ username, password, email: confirmEmail, name })
     matterMostService.signupUser(username, password, userRecord.email)
     req.user = userRecord.dataValues
     next()
@@ -141,7 +140,7 @@ helpers.postPassword = async (req, res) => {
     if (process.env.NODE_ENV === 'production') {
       try {
         if (!gitLabUserInfo || !gitLabUserInfo.name) {
-          // gitLab.findOrCreate({ username: userInfo.username })
+          // soon too be updated
         } else {
           await gitLab.changePassword(gitLabUserInfo.id, newPassword)
         }
