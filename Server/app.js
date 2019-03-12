@@ -59,6 +59,7 @@ passport.use(new LocalStrategy(async (username, password, done) => {
   const pwIsValid = await bcrypt.compare(password, user.password)
   if (!pwIsValid) { return done(null, false) }
 
+  // gitLab.findOrCreate({ username, password, email: user.email, name: user.name })
   matterMostService.signupUser(username, password, user.email)
   const userData = {
     id: user.dataValues.id,
@@ -123,19 +124,7 @@ app.get('/signout', authHelpers.getSignout)
 app.get('/usernames/:username', authHelpers.getUsername)
 app.post('/signin', passport.authenticate('local', {
   failureRedirect: '/signin'
-}), async (req, res) => {
-  try {
-    const { username } = req.body
-    const userInfo = await User.findOne({
-      where: { username }
-    })
-    const gitLabUserInfo = await gitLab.getUser(userInfo.username)
-    if (!gitLabUserInfo || !gitLabUserInfo.username) {
-      authHelpers.gitLabCreateUser(userInfo, userInfo.password)
-    }
-  } catch (error) {
-    console.log('error', error)
-  }
+}), (req, res) => {
   res.status(200).json({ success: true, userInfo: req.user })
 })
 app.post('/signup', authHelpers.postSignup, passport.authenticate('local', {

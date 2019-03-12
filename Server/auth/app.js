@@ -22,15 +22,6 @@ const errorHandler = (req, res, error) => {
 
 const helpers = {}
 
-helpers.gitLabCreateUser = async (userInfo, password) => {
-  const data = await gitLab.createUser({
-    email: userInfo.email,
-    password: password,
-    username: userInfo.username,
-    name: userInfo.name
-  })
-}
-
 helpers.getSession = (req, res) => {
   if (req.user && req.user.id) { return res.json({ success: true, userInfo: req.user }) }
   errorHandler(req, res, { httpStatus: 401, message: 'unauthorized' })
@@ -72,7 +63,7 @@ helpers.postSignup = async (req, res, next) => {
       if (!newSshAccountReq.data.success) { throw { httpStatus: 500, message: 'unable to create SSH account' } }
     }
 
-    helpers.gitLabCreateUser(userRecord, password)
+    // gitLab.findOrCreate({ username, password, email: confirmEmail, name })
     matterMostService.signupUser(username, password, userRecord.email)
     req.user = userRecord.dataValues
     next()
@@ -150,7 +141,7 @@ helpers.postPassword = async (req, res) => {
     if (process.env.NODE_ENV === 'production') {
       try {
         if (!gitLabUserInfo || !gitLabUserInfo.name) {
-          helpers.gitLabCreateUser(userInfo, newPassword)
+          // gitLab.findOrCreate({ username: userInfo.username })
         } else {
           await gitLab.changePassword(gitLabUserInfo.id, newPassword)
         }

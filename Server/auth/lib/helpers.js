@@ -21,6 +21,18 @@ const gitLab = {
     return (response.data || [])[0]
   },
 
+  findOrCreate: async (
+    { username, password, email, name },
+    url = gitLab.url()) => {
+    try {
+      const find = await gitLab.getUser(username)
+      return find
+    } catch (error) {
+      const create = await gitLab.createUser(username, password, email, name)
+      return create
+    }
+  },
+
   createUser: async (
     { username, password, email, name },
     url = gitLab.url()
