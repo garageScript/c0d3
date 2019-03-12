@@ -140,7 +140,12 @@ helpers.postPassword = async (req, res) => {
     if (process.env.NODE_ENV === 'production') {
       try {
         if (!gitLabUserInfo || !gitLabUserInfo.name) {
-          // soon too be updated
+          const data = await gitLab.createUser({
+            email: userInfo.email,
+            password: newPassword,
+            username: userInfo.username,
+            name: userInfo.name
+          })
         } else {
           await gitLab.changePassword(gitLabUserInfo.id, newPassword)
         }

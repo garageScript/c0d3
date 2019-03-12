@@ -23,7 +23,6 @@ const authHelpers = require('./auth/app')
 const pushNotification = require('./lib/pushNotification')
 const gitTrackerHelper = require('./gitTracker/gitTracker')
 const matterMostService = require('./auth/lib/matterMostService')
-const gitLab = require('./auth/lib/helpers')
 
 // Middleware to process requests
 app.use(express.urlencoded({ extended: true }))
