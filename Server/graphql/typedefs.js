@@ -42,6 +42,9 @@ type Query {
 
   "Get Announcements"
   announcements: [Announcement] 
+
+  "Get UserInfo"
+  userInfo(input: UserInput): UserData
 }
 
 type Mutation {
@@ -237,5 +240,10 @@ type Star {
 type Announcement {
   id: String
   description: String
+}
+
+type UserData {
+  name: String,
+  createdAt: String,
 }
 `

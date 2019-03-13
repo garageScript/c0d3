@@ -10,7 +10,6 @@ import {
   LESSON_INFO,
   ADOPTED_STUDENT_FILTER
 } from '../../db/queries.js'
-import StudentProgress from './StudentProgress'
 import SubmissionList from './SubmissionList'
 import { loadComponent } from '../shared/shared'
 import Toggle from './Toggle'
@@ -71,16 +70,8 @@ const TeacherPage = ({ match }) => {
                     {loadComponent(({ adoptedStudentFilter }) => {
                       return (
                         <div className='row'>
-                          <div className='col-7'>
+                          <div className='col-12'>
                             <SubmissionList
-                              lid={lid}
-                              adoptedStudentFilter={adoptedStudentFilter}
-                              students={students}
-                              submissions={submissions}
-                            />
-                          </div>
-                          <div className='col-5'>
-                            <StudentProgress
                               lid={lid}
                               adoptedStudentFilter={adoptedStudentFilter}
                               students={students}

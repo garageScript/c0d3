@@ -190,5 +190,13 @@ module.exports = {
     return Announcement.findAll({
       order: [ ['id', 'DESC'] ]
     })
+  },
+
+  userInfo: (obj, args, context) => {
+    return User.findOne({
+      where: {
+        username: args.input.username
+      }
+    })
   }
 }
