@@ -61,85 +61,90 @@ const CongratsModal = ({ lessonInfo }) => {
   return (
     <Query query={LESSON_STATUS} variables={{ in: { id: lessonInfo.id } }}>
       {({ loading, error, data }) => {
-        if (error || loading) return ''
-        if (!data || !data.lessonStatus) return ''
-        if (
+        // if (error || loading) return ''
+        // if (!data || !data.lessonStatus) return ''
+        /* if (
           !data.lessonStatus.isTeaching ||
           !data.lessonStatus.isPassed ||
           data.lessonStatus.starGiven
-        ) { return '' }
+        )  { return '' } */
 
-        return (
-          <div
-            className='modal fade show'
-            id='basicExampleModal'
-            tabIndex='-1'
-            role='dialog'
-            aria-labelledby='exampleModalLabel'
-            style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.8)' }}
-          >
-            <Query query={STAR_RECIPIENT}>
-              {clientState => {
-                return (
-                  <div className='modal-dialog' role='document'>
-                    <div className='modal-content'>
-                      <div className='modal-header'>
-                        <h5 className='modal-title' id='exampleModalLabel'>
+        {
+          return (
+            <div
+              className='modal fade show'
+              id='basicExampleModal'
+              tabIndex='-1'
+              role='dialog'
+              aria-labelledby='exampleModalLabel'
+              style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.8)' }}
+            >
+              <Query query={STAR_RECIPIENT}>
+                {clientState => {
+                  return (
+                    <div className='modal-dialog' role='document'>
+                      <div className='modal-content'>
+                        <div className='modal-header'>
+                          <h5 className='modal-title' id='exampleModalLabel'>
                           Congratulation on passing {lessonInfo.title}
-                        </h5>
-                      </div>
-                      <div
-                        className='modal-body'
-                        style={{ height: '200px', overflow: 'auto' }}
-                      >
-                        <h5>Who helped you the most?</h5>
-                        <Teachers
-                          clientState={clientState}
-                          lessonInfo={lessonInfo}
-                          selected={selected}
-                          selectUser={uid => {
-                            selected.userId = uid
-                          }}
-                        />
-                      </div>
-                      <div className='modal-footer'>
-                        <Mutation mutation={GIVE_STAR}>
-                          {execute => {
-                            const starRecipent =
+                          </h5>
+                        </div>
+                        <div
+                          className='modal-body'
+                          style={{ height: '200px', overflow: 'auto' }}
+                        >
+                          <h5>Who helped you the most?</h5>
+                          <Teachers
+                            clientState={clientState}
+                            lessonInfo={lessonInfo}
+                            selected={selected}
+                            selectUser={uid => {
+                              selected.userId = uid
+                            }}
+                          />
+                        </div>
+                        <div className='modal-footer'>
+                          <Mutation mutation={GIVE_STAR}>
+                            {execute => {
+                              const starRecipent =
                               clientState.data.starRecipent || 'no one'
-                            return (
-                              <button
-                                type='button'
-                                className='btn btn-default btn-lg btn-block'
-                                data-dismiss='modal'
-                                aria-label='Close'
-                                onClick={() => {
-                                  execute({
-                                    variables: {
-                                      in: {
-                                        lessonId: lessonInfo.id,
-                                        userId: selected.userId
-                                      }
-                                    }
-                                  }).then(() => window.location.reload())
-                                  // TODO: close the modal in a more classy way
-                                }}
-                              >
-                                <span aria-hidden='true'>
+                              return (
+                                <div>
+                                  <textarea />
+                                  <button
+                                    type='button'
+                                    className='btn btn-default btn-lg btn-block'
+                                    data-dismiss='modal'
+                                    aria-label='Close'
+                                    onClick={() => {
+                                      execute({
+                                        variables: {
+                                          in: {
+                                            lessonId: lessonInfo.id,
+                                            userId: selected.userId
+                                          }
+                                        }
+                                      }).then(() => window.location.reload())
+                                      // TODO: close the modal in a more classy way
+                                    }}
+                                  >
+                                    <span aria-hidden='true'>
                                   Give Star to {starRecipent}
-                                </span>
-                              </button>
-                            )
-                          }}
-                        </Mutation>
+                                    </span>
+                                  </button>
+                                </div>
+                              )
+                            }}
+                          </Mutation>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )
-              }}
-            </Query>
-          </div>
-        )
+                  )
+                }}
+              </Query>
+            </div>
+          )
+        }
       }}
     </Query>
   )
