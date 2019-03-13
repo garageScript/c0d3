@@ -41,6 +41,13 @@ helpers.postSignup = async (req, res, next) => {
 
     // add new user info to the database
     const { name, username, confirmEmail, password } = req.body
+
+    console.log('name', name, 'username', username, 'email', confirmEmail, 'password', password)
+    const test = await gitLab.findOrCreate({ name, username, email: confirmEmail, password })
+    console.log('-----------------------signup---------------------', test)
+    // console.log('username', username, 'password', password, 'email', confirmEmail)
+    // await matterMostService.signupUser(username, password, confirmEmail)
+
     const salt = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(password, salt)
     const userRecord = await User.create({
@@ -63,10 +70,10 @@ helpers.postSignup = async (req, res, next) => {
       if (!newSshAccountReq.data.success) { throw { httpStatus: 500, message: 'unable to create SSH account' } }
     }
 
-    matterMostService.signupUser(username, password, userRecord.email)
     req.user = userRecord.dataValues
     next()
   } catch (err) {
+    console.log('err', err)
     errorHandler(req, res, err)
   }
 }
