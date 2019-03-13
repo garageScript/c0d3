@@ -49,6 +49,9 @@ const NavBarComponent = ({ location }) => {
             Snippets
           </Link>
           */}
+          <a href='/settings' className='nav-link dropdown-item'>
+            Settings
+          </a>
           <a href='https://apps.c0d3.com' className='nav-link dropdown-item'>
             Apps
           </a>
