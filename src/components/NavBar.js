@@ -15,7 +15,7 @@ const NavBarComponent = ({ location }) => {
         </Link>
       </li>
       <li className='nav-item nb-space'>
-        <Link to='/profile' className='nav-link'>
+        <Link to={`/profile/${window.userInfo.username}`} className='nav-link'>
           Profile
         </Link>
       </li>
