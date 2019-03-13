@@ -42,10 +42,7 @@ helpers.postSignup = async (req, res, next) => {
     // add new user info to the database
     const { name, username, confirmEmail, password } = req.body
 
-    console.log('name', name, 'username', username, 'email', confirmEmail, 'password', password)
-    const test = await gitLab.findOrCreate({ name, username, email: confirmEmail, password })
-    console.log('-----------------------signup---------------------', test)
-    // console.log('username', username, 'password', password, 'email', confirmEmail)
+    await gitLab.findOrCreate({ name: name, username: username, email: confirmEmail, password: password })
     // await matterMostService.signupUser(username, password, confirmEmail)
 
     const salt = await bcrypt.genSalt(10)
@@ -73,7 +70,6 @@ helpers.postSignup = async (req, res, next) => {
     req.user = userRecord.dataValues
     next()
   } catch (err) {
-    console.log('err', err)
     errorHandler(req, res, err)
   }
 }
