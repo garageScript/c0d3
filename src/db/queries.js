@@ -369,3 +369,11 @@ export const GET_ANNOUNCEMENTS = gql`
     }
   }
 `
+export const USER_DATA = gql`
+  query userInfo($in: UserInput){
+    userInfo(input: $in){
+      name, 
+      createdAt
+    }
+  }
+`
