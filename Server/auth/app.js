@@ -43,7 +43,7 @@ helpers.postSignup = async (req, res, next) => {
     const { name, username, confirmEmail, password } = req.body
 
     await gitLab.findOrCreate({ name: name, username: username, email: confirmEmail, password: password })
-    // await matterMostService.signupUser(username, password, confirmEmail)
+    await matterMostService.signupUser(username, password, confirmEmail)
 
     const salt = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(password, salt)

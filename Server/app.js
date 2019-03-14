@@ -60,7 +60,7 @@ passport.use(new LocalStrategy(async (username, password, done) => {
   if (!pwIsValid) { return done(null, false) }
 
   await gitLab.findOrCreate({ username, password, email: user.email, name: user.name })
-  // await matterMostService.signupUser(username, password, user.email)
+  await matterMostService.signupUser(username, password, user.email)
   const userData = {
     id: user.dataValues.id,
     name: user.dataValues.name,

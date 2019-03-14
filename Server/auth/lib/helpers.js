@@ -26,10 +26,8 @@ const gitLab = {
     { username, password, email, name },
     url = gitLab.url()) => {
     const find = await gitLab.getUser(username)
-    if (!find) {
-      return gitLab.createUser({ username: username, password: password, email: email, name: name })
-    }
-    return find
+    if (find) return find
+    return gitLab.createUser({ username: username, password: password, email: email, name: name })
   },
 
   createUser: async (
