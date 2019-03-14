@@ -208,8 +208,16 @@ module.exports = {
     Star.create({
       lessonId: args.input.lessonId,
       studentId: context.user.id,
-      mentorId: args.input.userId || context.user.id
+      mentorId: args.input.userId || context.user.id,
+      comment: args.input.comment
     })
+
+    /* Star.findAll({
+      where: { lessonId: 1 }
+    }).then((result) => {
+      console.log('result', result)
+    }) */
+
     return 'Success'
   },
   createAnnouncement: (obj, args, context) => {
