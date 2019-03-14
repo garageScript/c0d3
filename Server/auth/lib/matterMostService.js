@@ -8,7 +8,6 @@ const matterMostService = {
     try {
       await axios.get(`${chatServiceUrl}/users/username/${username}`, { headers: chatServiceHeader })
     } catch (error) {
-      console.log('-----username-------', username, '--------password-----------', password, 'email', email)
       await axios.post(`${chatServiceUrl}/users`, { username, password, email }, { headers: chatServiceHeader })
       console.log('Sign up user to MatterMost', error)
     }
