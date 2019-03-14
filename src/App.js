@@ -23,6 +23,7 @@ import chatdb from './db/chatdb'
 import Markdown from 'react-markdown'
 import { GET_ANNOUNCEMENTS } from './db/queries.js'
 import { loadComponent } from './components/shared/shared.js'
+import { Settings } from './components/Settings'
 
 const Home = () => {
   return (
@@ -97,6 +98,7 @@ const AppElement = () => (
               component={LessonListAdmin}
             />
             <PrivateRoute path='/submissions/:lid/:cid' component={Diff} />
+            <PrivateRoute path='/settings' component={Settings} />
             <Route path='/signup' component={SignUp} />
             <Route path='/signin' component={SignIn} />
             <Route component={NotFound} />
