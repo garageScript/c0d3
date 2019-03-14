@@ -233,8 +233,8 @@ type Challenge {
 
 type Star {
   lessonId: String
-  student: User
-  mentor: User
+  studentId: Int
+  mentorId: Int
 }
 
 type Announcement {
@@ -245,6 +245,6 @@ type Announcement {
 type UserData {
   name: String,
   createdAt: String,
-  stars: Int
+  stars: [Star]
 }
 `
