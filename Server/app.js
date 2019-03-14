@@ -59,9 +59,12 @@ passport.use(new LocalStrategy(async (username, password, done) => {
   if (!user) { return done(null, false) }
   const pwIsValid = await bcrypt.compare(password, user.password)
   if (!pwIsValid) { return done(null, false) }
-
-  await gitLab.findOrCreate({ username, password, email: user.email, name: user.name })
-  await matterMostService.signupUser(username, password, user.email)
+  try {
+    await gitLab.findOrCreate({ username, password, email: user.email, name: user.name })
+    await matterMostService.signupUser(username, password, user.email)
+  } catch (err) {
+    console.log('err', err)
+  }
   const userData = {
     id: user.dataValues.id,
     name: user.dataValues.name,
