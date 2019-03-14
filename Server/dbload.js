@@ -128,5 +128,6 @@ module.exports = {
   UserLesson,
   UserRoom,
   Room,
-  Message
+  Message,
+  sequelize
 }
