@@ -79,5 +79,4 @@ class pwChangeForm extends React.Component {
     );
   }
 }
-
 export default pwChangeForm;
