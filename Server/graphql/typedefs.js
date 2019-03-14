@@ -233,8 +233,8 @@ type Challenge {
 
 type Star {
   lessonId: String
-  studentId: Int
-  mentorId: Int
+  studentId: String
+  mentorId: String
 }
 
 type Announcement {
