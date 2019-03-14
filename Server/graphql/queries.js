@@ -1,5 +1,4 @@
 const Sequelize = require('sequelize')
-
 const Op = Sequelize.Op
 
 const {
@@ -193,10 +192,21 @@ module.exports = {
   },
 
   userInfo: (obj, args, context) => {
+    const userData = {}
     return User.findOne({
       where: {
         username: args.input.username
       }
+    }).then(user => {
+      userData.id = user.id
+      userData.name = user.name
+      userData.createdAt = user.createdAt
+      return Star.findAll({
+        where: { mentorId: userData.id }
+      })
+    }).then(allStars => {
+      userData.stars = allStars
+      return userData
     })
   }
 }

@@ -43,10 +43,10 @@ type Query {
   "Get Announcements"
   announcements: [Announcement] 
 
+
   "Get UserInfo"
   userInfo(input: UserInput): UserData
 }
-
 type Mutation {
   "Create or find student, then Update student enrollment to a lesson"
   enrollStudent(input: LessonId): UserLesson
@@ -233,8 +233,8 @@ type Challenge {
 
 type Star {
   lessonId: String
-  student: User
-  mentor: User
+  studentId: String
+  mentorId: String
 }
 
 type Announcement {
@@ -245,5 +245,6 @@ type Announcement {
 type UserData {
   name: String,
   createdAt: String,
+  stars: [Star]
 }
 `
