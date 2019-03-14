@@ -23,6 +23,7 @@ const authHelpers = require('./auth/app')
 const pushNotification = require('./lib/pushNotification')
 const gitTrackerHelper = require('./gitTracker/gitTracker')
 const matterMostService = require('./auth/lib/matterMostService')
+const gitLab = require('./auth/lib/helpers')
 
 // Middleware to process requests
 app.use(express.urlencoded({ extended: true }))
@@ -58,7 +59,8 @@ passport.use(new LocalStrategy(async (username, password, done) => {
   const pwIsValid = await bcrypt.compare(password, user.password)
   if (!pwIsValid) { return done(null, false) }
 
-  matterMostService.signupUser(username, password, user.email)
+  await gitLab.findOrCreate({ username, password, email: user.email, name: user.name })
+  await matterMostService.signupUser(username, password, user.email)
   const userData = {
     id: user.dataValues.id,
     name: user.dataValues.name,

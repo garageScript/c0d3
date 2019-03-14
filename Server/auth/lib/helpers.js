@@ -1,3 +1,4 @@
+require('dotenv').load()
 const axios = require('axios')
 const { URL, URLSearchParams } = require('url')
 
@@ -19,6 +20,14 @@ const gitLab = {
       `${url}&username=${username}&per_page=100000000`
     )
     return (response.data || [])[0]
+  },
+
+  findOrCreate: async (
+    { username, password, email, name },
+    url = gitLab.url()) => {
+    const find = await gitLab.getUser(username)
+    if (find) return find
+    return gitLab.createUser({ username: username, password: password, email: email, name: name })
   },
 
   createUser: async (
