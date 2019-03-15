@@ -108,27 +108,31 @@ const CongratsModal = ({ lessonInfo }) => {
                             const starRecipent =
                               clientState.data.starRecipent || 'no one'
                             return (
-                              <button
-                                type='button'
-                                className='btn btn-default btn-lg btn-block'
-                                data-dismiss='modal'
-                                aria-label='Close'
-                                onClick={() => {
-                                  execute({
-                                    variables: {
-                                      in: {
-                                        lessonId: lessonInfo.id,
-                                        userId: selected.userId
+                              <div>
+                                <textarea />
+                                <button
+                                  type='button'
+                                  className='btn btn-default btn-lg btn-block'
+                                  data-dismiss='modal'
+                                  aria-label='Close'
+                                  onClick={() => {
+                                    execute({
+                                      variables: {
+                                        in: {
+                                          lessonId: lessonInfo.id,
+                                          userId: selected.userId,
+                                          comment: 'good job!'
+                                        }
                                       }
-                                    }
-                                  }).then(() => window.location.reload())
-                                  // TODO: close the modal in a more classy way
-                                }}
-                              >
-                                <span aria-hidden='true'>
+                                    }).then(() => window.location.reload())
+                                    // TODO: close the modal in a more classy way
+                                  }}
+                                >
+                                  <span aria-hidden='true'>
                                   Give Star to {starRecipent}
-                                </span>
-                              </button>
+                                  </span>
+                                </button>
+                              </div>
                             )
                           }}
                         </Mutation>
@@ -140,6 +144,7 @@ const CongratsModal = ({ lessonInfo }) => {
             </Query>
           </div>
         )
+      }
       }}
     </Query>
   )

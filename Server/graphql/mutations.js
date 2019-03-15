@@ -208,7 +208,8 @@ module.exports = {
     Star.create({
       lessonId: args.input.lessonId,
       studentId: context.user.id,
-      mentorId: args.input.userId || context.user.id
+      mentorId: args.input.userId || context.user.id,
+      comment: args.input.comment
     })
     return 'Success'
   },

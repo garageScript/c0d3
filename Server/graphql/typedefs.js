@@ -129,6 +129,7 @@ input ChallengeId {
 input LessonUserId {
   lessonId: String
   userId: String
+  comment: String
 }
 
 input ChallengeInput {

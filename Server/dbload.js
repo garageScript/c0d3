@@ -64,7 +64,8 @@ const Challenge = sequelize.define('challenge', {
 })
 
 const Star = sequelize.define('star', {
-  lessonId: Sequelize.INTEGER
+  lessonId: Sequelize.INTEGER,
+  comment: Sequelize.STRING
 })
 
 Lesson.hasMany(Challenge)
