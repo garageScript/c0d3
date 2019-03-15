@@ -61,13 +61,13 @@ const CongratsModal = ({ lessonInfo }) => {
   return (
     <Query query={LESSON_STATUS} variables={{ in: { id: lessonInfo.id } }}>
       {({ loading, error, data }) => {
-        /* if (error || loading) return ''
+        if (error || loading) return ''
         if (!data || !data.lessonStatus) return ''
         if (
           !data.lessonStatus.isTeaching ||
           !data.lessonStatus.isPassed ||
           data.lessonStatus.starGiven
-        ) { return '' } */
+        ) { return '' } 
 
         return (
           <div
