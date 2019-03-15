@@ -41,9 +41,12 @@ helpers.postSignup = async (req, res, next) => {
 
     // add new user info to the database
     const { name, username, confirmEmail, password } = req.body
-
-    await gitLab.findOrCreate({ name: name, username: username, email: confirmEmail, password: password })
-    await matterMostService.signupUser(username, password, confirmEmail)
+    try {
+      await gitLab.createUser({ name: name, username: username, email: confirmEmail, password: password })
+      await matterMostService.signupUser(username, password, confirmEmail)
+    } catch (err) {
+      console.log('err', err)
+    }
 
     const salt = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(password, salt)
