@@ -211,13 +211,6 @@ module.exports = {
       mentorId: args.input.userId || context.user.id,
       comment: args.input.comment
     })
-
-    /* Star.findAll({
-      where: { lessonId: 1 }
-    }).then((result) => {
-      console.log('result', result)
-    }) */
-
     return 'Success'
   },
   createAnnouncement: (obj, args, context) => {
