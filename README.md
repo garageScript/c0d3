@@ -1,5 +1,5 @@
 # C0D3.com
-This is the codebase for the website c0d3.com, which provides a platform for students to learn coding through solving challenges.
+This is the codebase for the website c0d3.com, which provides a platform for students to learn coding through solving challenges online.
 
 ## How to Start
 
