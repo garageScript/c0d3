@@ -56,7 +56,22 @@ const Teachers = ({ clientState, lessonInfo, selectUser }) => (
   </Query>
 )
 
-const CongratsModal = ({ lessonInfo }) => {
+class CongratsModal extends React.Component {
+  constructor ({ lessonInfo }) {
+    super({ lessonInfo })
+    this.state = {
+      commentUpdate: null,
+      selected: {}
+    }
+
+  }
+
+  render () {
+    return <h1> test  </h1>
+  }
+}
+
+/* const CongratsModal = ({ lessonInfo }) => {
   const selected = {}
   return (
     <Query query={LESSON_STATUS} variables={{ in: { id: lessonInfo.id } }}>
@@ -67,7 +82,7 @@ const CongratsModal = ({ lessonInfo }) => {
           !data.lessonStatus.isTeaching ||
           !data.lessonStatus.isPassed ||
           data.lessonStatus.starGiven
-        ) { return '' } 
+        ) { return '' }
 
         return (
           <div
@@ -147,6 +162,6 @@ const CongratsModal = ({ lessonInfo }) => {
       }}
     </Query>
   )
-}
+} */
 
 export default CongratsModal
