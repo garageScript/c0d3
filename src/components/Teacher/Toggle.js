@@ -8,15 +8,23 @@ const Toggle = () => (
       const filter = data.adoptedStudentFilter
       return (
         <Fragment>
-          <h3>Showing {filter ? 'Adopted' : 'All'} Students</h3>
-          <button
-            onClick={() => {
-              client.writeData({ data: { adoptedStudentFilter: !filter } })
-            }}
-            className='btn btn-secondary btn-sm gs-button text-capitalize'
-          >
-            View {filter ? 'All' : 'Adopted'} Students
-          </button>
+          <ul style={{ width: '100%' }} className='nav md-pills nav-justified pills-pink'>
+            <li className='nav-item'>
+              <a className='nav-link active' data-toggle='tab' href='#panel56' role='tab' onClick={() => {
+                client.writeData({ data: { adoptedStudentFilter: false } })
+              }} >View All Students</a>
+            </li>
+            <li className='nav-item'>
+              <a
+                onClick={() => {
+                  client.writeData({ data: { adoptedStudentFilter: true } })
+                }}
+                className='nav-link' data-toggle='tab' href='#panel55' role='tab'
+              >
+                View Adopted Students
+              </a>
+            </li>
+          </ul>
         </Fragment>
       )
     }}
