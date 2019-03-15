@@ -125,7 +125,7 @@ helpers.postPassword = async (req, res) => {
       }
     }
 
-    const { id } = req.session.userInfo
+    const { id } = req.user
 
     // validate the curent password
     const userInfo = await User.findOne({
