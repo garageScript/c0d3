@@ -27,7 +27,6 @@ const SubmissionList = ({
 
   return (
     <div>
-      <h4>Submissions</h4>
       {MergeRequestList}
     </div>
   )
