@@ -67,7 +67,7 @@ const CongratsModal = ({ lessonInfo }) => {
           !data.lessonStatus.isTeaching ||
           !data.lessonStatus.isPassed ||
           data.lessonStatus.starGiven
-        ) { return '' }
+        ) { return '' } 
 
         return (
           <div
@@ -144,7 +144,6 @@ const CongratsModal = ({ lessonInfo }) => {
             </Query>
           </div>
         )
-      }
       }}
     </Query>
   )
