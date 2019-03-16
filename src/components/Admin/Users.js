@@ -9,7 +9,6 @@ const UsersAdmin = () => {
     <Query query={USERS}>
       { loadComponent(({ users }) => {
         const rows = users.map(u => {
-          console.log(u.isAdmin)
           const buttonClass = (u.isAdmin) ? 'btn-primary' : 'btn-outline-primary waves-effect'
           return (
             <tr key={u.id}>
