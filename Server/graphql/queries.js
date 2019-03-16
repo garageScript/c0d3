@@ -14,8 +14,11 @@ const {
 
 module.exports = {
   users: (obj, args, context) => {
-    const variablesToMatch = {}
+    if (!Object.keys(args.input || {}).length) {
+      return User.findAll()
+    }
     const { username, userId } = args.input
+    const variablesToMatch = {}
     if (username) {
       variablesToMatch.username = username
     }

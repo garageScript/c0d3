@@ -32,7 +32,11 @@ const User = sequelize.define('user', {
   password: Sequelize.STRING,
   email: Sequelize.STRING,
   gsId: Sequelize.INTEGER,
-  isOnline: Sequelize.BOOLEAN
+  isOnline: Sequelize.BOOLEAN,
+  isAdmin: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
+  }
 })
 
 const UserLesson = sequelize.define('userLesson', {
