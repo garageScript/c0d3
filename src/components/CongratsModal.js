@@ -57,10 +57,9 @@ const Teachers = ({ clientState, lessonInfo, selectUser }) => (
 )
 
 class CongratsModal extends React.Component {
-  constructor ({ lessonInfo }) {
-    super({ lessonInfo })
+  constructor (props) {
+    super(props)
     this.state = {
-      lessonInfo,
       commentUpdate: null,
       selected: {}
     }
@@ -74,7 +73,7 @@ class CongratsModal extends React.Component {
 
   render () {
     return (
-      <Query query={LESSON_STATUS} variables={{ in: { id: this.state.lessonInfo.id } }}>
+      <Query query={LESSON_STATUS} variables={{ in: { id: this.props.lessonInfo.id } }}>
         {({ loading, error, data }) => {
           if (error || loading) return ''
           if (!data || !data.lessonStatus) return ''
@@ -84,7 +83,7 @@ class CongratsModal extends React.Component {
           data.lessonStatus.starGiven
           ) { return '' } 
 
-          return (
+        return (
             <div
               className='modal fade show'
               id='basicExampleModal'
@@ -100,7 +99,7 @@ class CongratsModal extends React.Component {
                       <div className='modal-content'>
                         <div className='modal-header'>
                           <h5 className='modal-title' id='exampleModalLabel'>
-                          Congratulation on passing {this.state.lessonInfo.title}
+                          Congratulation on passing {this.props.lessonInfo.title}
                           </h5>
                         </div>
                         <div
@@ -110,8 +109,7 @@ class CongratsModal extends React.Component {
                           <h5>Who helped you the most?</h5>
                           <Teachers
                             clientState={clientState}
-                            lessonInfo={this.state.lessonInfo}
-                            selected={this.selected}
+                            lessonInfo={this.props.lessonInfo}
                             selectUser={uid => {
                               this.setState({
                                 selected: { userId: uid }
@@ -136,7 +134,7 @@ class CongratsModal extends React.Component {
                                       execute({
                                         variables: {
                                           in: {
-                                            lessonId: this.state.lessonInfo.id,
+                                            lessonId: this.props.lessonInfo.id,
                                             userId: this.state.selected.userId,
                                             comment: this.state.commentUpdate
                                           }
