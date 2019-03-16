@@ -191,14 +191,16 @@ type Submission {
 
 type AdoptedStudent {
   userId: String,
-  studentId: String,
-  lessonId: String,
+  studentId: String
+  lessonId: String
 }
 
 type User {
   id: String
   username: String
   userLesson: UserLesson
+  email: String
+  name: String
 }
 
 type UserLesson {

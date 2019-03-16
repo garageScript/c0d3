@@ -31,6 +31,7 @@ const linkTypeDefs = `
     id: String,
     username: String,
     name: String,
+    email: String,
     userLesson: UserLesson,
     online: Boolean,
     lastroomId: Int

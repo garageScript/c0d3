@@ -20,6 +20,9 @@ export const USERS = gql`
   query users($in: UserInput) {
     users(input: $in) {
       username
+      name
+      email
+      id
     }
   }
 `
