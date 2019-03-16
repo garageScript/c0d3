@@ -1,4 +1,3 @@
-require('dotenv').load()
 const axios = require('axios')
 const accessToken = process.env.MATTERMOST_ACCESS_TOKEN
 const chatServiceHeader = { Authorization: `Bearer ${accessToken}` }
@@ -16,9 +15,12 @@ const matterMostService = {
   getUserInfo: (userName) => {
     return axios.get(`${chatServiceUrl}/users/username/${userName}`, { headers: chatServiceHeader })
   },
-  changePassword: async (userId, currPassword, newPassword) => {
+  changePassword: async (userName, currPassword, newPassword) => {
+    console.log('username', userName)
+    console.log('pw', currPassword, newPassword)
     try {
-      await axios.put(`${chatServiceUrl}/users/${userId}/password`, {
+      const userInfo = await matterMostService.getUserInfo(userName)
+      await axios.put(`${chatServiceUrl}/users/${userInfo.data.id}/password`, {
         'current_password': currPassword,
         'new_password': newPassword
       }, { headers: chatServiceHeader })

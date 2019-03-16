@@ -138,11 +138,9 @@ helpers.postPassword = async (req, res) => {
     if (!pwIsValid) { throw { httpStatus: 401, message: { currPassword: ['invalid'] } } }
 
     // Gitlab accounts - This validates password constraints (min length, chars, etc)
-    const gitLabUserInfo = await gitLab.getUser(userInfo.username)
-    const matterMostUserInfo = await matterMostService.getUserInfo(userInfo.username)
     try {
-      await gitLab.changePassword(gitLabUserInfo.id, newPassword)
-      await matterMostService.changePassword(matterMostUserInfo.data.id, currPassword, newPassword)
+      await gitLab.changePassword(userInfo.username, newPassword)
+      await matterMostService.changePassword(userInfo.username, currPassword, newPassword)
     } catch (glErr) {
       throw { httpStatus: 401, message: { gitlab: JSON.stringify(glErr.response.data) } }
     }
