@@ -22,7 +22,7 @@ const SubmissionList = ({
       mrInfo.status.includes('open') && mrInfo.user.id !== window.userInfo.id
   )
   const MergeRequestList = submissionsToShow.map((mrInfo, index) => {
-    return <MergeRequest key={index} lid={lid} mrInfo={mrInfo} />
+    return <MergeRequest key={index} lid={lid} mrInfo={mrInfo} studentMap={studentMap} />
   })
 
   return (

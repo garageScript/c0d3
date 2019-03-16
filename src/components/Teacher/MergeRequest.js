@@ -120,13 +120,22 @@ const MergeRequestBody = ({ mrInfo, lid }) => {
   )
 }
 
-const MergeRequest = ({ lid, mrInfo }) => {
+const MergeRequest = ({ lid, mrInfo, studentMap }) => {
+  console.log('studentMap;', studentMap)
+
+  const adoptButton = studentMap[mrInfo.user.id]
+    ? 'btn-warning'
+    : 'btn-outline-warning waves-effect'
   return (
     <div className='card-deck'>
       <div className='card mb-2 mt-1'>
         <div className='card-body'>
           <div className='card-title'>
             <span className='h5'>
+              <button className={`btn ${adoptButton}`} style={{
+                position: 'absolute',
+                right: '15px'
+              }}>Mentor Me</button>
               <Link to={`/profile/${mrInfo.user.id}`}>
                 {mrInfo.user.username}
               </Link>{' '}
