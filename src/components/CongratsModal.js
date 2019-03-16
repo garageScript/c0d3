@@ -66,17 +66,23 @@ class CongratsModal extends React.Component {
     }
   }
 
+  commentHandler = (e)=>{
+    this.setState({
+      commentUpdate: e.target.value  
+    })
+  }
+
   render () {
     return (
       <Query query={LESSON_STATUS} variables={{ in: { id: this.state.lessonInfo.id } }}>
         {({ loading, error, data }) => {
-          /* if (error || loading) return ''
+          if (error || loading) return ''
           if (!data || !data.lessonStatus) return ''
           if (
             !data.lessonStatus.isTeaching ||
           !data.lessonStatus.isPassed ||
           data.lessonStatus.starGiven
-          ) { return '' } */
+          ) { return '' } 
 
           return (
             <div
@@ -109,7 +115,7 @@ class CongratsModal extends React.Component {
                             selectUser={uid => {
                               this.setState({
                                 selected: { userId: uid }
-                              }, () => { console.log('state updated:', this.state) })
+                              })
                             }}
                           />
                         </div>
@@ -120,7 +126,7 @@ class CongratsModal extends React.Component {
                               clientState.data.starRecipent || 'no one'
                               return (
                                 <div>
-                                  <textarea />
+                                  <textarea onChange={(e)=>{this.commentHandler(e)}}/>
                                   <button
                                     type='button'
                                     className='btn btn-default btn-lg btn-block'
@@ -132,7 +138,7 @@ class CongratsModal extends React.Component {
                                           in: {
                                             lessonId: this.state.lessonInfo.id,
                                             userId: this.state.selected.userId,
-                                            comment: 'good job!'
+                                            comment: this.state.commentUpdate
                                           }
                                         }
                                       }).then(() => window.location.reload())
@@ -160,98 +166,5 @@ class CongratsModal extends React.Component {
     )
   }
 }
-
-/* const CongratsModal = ({ lessonInfo }) => {
-  const selected = {}
-  return (
-    <Query query={LESSON_STATUS} variables={{ in: { id: lessonInfo.id } }}>
-      {({ loading, error, data }) => {
-        if (error || loading) return ''
-        if (!data || !data.lessonStatus) return ''
-        if (
-          !data.lessonStatus.isTeaching ||
-          !data.lessonStatus.isPassed ||
-          data.lessonStatus.starGiven
-        ) { return '' }
-
-        return (
-          <div
-            className='modal fade show'
-            id='basicExampleModal'
-            tabIndex='-1'
-            role='dialog'
-            aria-labelledby='exampleModalLabel'
-            style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.8)' }}
-          >
-            <Query query={STAR_RECIPIENT}>
-              {clientState => {
-                return (
-                  <div className='modal-dialog' role='document'>
-                    <div className='modal-content'>
-                      <div className='modal-header'>
-                        <h5 className='modal-title' id='exampleModalLabel'>
-                          Congratulation on passing {lessonInfo.title}
-                        </h5>
-                      </div>
-                      <div
-                        className='modal-body'
-                        style={{ height: '200px', overflow: 'auto' }}
-                      >
-                        <h5>Who helped you the most?</h5>
-                        <Teachers
-                          clientState={clientState}
-                          lessonInfo={lessonInfo}
-                          selected={selected}
-                          selectUser={uid => {
-                            selected.userId = uid
-                          }}
-                        />
-                      </div>
-                      <div className='modal-footer'>
-                        <Mutation mutation={GIVE_STAR}>
-                          {execute => {
-                            const starRecipent =
-                              clientState.data.starRecipent || 'no one'
-                            return (
-                              <div>
-                                <textarea />
-                                <button
-                                  type='button'
-                                  className='btn btn-default btn-lg btn-block'
-                                  data-dismiss='modal'
-                                  aria-label='Close'
-                                  onClick={() => {
-                                    execute({
-                                      variables: {
-                                        in: {
-                                          lessonId: lessonInfo.id,
-                                          userId: selected.userId,
-                                          comment: 'good job!'
-                                        }
-                                      }
-                                    }).then(() => window.location.reload())
-                                    // TODO: close the modal in a more classy way
-                                  }}
-                                >
-                                  <span aria-hidden='true'>
-                                  Give Star to {starRecipent}
-                                  </span>
-                                </button>
-                              </div>
-                            )
-                          }}
-                        </Mutation>
-                      </div>
-                    </div>
-                  </div>
-                )
-              }}
-            </Query>
-          </div>
-        )
-      }}
-    </Query>
-  )
-} */
 
 export default CongratsModal
