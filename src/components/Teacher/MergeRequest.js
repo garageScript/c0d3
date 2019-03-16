@@ -9,7 +9,11 @@ import {
   APPROVE_SUBMISSION,
   REJECT_SUBMISSION,
   SUBMISSIONS,
-  UNAPPROVE_SUBMISSION
+  UNAPPROVE_SUBMISSION,
+  ADOPT_STUDENT,
+  UNADOPT_STUDENT,
+  STUDENTS
+
 } from '../../db/queries'
 import StudentDiff from '../Student/StudentDiff'
 
@@ -121,21 +125,45 @@ const MergeRequestBody = ({ mrInfo, lid }) => {
 }
 
 const MergeRequest = ({ lid, mrInfo, studentMap }) => {
-  console.log('studentMap;', studentMap)
-
   const adoptButton = studentMap[mrInfo.user.id]
     ? 'btn-warning'
     : 'btn-outline-warning waves-effect'
+  const buttonTitle = studentMap[mrInfo.user.id]
+    ? 'ADOPTED'
+    : 'ADOPT ME'
+  const mutationQuery = studentMap[mrInfo.user.id]
+    ? UNADOPT_STUDENT
+    : ADOPT_STUDENT
+  const mutationVar = { input: { lessonId: lid, userId: mrInfo.user.id } }
   return (
     <div className='card-deck'>
       <div className='card mb-2 mt-1'>
         <div className='card-body'>
           <div className='card-title'>
             <span className='h5'>
-              <button className={`btn ${adoptButton}`} style={{
-                position: 'absolute',
-                right: '15px'
-              }}>Mentor Me</button>
+              <Mutation mutation={mutationQuery} variables={mutationVar} update={cacheUpdate(STUDENTS, (_, { students }) => {
+                if (studentMap[mrInfo.user.id]) {
+                  const newStudents = students.filter((s) => {
+                    return mrInfo.user.id !== s.id
+                  })
+                  return {
+                    students: newStudents
+                  }
+                }
+                students.push({ ...mrInfo.user, userLesson: null })
+                return { students }
+              }, { in: { id: lid } })} >
+                {(execute) => {
+                  return (
+                    <button className={`btn ${adoptButton}`} onClick={() => {
+                      execute()
+                    }} style={{
+                      position: 'absolute',
+                      right: '15px'
+                    }}>{ buttonTitle}</button>
+                  )
+                }}
+              </Mutation>
               <Link to={`/profile/${mrInfo.user.id}`}>
                 {mrInfo.user.username}
               </Link>{' '}
