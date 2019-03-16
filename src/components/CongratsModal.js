@@ -74,14 +74,14 @@ class CongratsModal extends React.Component {
   render () {
     return (
       <Query query={LESSON_STATUS} variables={{ in: { id: this.props.lessonInfo.id } }}>
-        {({ loading, error, data }) => {
-          if (error || loading) return ''
+         {({ loading, error, data }) => {
+           /*if (error || loading) return ''
           if (!data || !data.lessonStatus) return ''
           if (
             !data.lessonStatus.isTeaching ||
           !data.lessonStatus.isPassed ||
           data.lessonStatus.starGiven
-          ) { return '' } 
+          ) { return '' }*/
 
         return (
             <div
@@ -118,13 +118,13 @@ class CongratsModal extends React.Component {
                           />
                         </div>
                         <div className='modal-footer'>
+                          <textarea onChange={(e)=>{this.commentHandler(e)}}/>  
                           <Mutation mutation={GIVE_STAR}>
                             {execute => {
                               const starRecipent =
                               clientState.data.starRecipent || 'no one'
                               return (
                                 <div>
-                                  <textarea onChange={(e)=>{this.commentHandler(e)}}/>
                                   <button
                                     type='button'
                                     className='btn btn-default btn-lg btn-block'
