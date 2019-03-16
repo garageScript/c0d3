@@ -139,9 +139,7 @@ const MergeRequest = ({ lid, mrInfo, studentMap }) => {
               <Mutation mutation={mutationQuery} variables={mutationVar} update={cacheUpdate(STUDENTS, (_, { students }) => {
                 if (isAdopted) {
                   return {
-                    students: students.filter((s) => {
-                      return mrInfo.user.id !== s.id
-                    })
+                    students: students.filter((s) => mrInfo.user.id !== s.id)
                   }
                 }
                 students.push({ ...mrInfo.user, userLesson: null })
