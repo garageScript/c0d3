@@ -79,7 +79,9 @@ app.use(session({
   domain: config.HOST_NAME,
   store: new SequelizeStore({
     db: sequelize
-  })
+  }),
+  resave: false, // This is set to false because SequelizeStore supports touch method
+  saveUninitialized: false // false is useful for implementing login sessions, reducing server storage usage
 }))
 app.use(passport.initialize())
 app.use(passport.session()) // persistent login session
