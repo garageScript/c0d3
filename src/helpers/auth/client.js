@@ -80,6 +80,15 @@ const client = {
         callback([])
       }
     }
+  },
+  getFieldProps: () => {
+    return {
+      value: '',
+      isValid: false,
+      inputClass: 'form-control',
+      feedbackClass: 'feedback',
+      feedback: ''
+    }
   }
 }
 

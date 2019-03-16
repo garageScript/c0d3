@@ -6,13 +6,7 @@ import '../css/AuthForm.css'
 class SignUpForm extends React.Component {
   constructor (props) {
     super(props)
-    this.fieldProps = {
-      value: '',
-      isValid: false,
-      inputClass: 'form-control',
-      feedbackClass: 'feedback',
-      feedback: ''
-    }
+    this.fieldProps = authClient.getFieldProps()
     this.state = {
       name: { ...this.fieldProps },
       userName: { ...this.fieldProps },
@@ -32,12 +26,11 @@ class SignUpForm extends React.Component {
   }
 
   recordInput (event) {
-    const inputValue = event.target.value
-    const inputName = event.target.name
+    const { name, value } = event.target
     this.setState({
-      [inputName]: { ...this.state[inputName], value: inputValue }
+      [name]: { ...this.state[name], value }
     })
-    this.validateInput(inputName)
+    this.validateInput(name)
   }
 
   handleSubmit (event) {
