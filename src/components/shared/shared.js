@@ -14,6 +14,7 @@ export const cacheUpdate = (query, cb, variables) => {
     })
     cache.writeQuery({
       query,
+      variables,
       data: cb(data, cacheData)
     })
   }
