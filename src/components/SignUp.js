@@ -1,12 +1,12 @@
 import React from 'react'
 import authClient from '../helpers/auth/client'
+import BaseValidationForm from '../helpers/auth/BaseValidationForm'
 import { debounce } from '../helpers/helpers'
 import '../css/AuthForm.css'
 
-class SignUpForm extends React.Component {
+class SignUpForm extends BaseValidationForm {
   constructor (props) {
     super(props)
-    this.fieldProps = authClient.getFieldProps()
     this.state = {
       name: { ...this.fieldProps },
       userName: { ...this.fieldProps },
@@ -25,14 +25,6 @@ class SignUpForm extends React.Component {
     }, 800)
   }
 
-  recordInput (event) {
-    const { name, value } = event.target
-    this.setState({
-      [name]: { ...this.state[name], value }
-    })
-    this.validateInput(name)
-  }
-
   handleSubmit (event) {
     event.preventDefault()
     event.stopPropagation()
@@ -44,27 +36,6 @@ class SignUpForm extends React.Component {
       })
     }
     return this.validateInputs(this.getFormData(), false)
-  }
-
-  displayFeedback (inputName, errors) {
-    const classNameModifier = `${errors ? 'in' : ''}valid`
-    this.setState({
-      [inputName]: {
-        ...this.state[inputName],
-        isValid: !errors,
-        inputClass: `${this.fieldProps.inputClass} ${classNameModifier}`,
-        feedbackClass: `${this.fieldProps.feedbackClass} ${classNameModifier}`,
-        feedback: !errors ? 'valid' : Object.values(errors)[0]
-      }
-    })
-  }
-
-  validateInputs (formInputs, context = 'partial') {
-    authClient.validator('signUp', formInputs, context, errors => {
-      Object.keys(formInputs).forEach(inputName => {
-        this.displayFeedback(inputName, (errors && errors[inputName]) || '')
-      })
-    })
   }
 
   formDataIsValid () {
@@ -94,7 +65,7 @@ class SignUpForm extends React.Component {
               className={this.state.name.inputClass}
               name='name'
               type='text'
-              onChange={this.recordInput.bind(this)}
+              onChange={this.recordInput}
             />
             <div className={this.state.name.feedbackClass}>
               {this.state.name.feedback}
@@ -107,7 +78,7 @@ class SignUpForm extends React.Component {
               className={this.state.userName.inputClass}
               name='userName'
               type='text'
-              onChange={this.recordInput.bind(this)}
+              onChange={this.recordInput}
             />
             <div className={this.state.userName.feedbackClass}>
               {this.state.userName.feedback}
@@ -120,7 +91,7 @@ class SignUpForm extends React.Component {
               className={this.state.confirmEmail.inputClass}
               name='confirmEmail'
               type='text'
-              onChange={this.recordInput.bind(this)}
+              onChange={this.recordInput}
             />
             <div className={this.state.confirmEmail.feedbackClass}>
               {this.state.confirmEmail.feedback}
@@ -134,7 +105,7 @@ class SignUpForm extends React.Component {
               name='password'
               type='password'
               autoComplete='off'
-              onChange={this.recordInput.bind(this)}
+              onChange={this.recordInput}
             />
             <div className={this.state.password.feedbackClass}>
               {this.state.password.feedback}
@@ -148,7 +119,7 @@ class SignUpForm extends React.Component {
               name='passwordConfirm'
               type='password'
               autoComplete='off'
-              onChange={this.recordInput.bind(this)}
+              onChange={this.recordInput}
             />
             <div className={this.state.passwordConfirm.feedbackClass}>
               {this.state.passwordConfirm.feedback}

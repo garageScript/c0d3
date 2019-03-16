@@ -1,42 +1,22 @@
 import React from 'react';
 import authClient from '../helpers/auth/client';
+import BaseValidationForm from '../helpers/auth/BaseValidationForm'
 import { debounce } from '../helpers/helpers'
 
-class PwChangeForm extends React.Component {
+class PwChangeForm extends BaseValidationForm {
   constructor(props) {
     super(props);
-    this.fieldProps = authClient.getFieldProps()
     this.state = {
       currentPassword: { ...this.fieldProps },
       password: { ...this.fieldProps },
       passwordConfirm: { ...this.fieldProps }
     }
     this.validateInput = debounce(() => {
-      const formInputs = { 
+      return this.validateInputs({ 
         password: this.state.password.value,
         passwordConfirm: this.state.passwordConfirm.value,
-      }
-
-      authClient.validator('signUp', formInputs, 'partial', errors => {
-        Object.keys(formInputs).forEach(inputName => {
-          this.displayFeedback(inputName, (errors && errors[inputName]) || '')
-        })
       })
-
     }, 800)
-  }
-
-  displayFeedback (inputName, errors) {
-    const classNameModifier = `${errors ? 'in' : ''}valid`
-    this.setState({
-      [inputName]: {
-        ...this.state[inputName],
-        isValid: !errors,
-        inputClass: `${this.fieldProps.inputClass} ${classNameModifier}`,
-        feedbackClass: `${this.fieldProps.feedbackClass} ${classNameModifier}`,
-        feedback: !errors ? 'valid' : Object.values(errors)[0]
-      }
-    })
   }
 
   handleSubmit = event => {
@@ -46,14 +26,6 @@ class PwChangeForm extends React.Component {
       currPassword: this.state.currentPassword.value,
       newPassword: this.state.password.value
     });
-  };
-
-  recordInput = event => {
-    const { name, value } = event.target
-    this.setState({
-      [name]: { ...this.state[name], value }
-    })
-    this.validateInput()
   };
 
   render() {
