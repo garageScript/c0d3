@@ -42,7 +42,7 @@ helpers.postSignup = async (req, res, next) => {
     // add new user info to the database
     const { name, username, confirmEmail, password } = req.body
     try {
-      await gitLab.createUser({ name: name, username: username, email: confirmEmail, password: password })
+      await gitLab.createUser({ name, username, email: confirmEmail, password })
       await matterMostService.signupUser(username, password, confirmEmail)
     } catch (err) {
       console.log('err', err)
