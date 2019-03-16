@@ -16,8 +16,6 @@ const matterMostService = {
     return axios.get(`${chatServiceUrl}/users/username/${userName}`, { headers: chatServiceHeader })
   },
   changePassword: async (userName, currPassword, newPassword) => {
-    console.log('username', userName)
-    console.log('pw', currPassword, newPassword)
     try {
       const userInfo = await matterMostService.getUserInfo(userName)
       await axios.put(`${chatServiceUrl}/users/${userInfo.data.id}/password`, {
