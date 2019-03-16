@@ -45,6 +45,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "lint": "eslint .",
     "cypress:open": "cypress open",
     "tf": "cypress run",
     "tfs": "cypress run --spec"
@@ -60,6 +61,7 @@
   ],
   "devDependencies": {
     "cypress": "^3.1.5",
-    "enzyme": "^3.8.0"
+    "enzyme": "^3.8.0",
+    "eslint-plugin-cypress": "^2.2.1"
   }
 }

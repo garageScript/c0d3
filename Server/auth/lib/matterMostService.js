@@ -11,6 +11,20 @@ const matterMostService = {
       await axios.post(`${chatServiceUrl}/users`, { username, password, email }, { headers: chatServiceHeader })
       console.log('Sign up user to MatterMost', error)
     }
+  },
+  getUserInfo: (userName) => {
+    return axios.get(`${chatServiceUrl}/users/username/${userName}`, { headers: chatServiceHeader })
+  },
+  changePassword: async (userName, currPassword, newPassword) => {
+    try {
+      const userInfo = await matterMostService.getUserInfo(userName)
+      await axios.put(`${chatServiceUrl}/users/${userInfo.data.id}/password`, {
+        'current_password': currPassword,
+        'new_password': newPassword
+      }, { headers: chatServiceHeader })
+    } catch (error) {
+      console.log('Error changing password with Matter Most API')
+    }
   }
 }
 

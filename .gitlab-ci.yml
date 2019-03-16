@@ -1,10 +1,29 @@
 image: node:10.14.1
 
 stages:
+  - test
   - deploy
+
+cache:
+  key: use-same-cache-for-all-branches-and-jobs
+  paths:
+  - node_modules/
 
 before_script:
   - yarn
+
+test:
+  stage: test
+  variables:
+    NODE_ENV: test
+  script:
+    - yarn lint
+    - echo "pm2 start Server/app.js --name test"
+    - echo "npx jest"
+    - echo "yarn tf"
+    - echo "pm2 delete test"
+  only:
+  - merge_requests
 
 deploy_production:
   stage: deploy
@@ -17,7 +36,8 @@ deploy_production:
     - rm -rf build
     - CI=false yarn build
     - mv build/index.html public/root.html && rm public/index.html
-    - pm2 reload all || pm2 start Server/app.js
+    - pm2 delete app || true
+    - pm2 reload prod --update-env || pm2 start Server/app.js --name prod
   environment:
     name: production
     url: https://c0d3.com
