@@ -102,8 +102,14 @@ type Mutation {
   "Delete an announcement"
   deleteAnnouncement(value: String): [Announcement]
 
+  "Toggle User Admin"
+  toggleAdmin(input: UserAdmin): User 
 }
 
+input UserAdmin {
+  userId: String
+  isAdmin: Boolean
+}
 input UserInput {
   username: String
   userId: String
@@ -201,6 +207,7 @@ type User {
   userLesson: UserLesson
   email: String
   name: String
+  isAdmin: Boolean
 }
 
 type UserLesson {

@@ -2,13 +2,14 @@ import React from 'react'
 import gql from 'graphql-tag'
 import { Query, Mutation } from 'react-apollo'
 import { loadComponent } from '../shared/shared.js'
-import { USERS } from '../../db/queries.js'
+import { USERS, SET_ADMIN } from '../../db/queries.js'
 
 const UsersAdmin = () => {
   return (
     <Query query={USERS}>
       { loadComponent(({ users }) => {
         const rows = users.map(u => {
+          console.log(u.isAdmin)
           const buttonClass = (u.isAdmin) ? 'btn-primary' : 'btn-outline-primary waves-effect'
           return (
             <tr key={u.id}>
@@ -16,8 +17,24 @@ const UsersAdmin = () => {
               <th>{u.name}</th>
               <th>{u.username}</th>
               <th>{u.email}</th>
-              <th><button type='button' className={`btn btn-sm ${buttonClass}`} onClick={() => {
-              }}>Admin</button></th>
+              <th>
+                <Mutation
+                  mutation={SET_ADMIN}
+                  variables={{ in: { userId: u.id, isAdmin: !u.isAdmin } }}
+                >
+                  { (execute) => {
+                    return (
+                      <button
+                        type='button'
+                        className={`btn btn-sm ${buttonClass}`}
+                        onClick={execute}
+                      >
+                  Admin
+                      </button>
+                    )
+                  }}
+                </Mutation>
+              </th>
             </tr>
           )
         })
