@@ -37,7 +37,7 @@ class Announcements extends React.Component {
         <div className='container' >
           <h4 >New Announcements: </h4>
           <div style={{ width: '100%', height: '200px' }}>
-            <MarkdownComponent onChange={(input) => {
+            <MarkdownComponent value={this.state.announcement} onChange={(input) => {
               this.setState({
                 announcement: input
               })

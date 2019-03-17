@@ -5,7 +5,6 @@ class MarkdownComponent extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      value: '',
       previewMode: false
     }
   }
@@ -21,16 +20,13 @@ class MarkdownComponent extends React.Component {
     const textBox = this.state.previewMode
       ? (
         <div style={textBoxStyle} >
-          <Markdown source={this.state.value} />
+          <Markdown source={this.props.value} />
         </div>
       )
       : (
         <textarea style={textBoxStyle}
-          value={this.state.value}
+          value={this.props.value}
           onChange={(e) => {
-            this.setState({
-              value: e.target.value
-            })
             this.props.onChange && this.props.onChange(e.target.value)
           }}
         />
