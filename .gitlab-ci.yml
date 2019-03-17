@@ -1,7 +1,6 @@
 image: node:10.14.1
 
 stages:
-  - test
   - deploy
 
 cache:
@@ -11,19 +10,6 @@ cache:
 
 before_script:
   - yarn
-
-test:
-  stage: test
-  variables:
-    NODE_ENV: test
-  script:
-    - yarn lint
-    - echo "pm2 start Server/app.js --name test"
-    - echo "npx jest"
-    - echo "yarn tf"
-    - echo "pm2 delete test"
-  only:
-  - merge_requests
 
 deploy_production:
   stage: deploy
@@ -36,7 +22,6 @@ deploy_production:
     - rm -rf build
     - CI=false yarn build
     - mv build/index.html public/root.html && rm public/index.html
-    - pm2 delete app || true
     - pm2 reload prod --update-env || pm2 start Server/app.js --name prod
   environment:
     name: production
