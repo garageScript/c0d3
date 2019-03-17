@@ -27,7 +27,6 @@ class MarkdownComponent extends React.Component {
         <textarea style={textBoxStyle}
           value={this.props.value}
           onChange={(e) => {
-            console.log(e.target.value)
             this.props.onChange && this.props.onChange(e.target.value)
           }}
         />
