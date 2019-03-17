@@ -32,13 +32,10 @@ class Announcements extends React.Component {
   }
   render () {
     return (
-      <div>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
         <h1 style={{ textAlign: 'center' }}>Admin Page</h1>
-        <h4 style={{
-          marginTop: '80px',
-          marginLeft: '143px'
-        }}>New Announcements: </h4>
-        <div className='container' style={{ display: 'flex' }}>
+        <div className='container' >
+          <h4 >New Announcements: </h4>
           <div style={{ width: '100%', height: '200px' }}>
             <MarkdownComponent onChange={(input) => {
               this.setState({
@@ -55,7 +52,7 @@ class Announcements extends React.Component {
             {(execute) => {
               return (
                 <div>
-                  <button className='btn btn-success' onClick={() => {
+                  <button className='btn btn-success' style={{ margin: '10px 0px 0px 0px' }} onClick={() => {
                     execute({
                       variables: {
                         input: this.state.announcement

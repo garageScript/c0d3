@@ -60,6 +60,9 @@ class MarkdownComponent extends React.Component {
             }}>
                       Preview
           </span>
+          <a href='https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet' target='_blank'>
+            <i className='fa fa-info-circle' style={{ color: '#b3b3b3' }} />
+          </a>
         </div>
         <div style={{ width: '100%', position: 'absolute', top: '50px', bottom: '0px' }}>
           {textBox}
