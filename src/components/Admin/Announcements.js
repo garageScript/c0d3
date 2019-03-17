@@ -32,7 +32,7 @@ class Announcements extends React.Component {
   }
   render () {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div >
         <h1 style={{ textAlign: 'center' }}>Admin Page</h1>
         <div className='container' >
           <h4 >New Announcements: </h4>
