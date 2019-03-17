@@ -9,9 +9,6 @@ class MarkdownComponent extends React.Component {
       previewMode: false
     }
   }
-  handleInput (event) {
-    this.state.value = event.target.value
-  }
 
   render () {
     const textBoxStyle = {
@@ -21,14 +18,23 @@ class MarkdownComponent extends React.Component {
       resize: 'none',
       wrap: 'hard'
     }
-    const textBox = this.state.previewMode ? <div style={textBoxStyle} > <Markdown source={this.state.value} /></div>
-      : <textarea style={textBoxStyle} value={this.state.value} onChange={(e) => {
-        this.setState({
-          value: e.target.value
-        })
-        this.props.onChange && this.props.onChange(e.target.value)
-      }}
-      />
+    const textBox = this.state.previewMode
+      ? (
+        <div style={textBoxStyle} >
+          <Markdown source={this.state.value} />
+        </div>
+      )
+      : (
+        <textarea style={textBoxStyle}
+          value={this.state.value}
+          onChange={(e) => {
+            this.setState({
+              value: e.target.value
+            })
+            this.props.onChange && this.props.onChange(e.target.value)
+          }}
+        />
+      )
     const toggleStyle = {
       display: 'inline-block',
       padding: '10px',
@@ -46,8 +52,7 @@ class MarkdownComponent extends React.Component {
           <span style={{ ...toggleStyle, borderBottom: writeBorderBottom }}
             onClick={() => {
               this.setState({
-                previewMode: false,
-                value: this.state.value
+                previewMode: false
               })
             }}>
                     Write
