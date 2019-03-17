@@ -5,7 +5,8 @@ class MarkdownComponent extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      previewMode: false
+      previewMode: false,
+      value: this.props.value || ''
     }
   }
 
@@ -19,17 +20,28 @@ class MarkdownComponent extends React.Component {
     }
     const textBox = this.state.previewMode
       ? (
-        <div style={textBoxStyle} >
-          <Markdown source={this.props.value} />
+        <div style={{ overflow: 'auto', width: '100%', position: 'absolute', top: '50px', bottom: '0px' }}>
+          <div style={textBoxStyle} >
+            <Markdown source={this.state.value} />
+          </div>
         </div>
       )
       : (
-        <textarea style={textBoxStyle}
-          value={this.props.value}
-          onChange={(e) => {
-            this.props.onChange && this.props.onChange(e.target.value)
-          }}
-        />
+        <div style={{ width: '100%', position: 'absolute', top: '50px', bottom: '0px' }}>
+          <textarea style={textBoxStyle}
+            value={this.state.value}
+            onChange={(e) => {
+              this.setState({
+                value: e.target.value
+              })
+              this.props.onChange && this.props.onChange(e.target.value)
+            }}
+            ref={node => {
+              if (!node) return
+              this.props.setRef && this.props.setRef(node)
+            }}
+          />
+        </div>
       )
     const toggleStyle = {
       display: 'inline-block',
@@ -65,9 +77,7 @@ class MarkdownComponent extends React.Component {
             <i className='fa fa-info-circle' style={{ color: '#b3b3b3' }} />
           </a>
         </div>
-        <div style={{ width: '100%', position: 'absolute', top: '50px', bottom: '0px' }}>
-          {textBox}
-        </div>
+        {textBox}
       </div>
     )
   }

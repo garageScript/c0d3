@@ -1,5 +1,5 @@
 import React from 'react'
-
+import MarkdownComponent from '../shared/Markdown.js'
 const EditableInput = ({
   id,
   lid,
@@ -29,7 +29,22 @@ const EditableInput = ({
         </div>
       )
     }
-
+    if (field.label === 'description') {
+      return (
+        <div>
+          <label htmlFor={i}>{field.label}</label>
+          <div style={{ width: '100%', height: '300px' }}>
+            <MarkdownComponent setRef={node => {
+              console.log('lololol')
+              console.log(node, 'nodnodnoeone')
+              refs[field.label] = node
+            }}
+            value={values[field.label] || ''}
+            />
+          </div>
+        </div>
+      )
+    }
     return (
       <div key={i}>
         <label htmlFor={i}>{field.label}</label>
