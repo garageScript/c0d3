@@ -4,7 +4,7 @@ import gql from 'graphql-tag'
 import Markdown from 'react-markdown'
 import { GET_ANNOUNCEMENTS } from '../../db/queries.js'
 import { loadComponent, cacheUpdate } from '../shared/shared.js'
-import MarkdownComponent from '../Markdown.js'
+import MarkdownComponent from '../shared/Markdown.js'
 
 const DELETE_ANNOUNCEMENT = gql`
                       mutation delete($input: String){
@@ -52,7 +52,7 @@ class Announcements extends React.Component {
             {(execute) => {
               return (
                 <div>
-                  <button className='btn btn-success' style={{ margin: '10px 0px 0px 0px' }} onClick={() => {
+                  <button className='btn btn-success' style={{ margin: '10px 0px 10px 0px' }} onClick={() => {
                     execute({
                       variables: {
                         input: this.state.announcement
