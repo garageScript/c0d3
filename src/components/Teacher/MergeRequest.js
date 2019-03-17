@@ -4,6 +4,7 @@ import { Mutation } from 'react-apollo'
 import moment from 'moment'
 import Markdown from 'react-markdown'
 import { cacheUpdate } from '../shared/shared'
+import MarkdownComponent from '../shared/Markdown.js'
 
 import {
   APPROVE_SUBMISSION,
@@ -75,6 +76,7 @@ const MergeRequestBody = ({ mrInfo, lid }) => {
         <label htmlFor='submission-comment'>
                   Add your comments to address here
         </label>
+        <MarkdownComponent />
         <textarea
           className='form-control rounded-0'
           id='submission-comment'
