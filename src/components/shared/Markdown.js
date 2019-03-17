@@ -46,23 +46,23 @@ class MarkdownComponent extends React.Component {
       writeBorderBottom = ''
       previewBorderBottom = '5px solid #DDD'
     }
+    const togglePreview = () => {
+      return () => {
+        this.setState({
+          previewMode: true
+        })
+      }
+    }
+
     return (
       <div className='heading' style={{ width: '100%', height: '100%', border: '1px solid #DDD', position: 'relative' }}>
         <div >
           <span style={{ ...toggleStyle, borderBottom: writeBorderBottom }}
-            onClick={() => {
-              this.setState({
-                previewMode: false
-              })
-            }}>
+            onClick={togglePreview(false)}>
                     Write
           </span>
           <span style={{ ...toggleStyle, borderBottom: previewBorderBottom }}
-            onClick={() => {
-              this.setState({
-                previewMode: true
-              })
-            }}>
+            onClick={togglePreview(true)}>
                       Preview
           </span>
           <a href='https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet' target='_blank'>
