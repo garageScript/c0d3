@@ -46,10 +46,10 @@ class MarkdownComponent extends React.Component {
       writeBorderBottom = ''
       previewBorderBottom = '5px solid #DDD'
     }
-    const togglePreview = () => {
+    const togglePreview = (previewMode) => {
       return () => {
         this.setState({
-          previewMode: true
+          previewMode
         })
       }
     }
