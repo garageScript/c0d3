@@ -4,6 +4,7 @@ import gql from 'graphql-tag'
 import Markdown from 'react-markdown'
 import { GET_ANNOUNCEMENTS } from '../../db/queries.js'
 import { loadComponent, cacheUpdate } from '../shared/shared.js'
+import MarkdownComponent from '../Markdown.js'
 
 const DELETE_ANNOUNCEMENT = gql`
                       mutation delete($input: String){
@@ -38,30 +39,34 @@ class Announcements extends React.Component {
           marginLeft: '143px'
         }}>New Announcements: </h4>
         <div className='container' style={{ display: 'flex' }}>
-          <textarea className='newAnnouncement' style={{
-            width: '100%',
-            height: '100px'
-          }} value={this.state.announcement} onChange={(v) => {
-            this.setState({
-              announcement: v.target.value
-            })
-          }} />
+          <div style={{ width: '100%', height: '200px' }}>
+            <MarkdownComponent onChange={(input) => {
+              this.setState({
+                announcement: input
+              })
+            }} />
+
+          </div>
           <Mutation update={cacheUpdate(GET_ANNOUNCEMENTS, ({ createAnnouncement }, { announcements }) => {
             return {
               announcements: [createAnnouncement].concat(announcements)
             }
           })} mutation={CREATE_ANNOUNCEMENT}>
             {(execute) => {
-              return <button className='btn btn-success' onClick={() => {
-                execute({
-                  variables: {
-                    input: this.state.announcement
-                  }
-                })
-                this.setState({
-                  announcement: ''
-                })
-              }}>SUBMIT</button>
+              return (
+                <div>
+                  <button className='btn btn-success' onClick={() => {
+                    execute({
+                      variables: {
+                        input: this.state.announcement
+                      }
+                    })
+                    this.setState({
+                      announcement: ''
+                    })
+                  }}>SUBMIT</button>
+                </div>
+              )
             }}
           </Mutation>
         </div>
