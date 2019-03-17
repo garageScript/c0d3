@@ -27,7 +27,7 @@ import { loadComponent } from './components/shared/shared.js'
 import { Settings } from './components/Settings'
 
 const Home = () => {
-  let reset = window.userInfo.mustReset || false
+  const reset = window.userInfo.mustReset
   if (reset) {
     window.location.assign(`${window.location}settings?reset=${reset}`)
   }
