@@ -11,7 +11,7 @@ import { loadComponent } from './shared/shared'
 
 const Teachers = ({ clientState, lessonInfo, selectUser }) => (
   <Query query={TEACHERS} variables={{ in: { id: lessonInfo.id } }}>
-    {loadComponent(({ teachers }) => {
+    {loadComponent(({teachers}) => {
       return (
         <div>
           {teachers.map((teacher, i) => {
@@ -72,16 +72,15 @@ class CongratsModal extends React.Component {
   }
 
   render () {
-    return (
+    return(
       <Query query={LESSON_STATUS} variables={{ in: { id: this.props.lessonInfo.id } }}>
-         {({ loading, error, data }) => {
-           /*if (error || loading) return ''
-          if (!data || !data.lessonStatus) return ''
+        {loadComponent(({lessonStatus})=>{
           if (
-            !data.lessonStatus.isTeaching ||
-          !data.lessonStatus.isPassed ||
-          data.lessonStatus.starGiven
-          ) { return '' }*/
+            !lessonStatus ||
+            !lessonStatus.isTeaching ||
+            !lessonStatus.isPassed ||
+            lessonStatus.starGiven
+          ) { return '' }
 
         return (
             <div
@@ -159,8 +158,8 @@ class CongratsModal extends React.Component {
               </Query>
             </div>
           )
-        }}
-      </Query>
+        })}
+      </Query>  
     )
   }
 }
