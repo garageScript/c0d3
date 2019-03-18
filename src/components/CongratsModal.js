@@ -68,14 +68,13 @@ class CongratsModal extends React.Component {
   commentHandler = (e)=>{
     this.setState({
       commentUpdate: e.target.value  
-    }, ()=>{console.log('this.state.commentUpdate', this.state.commentUpdate)})
+    })
   }
 
   render () {
     return(
       <Query query={LESSON_STATUS} variables={{ in: { id: this.props.lessonInfo.id } }}>
         {loadComponent(({lessonStatus})=>{
-          console.log('this.state.commentUpdate', this.state.commentUpdate)
           /* if (
             !lessonStatus ||
             !lessonStatus.isTeaching ||
@@ -132,9 +131,8 @@ class CongratsModal extends React.Component {
                                     className='btn btn-default btn-lg btn-block'
                                     data-dismiss='modal'
                                     aria-label='Close'
-                                    disabled={this.state.commentUpdate !== null && this.state.commentUpdate === '' ? true: false}
+                                    disabled={!this.state.selected.userId || (this.state.commentUpdate !== null && this.state.commentUpdate === '') ? true: false}
                                     onClick={() => {
-                                      console.log('inside button onclick method', 'this.state.commentUpdate', this.state.commentDate)
                                       execute({
                                         variables: {
                                           in: {
@@ -143,7 +141,7 @@ class CongratsModal extends React.Component {
                                             comment: this.state.commentUpdate
                                           }
                                         }
-                                      })//.then(() => window.location.reload())
+                                      }).then(() => window.location.reload())
                                     // TODO: close the modal in a more classy way
                                     }}
                                   >
