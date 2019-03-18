@@ -71,6 +71,9 @@ passport.use(new LocalStrategy(async (username, password, done) => {
     username: user.dataValues.username,
     createdAt: user.dataValues.createdAt
   }
+  if (password.length < 8) {
+    userData.mustReset = true
+  }
   return done(null, userData)
 }))
 
