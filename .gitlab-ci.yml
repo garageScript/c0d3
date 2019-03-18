@@ -1,16 +1,29 @@
-image: node:10.14.1
-
 stages:
+  - test
+  - build
   - deploy
 
-deploy_production:
+test:
+  stage: test
+  script:
+    - yarn ci:test
+  only:
+  - merge_requests
+
+build:
+  stage: build
+  script:
+    - yarn ci:build
+  only:
+  - master
+
+deploy:
   stage: deploy
   variables:
     NODE_ENV: production
     HOST_NAME: c0d3.com
   script:
-    - pm2 deploy ecosystem.config.js production setup
-    - pm2 deploy ecosystem.config.js production update
+    - yarn ci:deploy
   environment:
     name: production
     url: https://c0d3.com
