@@ -1,4 +1,5 @@
 cd ~/builds/c0d3
-git reset --hard origin/master
+git checkout -f
+git pull origin master
 yarn
 yarn build

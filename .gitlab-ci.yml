@@ -3,9 +3,15 @@ stages:
   - build
   - deploy
 
+cache:
+  key: use-same-cache-for-all-branches-and-jobs
+  paths:
+  - node_modules/
+
 test:
   stage: test
   script:
+    - yarn
     - yarn ci:test
   only:
   - merge_requests
