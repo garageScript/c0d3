@@ -11,7 +11,6 @@ cache:
 test:
   stage: test
   script:
-    - yarn
     - yarn ci:test
   only:
   - merge_requests
