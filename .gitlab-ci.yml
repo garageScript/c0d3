@@ -1,6 +1,8 @@
 image: node:10.14.1
 
 stages:
+  - test
+  - build
   - deploy
 
 cache:
@@ -8,10 +10,21 @@ cache:
   paths:
   - node_modules/
 
-before_script:
-  - yarn
+test:
+  stage: test
+  script:
+    - yarn ci:test
+  only:
+  - merge_requests
 
-deploy_production:
+build:
+  stage: build
+  script:
+    - yarn ci:build
+  only:
+  - master
+
+deploy:
   stage: deploy
   variables:
     NODE_ENV: production
@@ -19,10 +32,7 @@ deploy_production:
     HOST_NAME: c0d3.com
     CLIENT_URL: https://c0d3.com
   script:
-    - rm -rf build
-    - CI=false yarn build
-    - mv build/index.html public/root.html && rm public/index.html
-    - pm2 reload prod --update-env || pm2 start Server/app.js --name prod
+    - yarn ci:deploy
   environment:
     name: production
     url: https://c0d3.com
