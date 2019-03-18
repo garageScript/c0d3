@@ -72,7 +72,7 @@ const MergeRequestBody = ({ mrInfo, lid }) => {
         </div>
       ) : null}
 
-      <div className='form-group'>
+      <div style={{ width: '100%', height: '300px' }} className='form-group'>
         <label htmlFor='submission-comment'>
                   Add your comments to address here
         </label>
