@@ -35,21 +35,6 @@ const Teachers = ({ clientState, lessonInfo, selectUser }) => (
               </div>
             )
           })}
-          <div
-            onClick={execute => {
-              selectUser(0)
-              clientState.client.writeData({
-                data: { starRecipent: 0 }
-              })
-            }}
-            style={{
-              cursor: 'pointer',
-              backgroundColor:
-                clientState.data.starRecipent === 0 ? 'lightgreen' : null
-            }}
-          >
-            No one helped me
-          </div>
         </div>
       )
     })}
@@ -123,7 +108,7 @@ class CongratsModal extends React.Component {
                           <Mutation mutation={GIVE_STAR}>
                             {execute => {
                               const starRecipent =
-                              clientState.data.starRecipent || 'no one'
+                              clientState.data.starRecipent || '(someone)'
                               return (
                                 <div>
                                   <button
