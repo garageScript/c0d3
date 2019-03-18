@@ -3,7 +3,7 @@ import PassWordChange from './PasswordChange'
 
 export const Settings = () => {
   const url = window.location.href.split('=')[1]
-  const [resetText, resetTextClass] = [url === 'true' ? 'Your password needs to be at least 8 characters for Mattermost and Gitlab: Fill out below' : '', url === 'true' ? 'alert alert-danger' : ''
+  const [resetText, resetTextClass] = [url === 'true' ? 'Your password needs to be at least 8 characters for Mattermost and Gitlab: Please reset your password' : '', url === 'true' ? 'alert alert-danger' : ''
   ]
   return (
     <div>
