@@ -68,19 +68,20 @@ class CongratsModal extends React.Component {
   commentHandler = (e)=>{
     this.setState({
       commentUpdate: e.target.value  
-    })
+    }, ()=>{console.log('this.state.commentUpdate', this.state.commentUpdate)})
   }
 
   render () {
     return(
       <Query query={LESSON_STATUS} variables={{ in: { id: this.props.lessonInfo.id } }}>
         {loadComponent(({lessonStatus})=>{
-          if (
+          console.log('this.state.commentUpdate', this.state.commentUpdate)
+          /* if (
             !lessonStatus ||
             !lessonStatus.isTeaching ||
             !lessonStatus.isPassed ||
             lessonStatus.starGiven
-          ) { return '' }
+          ) { return '' }*/
 
         return (
             <div
@@ -116,8 +117,10 @@ class CongratsModal extends React.Component {
                             }}
                           />
                         </div>
-                        <div className='modal-footer'>
-                          <textarea onChange={(e)=>{this.commentHandler(e)}}/>  
+                          <div className='modal-footer'>
+
+                          <textarea defaultValue={'Thank you!'}  onChange={(e)=>{this.commentHandler(e)}}/>  
+
                           <Mutation mutation={GIVE_STAR}>
                             {execute => {
                               const starRecipent =
@@ -129,7 +132,9 @@ class CongratsModal extends React.Component {
                                     className='btn btn-default btn-lg btn-block'
                                     data-dismiss='modal'
                                     aria-label='Close'
+                                    disabled={this.state.commentUpdate !== null && this.state.commentUpdate === '' ? true: false}
                                     onClick={() => {
+                                      console.log('inside button onclick method', 'this.state.commentUpdate', this.state.commentDate)
                                       execute({
                                         variables: {
                                           in: {
@@ -138,7 +143,7 @@ class CongratsModal extends React.Component {
                                             comment: this.state.commentUpdate
                                           }
                                         }
-                                      }).then(() => window.location.reload())
+                                      })//.then(() => window.location.reload())
                                     // TODO: close the modal in a more classy way
                                     }}
                                   >
