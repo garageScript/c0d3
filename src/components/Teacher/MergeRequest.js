@@ -76,12 +76,9 @@ const MergeRequestBody = ({ mrInfo, lid }) => {
                   Add your comments to address here
       </label>
       <div style={{ width: '100%', height: '300px' }}>
-        <MarkdownComponent />
-        <textarea
-          className='form-control rounded-0'
-          id='submission-comment'
-          rows='10'
-          ref={node => (comment = node)}
+        <MarkdownComponent setRef={node => {
+          comment = node
+        }}
         />
       </div>
 
