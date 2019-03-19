@@ -45,7 +45,7 @@ class CongratsModal extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      commentUpdate: null,
+      commentUpdate: 'Thank you!',
       selected: {}
     }
   }
@@ -60,12 +60,12 @@ class CongratsModal extends React.Component {
     return(
       <Query query={LESSON_STATUS} variables={{ in: { id: this.props.lessonInfo.id } }}>
         {loadComponent(({lessonStatus})=>{
-          /* if (
-            !lessonStatus ||
+           if (
+             !lessonStatus ||
             !lessonStatus.isTeaching ||
             !lessonStatus.isPassed ||
-            lessonStatus.starGiven
-          ) { return '' }*/
+            !lessonStatus.starGiven
+          ) { return '' }
 
         return (
             <div
@@ -116,7 +116,7 @@ class CongratsModal extends React.Component {
                                     className='btn btn-default btn-lg btn-block'
                                     data-dismiss='modal'
                                     aria-label='Close'
-                                    disabled={!this.state.selected.userId || (this.state.commentUpdate !== null && this.state.commentUpdate === '') ? true: false}
+                                    disabled={!this.state.selected.userId || (!this.state.commentUpdate) ? true: false}
                                     onClick={() => {
                                       execute({
                                         variables: {
