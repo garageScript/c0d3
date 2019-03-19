@@ -4,6 +4,7 @@ const gitLab = require('./lib/helpers')
 const matterMostService = require('./lib/matterMostService')
 const axios = require('axios')
 const { User } = require('../dbload')
+const log = require('../log/index')(__filename)
 
 const errorHandler = (req, res, error) => {
   if (error.httpStatus && error.message) {
@@ -42,10 +43,13 @@ helpers.postSignup = async (req, res, next) => {
     // add new user info to the database
     const { name, username, confirmEmail, password } = req.body
     try {
-      await gitLab.createUser({ name, username, email: confirmEmail, password })
-      await matterMostService.signupUser(username, password, confirmEmail)
+      const gitlab = await gitLab.createUser({ name, username, email: confirmEmail, password })
+      log.info(`Signup for gitlab successful: ${gitlab}`)
+      const mattermost = await matterMostService.signupUser(username, password, confirmEmail)
+      log.info(`Signup for mattermost sucessful: ${mattermost}`)
     } catch (err) {
-      console.log('err', err)
+      log.error(`Signup for mattermost or gitlab failed: ${err}`)
+      errorHandler(req, res, { httpStatus: 404, message: 'Signup failed for gitlab or mattermost' })
     }
 
     const salt = await bcrypt.genSalt(10)
@@ -142,9 +146,12 @@ helpers.postPassword = async (req, res) => {
 
     // Gitlab accounts - This validates password constraints (min length, chars, etc)
     try {
-      await gitLab.changePassword(userInfo.username, newPassword)
-      await matterMostService.changePassword(userInfo.username, currPassword, newPassword)
+      const gitlab = await gitLab.changePassword(userInfo.username, newPassword)
+      log.info(`Password change for gitlab successful: ${gitlab}`)
+      const mattermost = await matterMostService.changePassword(userInfo.username, currPassword, newPassword)
+      log.info(`Password change for mattermost successful: ${mattermost}`)
     } catch (glErr) {
+      log.error(`Password change for mattermost or gitlab failed: ${glErr}`)
       throw { httpStatus: 401, message: { gitlab: JSON.stringify(glErr.response.data) } }
     }
 
