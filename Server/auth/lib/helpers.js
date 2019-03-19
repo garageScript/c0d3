@@ -44,8 +44,9 @@ const gitLab = {
     return (response.data || [])[0]
   },
 
-  changePassword: async (userId, password) => {
-    const url = gitLab.url(`/${userId}`)
+  changePassword: async (userName, password) => {
+    const userInfo = await gitLab.getUser(userName)
+    const url = gitLab.url(`/${userInfo.id}`)
     const response = await axios.put(`${url}`, {
       password,
       skip_reconfirmation: true

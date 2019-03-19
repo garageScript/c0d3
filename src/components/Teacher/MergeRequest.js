@@ -4,12 +4,16 @@ import { Mutation } from 'react-apollo'
 import moment from 'moment'
 import Markdown from 'react-markdown'
 import { cacheUpdate } from '../shared/shared'
+import MarkdownComponent from '../shared/Markdown.js'
 
 import {
   APPROVE_SUBMISSION,
   REJECT_SUBMISSION,
   SUBMISSIONS,
-  UNAPPROVE_SUBMISSION
+  UNAPPROVE_SUBMISSION,
+  ADOPT_STUDENT,
+  UNADOPT_STUDENT,
+  STUDENTS
 } from '../../db/queries'
 import StudentDiff from '../Student/StudentDiff'
 
@@ -68,15 +72,13 @@ const MergeRequestBody = ({ mrInfo, lid }) => {
         </div>
       ) : null}
 
-      <div className='form-group'>
-        <label htmlFor='submission-comment'>
+      <label htmlFor='submission-comment'>
                   Add your comments to address here
-        </label>
-        <textarea
-          className='form-control rounded-0'
-          id='submission-comment'
-          rows='10'
-          ref={node => (comment = node)}
+      </label>
+      <div style={{ width: '100%', height: '300px' }}>
+        <MarkdownComponent setRef={node => {
+          comment = node
+        }}
         />
       </div>
 
@@ -120,13 +122,37 @@ const MergeRequestBody = ({ mrInfo, lid }) => {
   )
 }
 
-const MergeRequest = ({ lid, mrInfo }) => {
+const MergeRequest = ({ lid, mrInfo, studentMap }) => {
+  const isAdopted = studentMap[mrInfo.user.id]
+  let [adoptButton, buttonTitle, mutationQuery] = [ 'btn-outline-warning waves-effect', 'ADOPT ME', ADOPT_STUDENT]
+  if (isAdopted) {
+    [adoptButton, buttonTitle, mutationQuery] = [ 'btn-warning', 'ADOPTED', UNADOPT_STUDENT]
+  }
+  const mutationVar = { input: { lessonId: lid, userId: mrInfo.user.id } }
   return (
     <div className='card-deck'>
       <div className='card mb-2 mt-1'>
         <div className='card-body'>
           <div className='card-title'>
             <span className='h5'>
+              <Mutation mutation={mutationQuery} variables={mutationVar} update={cacheUpdate(STUDENTS, (_, { students }) => {
+                if (isAdopted) {
+                  return {
+                    students: students.filter((s) => mrInfo.user.id !== s.id)
+                  }
+                }
+                students.push({ ...mrInfo.user, userLesson: null })
+                return { students }
+              }, { in: { id: lid } })} >
+                {(execute) => {
+                  return (
+                    <button className={`btn ${adoptButton}`} onClick={execute} style={{
+                      position: 'absolute',
+                      right: '15px'
+                    }}>{ buttonTitle}</button>
+                  )
+                }}
+              </Mutation>
               <Link to={`/profile/${mrInfo.user.id}`}>
                 {mrInfo.user.username}
               </Link>{' '}

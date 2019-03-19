@@ -7,3 +7,13 @@ export const arrUntil = (arr, fn, i = 0) => {
   }
   return arrUntil(arr, fn, i + 1)
 }
+
+export const debounce = (fun, time) => {
+  let timer
+  return (...a) => {
+    clearTimeout(timer)
+    timer = setTimeout(() => {
+      fun(...a)
+    }, time)
+  }
+}

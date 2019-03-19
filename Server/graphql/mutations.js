@@ -6,6 +6,7 @@ const {
   Lesson,
   Star,
   Submission,
+  User,
   UserLesson
 } = require('../dbload')
 
@@ -218,7 +219,7 @@ module.exports = {
       description: args.value
     })
   },
-  deleteAnnouncement: (obj, args, conext) => {
+  deleteAnnouncement: (obj, args, context) => {
     return Announcement.destroy({
       where: {
         id: args.value
@@ -227,6 +228,12 @@ module.exports = {
       return Announcement.findAll({
         order: [ ['id', 'DESC' ] ]
       })
+    })
+  },
+  toggleAdmin: (obj, args, context) => {
+    const { userId, isAdmin } = args.input
+    return User.findById(userId).then(user => {
+      return user.update({ isAdmin })
     })
   }
 }

@@ -71,6 +71,9 @@ passport.use(new LocalStrategy(async (username, password, done) => {
     username: user.dataValues.username,
     createdAt: user.dataValues.createdAt
   }
+  if (password.length < 8) {
+    userData.mustReset = true
+  }
   return done(null, userData)
 }))
 
@@ -79,7 +82,9 @@ app.use(session({
   domain: config.HOST_NAME,
   store: new SequelizeStore({
     db: sequelize
-  })
+  }),
+  resave: false, // This is set to false because SequelizeStore supports touch method
+  saveUninitialized: false // false is useful for implementing login sessions, reducing server storage usage
 }))
 app.use(passport.initialize())
 app.use(passport.session()) // persistent login session

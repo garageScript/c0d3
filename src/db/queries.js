@@ -20,6 +20,10 @@ export const USERS = gql`
   query users($in: UserInput) {
     users(input: $in) {
       username
+      name
+      email
+      id
+      isAdmin
     }
   }
 `
@@ -374,6 +378,14 @@ export const USER_DATA = gql`
     userInfo(input: $in){
       name, 
       createdAt
+    }
+  }
+`
+export const SET_ADMIN = gql`
+  mutation($in: UserAdmin){
+    toggleAdmin(input: $in){
+      id,
+      isAdmin
     }
   }
 `

@@ -17,6 +17,7 @@ import Profile from './components/UserProfile'
 import NotFound from './components/NotFound'
 import PrivateRoute from './components/PrivateRoute'
 import NavBar from './components/NavBar'
+import UsersAdmin from './components/Admin/Users'
 import LessonListAdmin from './components/Admin/LessonList'
 import AdminAnnouncements from './components/Admin/Announcements'
 import chatdb from './db/chatdb'
@@ -26,6 +27,10 @@ import { loadComponent } from './components/shared/shared.js'
 import { Settings } from './components/Settings'
 
 const Home = () => {
+  const reset = window.userInfo.mustReset
+  if (reset) {
+    window.location.assign(`${window.location}settings?reset=${reset}`)
+  }
   return (
     <div>
       <div className='gs-container-2'>
@@ -92,7 +97,8 @@ const AppElement = () => (
             <PrivateRoute exact path='/profile' component={Profile} />
             <PrivateRoute exact path='/profile/:userId' component={Profile} />
             <PrivateRoute path='/admin/announcements' component={AdminAnnouncements} />
-            <PrivateRoute path='/admin' component={LessonListAdmin} />
+            <PrivateRoute exact path='/admin' component={LessonListAdmin} />
+            <PrivateRoute exact path='/admin/users' component={UsersAdmin} />
             <PrivateRoute
               path='/admin/lessons/new'
               component={LessonListAdmin}

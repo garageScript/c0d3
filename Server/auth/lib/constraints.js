@@ -36,12 +36,13 @@ const constraints = {
       maximum: 64,
       tooShort: 'too short (minimum is %{count} characters)',
       tooLong: 'too long (maximum is %{count} characters)'
-    }
+    },
+    emailIsAvailable: true
   },
   password: {
     presence: { allowEmpty: false },
     length: {
-      minimum: 6,
+      minimum: 8,
       maximum: 64,
       tooShort: 'too short (minimum is %{count} characters)',
       tooLong: 'too long (maximum is %{count} characters)'
@@ -54,6 +55,6 @@ const constraints = {
       message: 'passwords do not match'
     }
   }
-};
+}
 
-module.exports = constraints;
+module.exports = constraints
