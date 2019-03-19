@@ -82,6 +82,7 @@ class SignInForm extends React.Component {
           <button className='btn btn-primary' type='submit'>
             Sign in
           </button>
+          <a href='/forgotpassword'> Forgot Password</a>
         </form>
       </div>
     )

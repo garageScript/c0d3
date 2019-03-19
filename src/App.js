@@ -11,6 +11,7 @@ import Teacher from './components/Teacher'
 import Diff from './components/Diff'
 import LessonList from './components/LessonList'
 import SignIn from './components/SignIn'
+import ForgotPassword from './components/ForgotPassword'
 import SignUp from './components/SignUp'
 import Chat from './components/Chat/Chat'
 import Profile from './components/UserProfile'
@@ -105,6 +106,7 @@ const AppElement = () => (
             />
             <PrivateRoute path='/submissions/:lid/:cid' component={Diff} />
             <PrivateRoute path='/settings' component={Settings} />
+            <Route path='/forgotpassword' component={ForgotPassword} />
             <Route path='/signup' component={SignUp} />
             <Route path='/signin' component={SignIn} />
             <Route component={NotFound} />
