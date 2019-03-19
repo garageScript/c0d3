@@ -116,7 +116,7 @@ class CongratsModal extends React.Component {
                                     className='btn btn-default btn-lg btn-block'
                                     data-dismiss='modal'
                                     aria-label='Close'
-                                    disabled={!this.state.selected.userId || (!this.state.commentUpdate) ? true: false}
+                                    disabled={!this.state.selected.userId || !this.state.commentUpdate}
                                     onClick={() => {
                                       execute({
                                         variables: {
