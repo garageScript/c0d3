@@ -62,7 +62,6 @@ class CongratsModal extends React.Component {
         {loadComponent(({lessonStatus})=>{
            if (
              !lessonStatus ||
-            !lessonStatus.isTeaching ||
             !lessonStatus.isPassed ||
             lessonStatus.starGiven
           ) { return '' }
