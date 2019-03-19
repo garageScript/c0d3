@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const ForgotPassword = () => {
+const ForgotPassword = () => {
   return <div className='container'>
     <form className='auth-form'>
       <p className='h5 mb-4'> Forgot Password?</p>
