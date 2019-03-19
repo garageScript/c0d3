@@ -72,16 +72,13 @@ const MergeRequestBody = ({ mrInfo, lid }) => {
         </div>
       ) : null}
 
-      <div className='form-group'>
-        <label htmlFor='submission-comment'>
+      <label htmlFor='submission-comment'>
                   Add your comments to address here
-        </label>
-        <MarkdownComponent />
-        <textarea
-          className='form-control rounded-0'
-          id='submission-comment'
-          rows='10'
-          ref={node => (comment = node)}
+      </label>
+      <div style={{ width: '100%', height: '300px' }}>
+        <MarkdownComponent setRef={node => {
+          comment = node
+        }}
         />
       </div>
 
