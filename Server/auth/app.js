@@ -44,10 +44,10 @@ helpers.postSignup = async (req, res, next) => {
     const { name, username, confirmEmail, password } = req.body
     try {
       log.info(`Before signup`)
-      const gitlab = await gitLab.createUser({ name, username, email: confirmEmail, password })
-      log.info(`Signup for gitlab successful: ${gitlab}`)
-      const mattermost = await matterMostService.signupUser(username, password, confirmEmail)
-      log.info(`Signup for mattermost sucessful: ${mattermost}`)
+      const gitLabUser = await gitLab.createUser({ name, username, email: confirmEmail, password })
+      log.info(`Signup for gitlab successful: ${gitLabUser}`)
+      const mattermostUser = await matterMostService.signupUser(username, password, confirmEmail)
+      log.info(`Signup for mattermost sucessful: ${mattermostUser}`)
     } catch (err) {
       log.error(`Signup for mattermost or gitlab failed: ${err}`)
       errorHandler(req, res, { httpStatus: 404, message: 'Signup failed for gitlab or mattermost' })
@@ -148,10 +148,10 @@ helpers.postPassword = async (req, res) => {
     // Gitlab accounts - This validates password constraints (min length, chars, etc)
     try {
       log.info(`Before password change`)
-      const gitlab = await gitLab.changePassword(userInfo.username, newPassword)
-      log.info(`Password change for gitlab successful: ${gitlab}`)
-      const mattermost = await matterMostService.changePassword(userInfo.username, currPassword, newPassword)
-      log.info(`Password change for mattermost successful: ${mattermost}`)
+      const gitLabUser = await gitLab.changePassword(userInfo.username, newPassword)
+      log.info(`Password change for gitlab successful: ${gitLabUser}`)
+      const mattermostUser = await matterMostService.changePassword(userInfo.username, currPassword, newPassword)
+      log.info(`Password change for mattermost successful: ${mattermostUser}`)
     } catch (glErr) {
       log.error(`Password change for mattermost or gitlab failed: ${glErr}`)
       throw { httpStatus: 401, message: { gitlab: JSON.stringify(glErr.response.data) } }

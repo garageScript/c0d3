@@ -61,10 +61,10 @@ passport.use(new LocalStrategy(async (username, password, done) => {
   if (!pwIsValid) { return done(null, false) }
   try {
     log.info(`Before Signin`)
-    const gitlab = await gitLab.findOrCreate({ username, password, email: user.email, name: user.name })
-    log.info(`Signin for gitlab successful: ${gitlab}`)
-    const mattermost = await matterMostService.signupUser(username, password, user.email)
-    log.info(`Signin for mattermost successful: ${mattermost}`)
+    const gitLabUser = await gitLab.findOrCreate({ username, password, email: user.email, name: user.name })
+    log.info(`Signin for gitlab successful: ${gitLabUser}`)
+    const mattermostUser = await matterMostService.signupUser(username, password, user.email)
+    log.info(`Signin for mattermost successful: ${mattermostUser}`)
   } catch (err) {
     log.error(`Signin for mattermost or gitlab failed: ${err}`)
     console.log('err', err)
