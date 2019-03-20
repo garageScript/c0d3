@@ -14,6 +14,7 @@ import EditableInput from './EditableInput'
 import { loadComponent } from '../shared/shared'
 
 const NewLessonPage = () => {
+  console.log(window.userInfo)
   return (
     <Query query={ADMIN_STATE}>
       {res => {
