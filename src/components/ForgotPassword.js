@@ -14,7 +14,7 @@ const ForgotPassword = () => {
         ref={emailRef}
           />
         </label>
-        <button className='btn btn-primary'>Submit</button>
+        <a href='/checkemail' >Submit</a>
       </form>
     </div>
   )
