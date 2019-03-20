@@ -11,10 +11,10 @@ const ForgotPassword = () => {
       Email: <input
         id='email'
         placeholder='hello@c0d3.com'
-        ref={emailRef.current.value}
+        ref={emailRef}
           />
         </label>
-        <button className='btn btn-primary'>Submit</button>
+        <a href='/checkemail' >Submit</a>
       </form>
     </div>
   )
