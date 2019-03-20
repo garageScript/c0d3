@@ -9,11 +9,11 @@ const AdminRoute = ({
   const renderRoute = props => {
     if (!window.userInfo.id) {
       return <Redirect to='/signin' />
-    } else if (!window.userInfo.isAdmin) {
-      return <Redirect to='/' />
-    } else {
-      return <Component {...props} />
     }
+    if (!window.userInfo.isAdmin) {
+      return <Redirect to='/' />
+    }
+    return <Component {...props} />
   }
   return <Route {...otherProps} render={renderRoute} />
 }
