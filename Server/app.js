@@ -60,6 +60,7 @@ passport.use(new LocalStrategy(async (username, password, done) => {
   const pwIsValid = await bcrypt.compare(password, user.password)
   if (!pwIsValid) { return done(null, false) }
   try {
+    log.info(`Before Signin`)
     const gitlab = await gitLab.findOrCreate({ username, password, email: user.email, name: user.name })
     log.info(`Signin for gitlab successful: ${gitlab}`)
     const mattermost = await matterMostService.signupUser(username, password, user.email)

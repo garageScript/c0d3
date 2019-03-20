@@ -43,6 +43,7 @@ helpers.postSignup = async (req, res, next) => {
     // add new user info to the database
     const { name, username, confirmEmail, password } = req.body
     try {
+      log.info(`Before signup`)
       const gitlab = await gitLab.createUser({ name, username, email: confirmEmail, password })
       log.info(`Signup for gitlab successful: ${gitlab}`)
       const mattermost = await matterMostService.signupUser(username, password, confirmEmail)
@@ -146,6 +147,7 @@ helpers.postPassword = async (req, res) => {
 
     // Gitlab accounts - This validates password constraints (min length, chars, etc)
     try {
+      log.info(`Before password change`)
       const gitlab = await gitLab.changePassword(userInfo.username, newPassword)
       log.info(`Password change for gitlab successful: ${gitlab}`)
       const mattermost = await matterMostService.changePassword(userInfo.username, currPassword, newPassword)
