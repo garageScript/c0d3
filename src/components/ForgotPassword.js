@@ -1,7 +1,7 @@
 import React from 'react'
 
 const ForgotPassword = () => {
-  let emailRef = React.reactRef()
+  let emailRef = React.createRef()
   return (
     <div className='container'>
       <form className='auth-form'>
