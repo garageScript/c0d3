@@ -47,6 +47,7 @@ type Query {
   "Get UserInfo"
   userInfo(input: UserInput): UserData
 }
+
 type Mutation {
   "Create or find student, then Update student enrollment to a lesson"
   enrollStudent(input: LessonId): UserLesson
@@ -104,6 +105,9 @@ type Mutation {
 
   "Toggle User Admin"
   toggleAdmin(input: UserAdmin): User 
+
+  "Send Email"
+  sendEmail(value: String): String
 }
 
 input UserAdmin {

@@ -235,5 +235,9 @@ module.exports = {
     return User.findById(userId).then(user => {
       return user.update({ isAdmin })
     })
+  },
+  sendEmail: (obj, args, context) => {
+    console.log('args::::::::::::::::::::::::::', args)
+    return 'success'
   }
 }
