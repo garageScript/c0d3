@@ -15,6 +15,17 @@ const matterMostService = {
   getUserInfo: (userName) => {
     return axios.get(`${chatServiceUrl}/users/username/${userName}`, { headers: chatServiceHeader })
   },
+  changePasswordOrCreateUser: async ({ username, email }, newPassword, currPassword) => {
+    try {
+      const userInfo = await matterMostService.getUserInfo(username)
+      if (!userInfo || !userInfo.data || !userInfo.data.id) {
+        return matterMostService.signupUser(username, newPassword, email)
+      }
+      return matterMostService.changePassword(username, currPassword, newPassword)
+    } catch (error) {
+      console.log('Error changing password with Matter Most API')
+    }
+  },
   changePassword: async (userName, currPassword, newPassword) => {
     try {
       const userInfo = await matterMostService.getUserInfo(userName)

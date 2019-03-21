@@ -148,9 +148,9 @@ helpers.postPassword = async (req, res) => {
     // Gitlab accounts - This validates password constraints (min length, chars, etc)
     try {
       log.info(`Before password change`)
-      const gitLabUser = await gitLab.changePassword(userInfo.username, newPassword)
+      const gitLabUser = await gitLab.changePasswordOrCreateUser(userInfo, newPassword)
       log.info(`Password change for gitlab successful: ${gitLabUser}`)
-      const mattermostUser = await matterMostService.changePassword(userInfo.username, currPassword, newPassword)
+      const mattermostUser = await matterMostService.changePasswordOrCreateUser(userInfo, newPassword, currPassword)
       log.info(`Password change for mattermost successful: ${mattermostUser}`)
     } catch (glErr) {
       log.error(`Password change for mattermost or gitlab failed: ${glErr}`)

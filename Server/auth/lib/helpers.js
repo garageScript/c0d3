@@ -44,6 +44,16 @@ const gitLab = {
     return (response.data || [])[0]
   },
 
+  changePasswordOrCreateUser: async ({ username, name, email }, password) => {
+    const userInfo = await gitLab.getUser(username)
+    if (!userInfo || !userInfo.id) {
+      return gitLab.createUser({
+        username, name, email, password
+      })
+    }
+    return gitLab.changePassword(username, password)
+  },
+
   changePassword: async (userName, password) => {
     const userInfo = await gitLab.getUser(userName)
     const url = gitLab.url(`/${userInfo.id}`)
