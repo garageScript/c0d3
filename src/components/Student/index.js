@@ -22,6 +22,21 @@ const StudentPage = ({ match }) => {
         const { docUrl, title, videoUrl } = data.lessonInfo
         return (
           <Fragment>
+            <Query
+              query={LESSON_STATUS}
+              variables={{ in: { id: match.params.lid } }}
+            >
+              {loadComponent(({ lessonStatus }) => {
+                if (!lessonStatus.starGiven) return ''
+                return (
+                  <div>
+                    <h3>Mentor: {lessonStatus.starGiven.username} </h3>
+                    <h3>Comment: {lessonStatus.comment} </h3>
+                  </div>
+                )
+              })}
+            </Query>
+
             <div className='gs-container-1'>
               <div className='container'>
                 <CongratsModal lessonInfo={data.lessonInfo} />

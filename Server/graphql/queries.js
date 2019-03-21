@@ -108,6 +108,7 @@ module.exports = {
       .then(star => {
         if (star && star.mentor) {
           lessonStatus.starGiven = star.mentor
+          lessonStatus.comment = star.dataValues.comment
         }
         return lessonStatus
       })
