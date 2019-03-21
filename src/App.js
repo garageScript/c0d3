@@ -27,6 +27,7 @@ import { GET_ANNOUNCEMENTS } from './db/queries.js'
 import { loadComponent } from './components/shared/shared.js'
 import { Settings } from './components/Settings'
 import CheckEmail from './components/CheckEmail'
+import ResetPassword from './components/ResetPassword'
 
 const Home = () => {
   const reset = window.userInfo.mustReset
@@ -110,6 +111,7 @@ const AppElement = () => (
             <Route path='/forgotpassword' component={ForgotPassword} />
             <Route path='/signup' component={SignUp} />
             <Route path='/signin' component={SignIn} />
+            <Route path='/resetpassword' component={ResetPassword} />
             <Route path='/checkemail' component={CheckEmail} />
             <Route component={NotFound} />
           </Switch>
