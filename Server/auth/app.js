@@ -4,6 +4,7 @@ const gitLab = require('./lib/helpers')
 const matterMostService = require('./lib/matterMostService')
 const axios = require('axios')
 const { User } = require('../dbload')
+const log = require('../log/index')(__filename)
 
 const errorHandler = (req, res, error) => {
   if (error.httpStatus && error.message) {
@@ -41,9 +42,16 @@ helpers.postSignup = async (req, res, next) => {
 
     // add new user info to the database
     const { name, username, confirmEmail, password } = req.body
-
-    await gitLab.findOrCreate({ name: name, username: username, email: confirmEmail, password: password })
-    await matterMostService.signupUser(username, password, confirmEmail)
+    try {
+      log.info(`Before signup`)
+      const gitLabUser = await gitLab.createUser({ name, username, email: confirmEmail, password })
+      log.info(`Signup for gitlab successful: ${gitLabUser}`)
+      const mattermostUser = await matterMostService.signupUser(username, password, confirmEmail)
+      log.info(`Signup for mattermost sucessful: ${mattermostUser}`)
+    } catch (err) {
+      log.error(`Signup for mattermost or gitlab failed: ${err}`)
+      errorHandler(req, res, { httpStatus: 404, message: 'Signup failed for gitlab or mattermost' })
+    }
 
     const salt = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(password, salt)
@@ -57,7 +65,7 @@ helpers.postSignup = async (req, res, next) => {
     // create SSH account if environment is in production
     if (process.env.NODE_ENV === 'production') {
       const newSshAccountReq = await axios.post(
-        process.env.SUDO_URL,
+        process.env.SUDO_URL + '/users',
         {
           password,
           username,
@@ -139,19 +147,24 @@ helpers.postPassword = async (req, res) => {
 
     // Gitlab accounts - This validates password constraints (min length, chars, etc)
     try {
-      await gitLab.changePassword(userInfo.username, newPassword)
-      await matterMostService.changePassword(userInfo.username, currPassword, newPassword)
+      log.info(`Before password change`)
+      const gitLabUser = await gitLab.changePasswordOrCreateUser(userInfo, newPassword)
+      log.info(`Password change for gitlab successful: ${gitLabUser}`)
+      const mattermostUser = await matterMostService.changePasswordOrCreateUser(userInfo, newPassword, currPassword)
+      log.info(`Password change for mattermost successful: ${mattermostUser}`)
     } catch (glErr) {
+      log.error(`Password change for mattermost or gitlab failed: ${glErr}`)
       throw { httpStatus: 401, message: { gitlab: JSON.stringify(glErr.response.data) } }
     }
 
-    /*
-    // Change ssh login credentials
-    await axios.post('https://sudostuff.garagescript.org/password', {
-      password: newPassword,
-      username: userInfo.username
-    })
-    */
+    // change SSH account if environment is in production
+    if (process.env.NODE_ENV === 'production') {
+      const newSshAccountReq = await axios.post(process.env.SUDO_URL + '/password', {
+        password: newPassword,
+        username: userInfo.username
+      })
+      if (!newSshAccountReq.data.success) { throw { httpStatus: 500, message: 'unable to create SSH account' } }
+    }
 
     // replace the password hash
     const salt = await bcrypt.genSalt(10)

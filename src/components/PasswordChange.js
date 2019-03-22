@@ -31,7 +31,7 @@ class PwChangeForm extends BaseValidationForm {
   render() {
     return (
       <div className="container">
-        <form className="auth-form" onSubmit={this.handleSubmit} style={{width: '300px'}}>
+        <form className="auth-form" onSubmit={this.handleSubmit} >
           <p className="h5 mb-4">Change Your Password</p>
           <div className="md-form">
             <label htmlFor="pw-change-current-password">Current Password</label>

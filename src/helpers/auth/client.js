@@ -50,9 +50,12 @@ const client = {
     },
     updatePassword: async fieldInputs => {
       try {
-        const url = `${client.authServer}/password`
+        let url = `${client.authServer}/password`
         await axios.post(url, fieldInputs, client.reqConf)
-        alert('success!')
+        alert('success! Your password has been changed, please signin again')
+        url = `${client.authServer}/signout`
+        await axios.get(url, client.reqConf)
+        window.location = '/'
       } catch (err) {
         alert('error')
         console.log(err)
