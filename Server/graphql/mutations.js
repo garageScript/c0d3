@@ -1,3 +1,7 @@
+const mailGun = require('../mailGun/mailGun')
+const passwordUpdate = require('../auth/app')
+const nanoid = require('nanoid')
+const randomToken = nanoid()
 
 const {
   Announcement,
@@ -235,5 +239,21 @@ module.exports = {
     return User.findById(userId).then(user => {
       return user.update({ isAdmin })
     })
+  },
+  sendEmail: (obj, args, context) => {
+    console.log('args', args)
+    const { value } = args
+    User.findOne({ where: { email: value } }).then(user => {
+      mailGun.sendEmail(value, randomToken)
+      user.update({ forgotToken: randomToken })
+    })
+    return 'Success'
+  },
+  resetPassword: (obj, args, context) => {
+    const { forgotToken, password } = args.input
+    User.findOne({ where: { forgotToken: forgotToken } }).then(user => {
+      passwordUpdate.resetPassword(forgotToken, password)
+    })
+    return 'Success'
   }
 }

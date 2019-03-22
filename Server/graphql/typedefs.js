@@ -104,6 +104,18 @@ type Mutation {
 
   "Toggle User Admin"
   toggleAdmin(input: UserAdmin): User 
+
+  "Send email with Mailgun"
+  sendEmail(value: String): String
+
+  "Reset password with Mailgun"
+  resetPassword(input: PasswordChange): String
+}
+
+input PasswordChange {
+  forgotToken: String
+  password: String
+  confirmPassword: String
 }
 
 input UserAdmin {

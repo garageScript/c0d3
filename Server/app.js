@@ -161,12 +161,6 @@ app.get('/ios', (req, res) => {
   return res.redirect('https://testflight.apple.com/join/B8wZp83I')
 })
 
-const noAuthRouter = (req, res) => {
-  return res.sendFile(path.join(__dirname, '../public/root.html'))
-}
-app.get('/signup', noAuthRouter)
-app.get('/signin', noAuthRouter)
-
 app.get('/*', (req, res) => {
   if (req.user && req.user.id) { return res.sendFile(path.join(__dirname, '../public/root.html')) }
   return res.sendFile(path.join(__dirname, '../public/landing.html'))

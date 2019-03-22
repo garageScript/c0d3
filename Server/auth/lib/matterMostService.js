@@ -30,7 +30,6 @@ const matterMostService = {
     try {
       const userInfo = await matterMostService.getUserInfo(userName)
       await axios.put(`${chatServiceUrl}/users/${userInfo.data.id}/password`, {
-        'current_password': currPassword,
         'new_password': newPassword
       }, { headers: chatServiceHeader })
     } catch (error) {
