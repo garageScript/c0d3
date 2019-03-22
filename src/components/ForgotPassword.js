@@ -1,4 +1,6 @@
 import React from 'react'
+import { Mutation } from 'react-apollo'
+import { SEND_EMAIL } from '../db/queries'
 
 const ForgotPassword = () => {
   let emailRef = React.createRef()
@@ -13,9 +15,19 @@ const ForgotPassword = () => {
         ref={emailRef}
         />
       </label>
-      <button onClick={() => {
-        window.location = '/checkemail'
-      }}>Submit</button>
+      <Mutation mutation={SEND_EMAIL}>
+        {(execute) => {
+          return (
+            <button onClick={() => {
+              execute({
+                variables: {
+                  input: emailRef.current.value
+                }
+              })
+              window.location = '/checkemail'
+            }}>Submit</button>)
+        }}
+      </Mutation>
     </div>
   )
 }
