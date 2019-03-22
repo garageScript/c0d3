@@ -108,14 +108,13 @@ type Mutation {
   "Send email with Mailgun"
   sendEmail(value: String): String
 
-  "Reset password with Mailgun"
+  "Reset password for non-authorized clients"
   resetPassword(input: PasswordChange): String
 }
 
 input PasswordChange {
   forgotToken: String
   password: String
-  confirmPassword: String
 }
 
 input UserAdmin {
