@@ -65,7 +65,7 @@ helpers.postSignup = async (req, res, next) => {
     // create SSH account if environment is in production
     if (process.env.NODE_ENV === 'production') {
       const newSshAccountReq = await axios.post(
-        process.env.SUDO_URL,
+        process.env.SUDO_URL + '/users',
         {
           password,
           username,
@@ -157,13 +157,14 @@ helpers.postPassword = async (req, res) => {
       throw { httpStatus: 401, message: { gitlab: JSON.stringify(glErr.response.data) } }
     }
 
-    /*
-    // Change ssh login credentials
-    await axios.post('https://sudostuff.garagescript.org/password', {
-      password: newPassword,
-      username: userInfo.username
-    })
-    */
+    // change SSH account if environment is in production
+    if (process.env.NODE_ENV === 'production') {
+      const newSshAccountReq = await axios.post(process.env.SUDO_URL + '/password', {
+        password: newPassword,
+        username: userInfo.username
+      })
+      if (!newSshAccountReq.data.success) { throw { httpStatus: 500, message: 'unable to create SSH account' } }
+    }
 
     // replace the password hash
     const salt = await bcrypt.genSalt(10)
