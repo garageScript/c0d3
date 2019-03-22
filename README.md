@@ -158,7 +158,7 @@ https://dba.stackexchange.com/questions/65662/postgres-how-to-insert-row-with-au
 ## Mailgun
 
 ### Setup
-Ask admin for API key, DOMAIN and add them to .env file.
+Ask admin for Mail API key, Mail Domain and add them to .env file.
 
 ### Documentation
 https://documentation.mailgun.com/en/latest/quickstart-sending.html#send-with-smtp-or-api
