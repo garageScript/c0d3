@@ -4,18 +4,18 @@ const ForgotPassword = () => {
   let emailRef = React.createRef()
   return (
     <div className='container'>
-      <form className='auth-form'>
-        <p className='h5 mb-4'> Forgot Password?</p>
-        <p>Please enter your email address below to recieve the reset password link.</p>
-        <label htmlFor='forgotPasswordEmail'>
+      <p className='h5 mb-4'> Forgot Password?</p>
+      <p>Please enter your email address below to receive instructions for resetting your password</p>
+      <label htmlFor='forgotPasswordEmail'>
       Email: <input
-        id='email'
+        id='forgotPasswordEmail'
         placeholder='hello@c0d3.com'
         ref={emailRef}
-          />
-        </label>
-        <a href='/checkemail' >Submit</a>
-      </form>
+        />
+      </label>
+      <button onClick={() => {
+        window.location = '/checkemail'
+      }}>Submit</button>
     </div>
   )
 }

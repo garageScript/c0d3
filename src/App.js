@@ -111,7 +111,7 @@ const AppElement = () => (
             <Route path='/forgotpassword' component={ForgotPassword} />
             <Route path='/signup' component={SignUp} />
             <Route path='/signin' component={SignIn} />
-            <Route path='/resetpassword' component={ResetPassword} />
+            <Route path='/resetpassword/:token' component={ResetPassword} />
             <Route path='/checkemail' component={CheckEmail} />
             <Route component={NotFound} />
           </Switch>
