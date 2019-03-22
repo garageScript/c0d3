@@ -237,7 +237,6 @@ module.exports = {
     })
   },
   sendEmail: (obj, args, context) => {
-    console.log('args::::::::::::::::::::::::::', args)
     return 'success'
   }
 }

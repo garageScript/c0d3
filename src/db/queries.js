@@ -389,3 +389,8 @@ export const SET_ADMIN = gql`
     }
   }
 `
+export const SEND_EMAIL = gql`
+  mutation($input: String){
+    sendEmail(value: $input )
+  }
+`
