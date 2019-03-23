@@ -6,29 +6,31 @@ let chatServiceUrl = process.env.NODE_ENV === 'production' ? 'https://chat.c0d3.
 const matterMostService = {
   signupUser: async (username, password, email) => {
     try {
-      await axios.get(`${chatServiceUrl}/users/username/${username}`, { headers: chatServiceHeader })
+      await axios.get(`${chatServiceUrl}/users/email/${email}`, { headers: chatServiceHeader })
     } catch (error) {
       await axios.post(`${chatServiceUrl}/users`, { username, password, email }, { headers: chatServiceHeader })
-      console.log('Sign up user to MatterMost', error)
     }
   },
-  getUserInfo: (userName) => {
-    return axios.get(`${chatServiceUrl}/users/username/${userName}`, { headers: chatServiceHeader })
+  getUserInfo: (email) => {
+    return axios.get(`${chatServiceUrl}/users/email/${email}`, { headers: chatServiceHeader })
   },
   changePasswordOrCreateUser: async ({ username, email }, newPassword, currPassword) => {
     try {
-      const userInfo = await matterMostService.getUserInfo(username)
+      const userInfo = await matterMostService.getUserInfo(email)
       if (!userInfo || !userInfo.data || !userInfo.data.id) {
         return matterMostService.signupUser(username, newPassword, email)
       }
-      return matterMostService.changePassword(username, currPassword, newPassword)
+      return matterMostService.changePassword(email, currPassword, newPassword)
     } catch (error) {
       console.log('Error changing password with Matter Most API')
     }
   },
-  changePassword: async (userName, currPassword, newPassword) => {
+  changePassword: async (email, currPassword, newPassword) => {
+    // Becareful as a developer: According to the docs, current password is required
+    // if you are updating your own password
+    // https://api.mattermost.com/#tag/users%2Fpaths%2F~1users~1%7Buser_id%7D~1password%2Fput
     try {
-      const userInfo = await matterMostService.getUserInfo(userName)
+      const userInfo = await matterMostService.getUserInfo(email)
       await axios.put(`${chatServiceUrl}/users/${userInfo.data.id}/password`, {
         'new_password': newPassword
       }, { headers: chatServiceHeader })
