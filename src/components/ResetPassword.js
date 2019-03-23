@@ -21,7 +21,6 @@ class ResetPassword extends BaseValidationForm {
     return (
       <div className='container'>
         <p className='h5 mb-4'>New Password</p>
-        <div />
         <div className='md-form'>
           <label htmlFor='new-password'>New Password</label>
           <input
