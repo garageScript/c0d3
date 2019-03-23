@@ -2,6 +2,8 @@ import React from 'react'
 import BaseValidationForm from '../helpers/auth/BaseValidationForm'
 import { debounce } from '../helpers/helpers'
 import { withRouter } from 'react-router'
+import { RESET_PASSWORD } from '../../db/queries'
+import { Mutation } from 'react-apollo'
 
 class ResetPassword extends BaseValidationForm {
   constructor (props) {
@@ -49,9 +51,21 @@ class ResetPassword extends BaseValidationForm {
             {this.state.passwordConfirm.feedback}
           </div>
         </div>
-        <button className='btn btn-primary' type='submit'>
+        <Mutation mutation={RESET_PASSWORD}>
+          {(execute) => {
+            return (
+              <button className='btn btn-primary' type='submit' onClick={() => {
+                execute({
+                  variables: {
+                    input: this.state.passwordConfirm
+                  }
+                })
+              }}>
             Submit New Password
-        </button>
+              </button>
+            )
+          }}
+        </Mutation>
       </div>
     )
   }

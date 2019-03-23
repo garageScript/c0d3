@@ -394,3 +394,8 @@ export const SEND_EMAIL = gql`
     sendEmail(value: $input )
   }
 `
+export const RESET_PASSWORD = gql`
+  mutation($input: PasswordChange){
+    resetPassword(input: $input)
+  }
+`
