@@ -1,5 +1,5 @@
 const mailGun = require('../mailGun/mailGun')
-const passwordUpdate = require('../mailGun/resetPassword')
+const passwordUpdate = require('../auth/resetPassword')
 const nanoid = require('nanoid')
 
 const {
