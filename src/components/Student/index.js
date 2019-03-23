@@ -29,9 +29,12 @@ const StudentPage = ({ match }) => {
               {loadComponent(({ lessonStatus }) => {
                 if (!lessonStatus.starGiven) return ''
                 return (
-                  <div>
-                    <h3>Mentor: {lessonStatus.starGiven.username} </h3>
-                    <h3>Comment: {lessonStatus.starComment} </h3>
+                  <div class='card' style={{ position: 'fixed', top: 70, right: 10, width: '11%' }}>
+                    <div class='card-body text-center'>
+                      <i class='fa fa-star fas' style={{ color: 'yellow', WebkitTextStrokeWidth: '3px', WebkitTextStrokeColor: ' black', fontSize: 30 }} />
+                      <h4 class='font-weight-bold indigo-text py-2'>{lessonStatus.starGiven.username}</h4>
+                      <p class='card-text'>{lessonStatus.starComment} </p>
+                    </div>
                   </div>
                 )
               })}
