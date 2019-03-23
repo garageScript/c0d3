@@ -109,11 +109,11 @@ const AppElement = () => (
             />
             <PrivateRoute path='/submissions/:lid/:cid' component={Diff} />
             <PrivateRoute path='/settings' component={Settings} />
-            <Route path='/forgotpassword' component={ForgotPassword} />
-            <Route path='/signup' component={SignUp} />
-            <Route path='/signin' component={SignIn} />
-            <Route path='/resetpassword/:token' component={ResetPassword} />
-            <Route path='/checkemail' component={CheckEmail} />
+            <Route exact path='/signup' component={SignUp} />
+            <Route exact path='/signin' component={SignIn} />
+            <Route exact path='/forgotpassword' component={ForgotPassword} />
+            <Route exact path='/checkemail' component={CheckEmail} />
+            <Route exact path='/resetpassword/:token' component={ResetPassword} />
             <Route component={NotFound} />
           </Switch>
         </div>

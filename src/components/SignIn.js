@@ -1,5 +1,6 @@
 import React from 'react'
 import { Redirect } from 'react-router'
+import { Link } from 'react-router-dom'
 import authClient from '../helpers/auth/client'
 import '../css/AuthForm.css'
 
@@ -82,7 +83,9 @@ class SignInForm extends React.Component {
           <button className='btn btn-primary' type='submit'>
             Sign in
           </button>
-          <a href='/forgotpassword'> Forgot Password</a>
+          <Link to='/forgotpassword'>
+          Forgot Password
+          </Link>
         </form>
       </div>
     )

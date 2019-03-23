@@ -166,6 +166,7 @@ const noAuthRouter = (req, res) => {
 }
 app.get('/signup', noAuthRouter)
 app.get('/signin', noAuthRouter)
+app.get('/resetpassword/:token', noAuthRouter)
 
 app.get('/*', (req, res) => {
   if (req.user && req.user.id) { return res.sendFile(path.join(__dirname, '../public/root.html')) }
