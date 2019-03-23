@@ -103,7 +103,7 @@ link `https://api.mattermost.com/#tag/users`
 ## Mailgun
 
 ### Setup
-Ask admin for Mail API key and add them to .env file. This is used for sending emails
+Ask admin for Mail API key and Mail Domain, then add them to .env file. This is used for sending emails
 
 ### Documentation
 https://documentation.mailgun.com/en/latest/quickstart-sending.html#send-with-smtp-or-api

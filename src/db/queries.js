@@ -389,3 +389,13 @@ export const SET_ADMIN = gql`
     }
   }
 `
+export const SEND_FORGOT_EMAIL = gql`
+  mutation($input: String){
+    sendPasswordResetEmail(value: $input )
+  }
+`
+export const FORGOT_RESET_PASSWORD = gql`
+  mutation($input: PasswordChange){
+    forgotResetPassword(input: $input)
+  }
+`

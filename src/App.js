@@ -26,6 +26,9 @@ import Markdown from 'react-markdown'
 import { GET_ANNOUNCEMENTS } from './db/queries.js'
 import { loadComponent } from './components/shared/shared.js'
 import { Settings } from './components/Settings'
+import ForgotPassword from './components/Auth/ForgotPassword'
+import CheckEmail from './components/Auth/CheckEmail'
+import ResetPassword from './components/Auth/ResetPassword'
 
 const Home = () => {
   const reset = window.userInfo.mustReset
@@ -106,8 +109,11 @@ const AppElement = () => (
             />
             <PrivateRoute path='/submissions/:lid/:cid' component={Diff} />
             <PrivateRoute path='/settings' component={Settings} />
-            <Route path='/signup' component={SignUp} />
-            <Route path='/signin' component={SignIn} />
+            <Route exact path='/signup' component={SignUp} />
+            <Route exact path='/signin' component={SignIn} />
+            <Route exact path='/forgotpassword' component={ForgotPassword} />
+            <Route exact path='/checkemail' component={CheckEmail} />
+            <Route exact path='/resetpassword/:token' component={ResetPassword} />
             <Route component={NotFound} />
           </Switch>
         </div>
