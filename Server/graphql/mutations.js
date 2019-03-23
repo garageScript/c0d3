@@ -248,7 +248,7 @@ module.exports = {
     })
     return 'Success'
   },
-  resetPassword: (obj, args, context) => {
+  forgotResetPassword: (obj, args, context) => {
     const { forgotToken, password } = args.input
     User.findOne({ where: { forgotToken: forgotToken } }).then(user => {
       passwordUpdate.resetPassword(forgotToken, password)
