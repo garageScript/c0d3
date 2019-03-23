@@ -230,6 +230,7 @@ type UserLesson {
   isTeaching: String
   isEnrolled: String
   starGiven: User
+  starComment: String
 }
 
 type Lesson {

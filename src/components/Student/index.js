@@ -22,6 +22,24 @@ const StudentPage = ({ match }) => {
         const { docUrl, title, videoUrl } = data.lessonInfo
         return (
           <Fragment>
+            <Query
+              query={LESSON_STATUS}
+              variables={{ in: { id: match.params.lid } }}
+            >
+              {loadComponent(({ lessonStatus }) => {
+                if (!lessonStatus.starGiven) return ''
+                return (
+                  <div class='card' style={{ position: 'fixed', top: 70, right: 10, width: '11%' }}>
+                    <div class='card-body text-center'>
+                      <i class='fa fa-star fas' style={{ color: 'yellow', WebkitTextStrokeWidth: '3px', WebkitTextStrokeColor: ' black', fontSize: 30 }} />
+                      <h4 class='font-weight-bold indigo-text py-2'>{lessonStatus.starGiven.username}</h4>
+                      <p class='card-text'>{lessonStatus.starComment} </p>
+                    </div>
+                  </div>
+                )
+              })}
+            </Query>
+
             <div className='gs-container-1'>
               <div className='container'>
                 <CongratsModal lessonInfo={data.lessonInfo} />
