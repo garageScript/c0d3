@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const gitLab = require('./lib/helpers')
-const matterMostService = require('../lib/matterMostService')
+const matterMostService = require('./lib/matterMostService')
 const { User } = require('../dbload')
 const log = require('../log/index')(__filename)
 
