@@ -2,7 +2,7 @@ import React from 'react'
 import BaseValidationForm from '../helpers/auth/BaseValidationForm'
 import { debounce } from '../helpers/helpers'
 import { withRouter } from 'react-router'
-import { RESET_PASSWORD } from '../../db/queries'
+import { RESET_PASSWORD } from '../db/queries'
 import { Mutation } from 'react-apollo'
 
 class ResetPassword extends BaseValidationForm {
@@ -57,7 +57,10 @@ class ResetPassword extends BaseValidationForm {
               <button className='btn btn-primary' type='submit' onClick={() => {
                 execute({
                   variables: {
-                    input: this.state.passwordConfirm
+                    input: {
+                      password: this.state.password.value,
+                      forgotToken: this.props.match.params.token
+                    }
                   }
                 })
               }}>
@@ -72,4 +75,4 @@ class ResetPassword extends BaseValidationForm {
 }
 const NewPassword = withRouter(ResetPassword)
 
-export default ResetPassword
+export default NewPassword

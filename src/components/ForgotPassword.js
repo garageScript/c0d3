@@ -24,7 +24,6 @@ const ForgotPassword = () => {
                   input: emailRef.current.value
                 }
               })
-              window.location = '/checkemail'
             }}>Submit</button>)
         }}
       </Mutation>

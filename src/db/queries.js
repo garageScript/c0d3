@@ -391,11 +391,11 @@ export const SET_ADMIN = gql`
 `
 export const SEND_EMAIL = gql`
   mutation($input: String){
-    sendEmail(value: $input )
+    sendPasswordResetEmail(value: $input )
   }
 `
 export const RESET_PASSWORD = gql`
   mutation($input: PasswordChange){
-    resetPassword(input: $input)
+    forgotResetPassword(input: $input)
   }
 `
