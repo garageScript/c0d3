@@ -119,6 +119,36 @@ helpers.postNames = async (req, res) => {
   */
 }
 
+const resetPasswordHelper = async (userInfo, newPassword) => {
+  // Gitlab accounts - This validates password constraints (min length, chars, etc)
+  try {
+    log.info(`Before password change`)
+    const gitLabUser = await gitLab.changePasswordOrCreateUser(userInfo, newPassword)
+    log.info(`Password change for gitlab successful: ${gitLabUser}`)
+    const mattermostUser = await matterMostService.changePasswordOrCreateUser(userInfo, newPassword)
+    log.info(`Password change for mattermost successful: ${mattermostUser}`)
+  } catch (glErr) {
+    log.error(`Password change for mattermost or gitlab failed: ${glErr}`)
+    throw { httpStatus: 401, message: { gitlab: JSON.stringify(glErr.response.data) } }
+  }
+
+  // change SSH account if environment is in production
+  if (process.env.NODE_ENV === 'production') {
+    const newSshAccountReq = await axios.post(process.env.SUDO_URL + '/password', {
+      password: newPassword,
+      username: userInfo.username
+    })
+    if (!newSshAccountReq.data.success) { throw { httpStatus: 500, message: 'unable to create SSH account' } }
+  }
+
+  // replace the password hash
+  const salt = await bcrypt.genSalt(10)
+  const newHash = await bcrypt.hash(newPassword, salt)
+  userInfo.update({
+    password: newHash
+  })
+}
+
 helpers.postPassword = async (req, res) => {
   try {
     // get user id if session is active, else reject with 401
@@ -145,38 +175,29 @@ helpers.postPassword = async (req, res) => {
     const pwIsValid = await bcrypt.compare(currPassword, currHash)
     if (!pwIsValid) { throw { httpStatus: 401, message: { currPassword: ['invalid'] } } }
 
-    // Gitlab accounts - This validates password constraints (min length, chars, etc)
-    try {
-      log.info(`Before password change`)
-      const gitLabUser = await gitLab.changePasswordOrCreateUser(userInfo, newPassword)
-      log.info(`Password change for gitlab successful: ${gitLabUser}`)
-      const mattermostUser = await matterMostService.changePasswordOrCreateUser(userInfo, newPassword, currPassword)
-      log.info(`Password change for mattermost successful: ${mattermostUser}`)
-    } catch (glErr) {
-      log.error(`Password change for mattermost or gitlab failed: ${glErr}`)
-      throw { httpStatus: 401, message: { gitlab: JSON.stringify(glErr.response.data) } }
-    }
-
-    // change SSH account if environment is in production
-    if (process.env.NODE_ENV === 'production') {
-      const newSshAccountReq = await axios.post(process.env.SUDO_URL + '/password', {
-        password: newPassword,
-        username: userInfo.username
-      })
-      if (!newSshAccountReq.data.success) { throw { httpStatus: 500, message: 'unable to create SSH account' } }
-    }
-
-    // replace the password hash
-    const salt = await bcrypt.genSalt(10)
-    const newHash = await bcrypt.hash(newPassword, salt)
-    userInfo.update({
-      password: newHash
-    })
+    await resetPasswordHelper(userInfo, newPassword)
 
     // respond with a success status
     res.status(204).end()
   } catch (error) {
     errorHandler(req, res, error)
+  }
+}
+
+helpers.forgotResetPassword = async (forgotToken, newPassword, userInfo) => {
+  try {
+    log.info(`Get userInfo given token`)
+
+    if (!userInfo) {
+      log.error('UserInfo does not exist')
+      throw { httpStatus: 401, message: { id: ['invalid'] } }
+    }
+
+    await resetPasswordHelper(userInfo, newPassword)
+
+    log.info('Password unpdated successfully')
+  } catch (error) {
+    log.error(`Password reset failed ${error}`)
   }
 }
 
