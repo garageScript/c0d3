@@ -26,7 +26,8 @@ const StudentPage = ({ match }) => {
               query={LESSON_STATUS}
               variables={{ in: { id: match.params.lid } }}
             >
-              {loadComponent(({ lessonStatus }) => {
+              {loadComponent((data) => {
+                const lessonStatus = data.lessonStatus || {}
                 if (!lessonStatus.starGiven) return ''
                 return (
                   <div class='card' style={{ position: 'fixed', top: 70, right: 10, width: '11%' }}>
