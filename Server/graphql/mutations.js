@@ -1,5 +1,5 @@
 const mailGun = require('../mailGun/mailGun')
-const passwordUpdate = require('../auth/resetPassword')
+const { forgotResetPassword } = require('../auth/app')
 const nanoid = require('nanoid')
 
 const {
@@ -251,7 +251,7 @@ module.exports = {
   forgotResetPassword: (obj, args, context) => {
     const { forgotToken, password } = args.input
     User.findOne({ where: { forgotToken: forgotToken } }).then(user => {
-      passwordUpdate.resetPassword(forgotToken, password)
+      forgotResetPassword(forgotToken, password, user)
       user.update({ forgotToken: '' })
     })
     return 'Success'

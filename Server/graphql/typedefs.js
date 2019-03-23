@@ -109,12 +109,12 @@ type Mutation {
   sendPasswordResetEmail(value: String): String
 
   "Reset password for non-authorized clients"
-  resetPassword(input: PasswordChange): String
+  forgotResetPassword(input: PasswordChange): String
 }
 
 input PasswordChange {
-  forgotToken: String
-  password: String
+  forgotToken: String!
+  password: String!
 }
 
 input UserAdmin {
