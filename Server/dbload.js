@@ -36,7 +36,8 @@ const User = sequelize.define('user', {
   isAdmin: {
     type: Sequelize.BOOLEAN,
     defaultValue: false
-  }
+  },
+  forgotToken: Sequelize.STRING
 })
 
 const UserLesson = sequelize.define('userLesson', {

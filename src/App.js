@@ -17,6 +17,7 @@ import Chat from './components/Chat/Chat'
 import Profile from './components/UserProfile'
 import NotFound from './components/NotFound'
 import PrivateRoute from './components/PrivateRoute'
+import AdminRoute from './components/AdminRoute'
 import NavBar from './components/NavBar'
 import UsersAdmin from './components/Admin/Users'
 import LessonListAdmin from './components/Admin/LessonList'
@@ -99,10 +100,10 @@ const AppElement = () => (
             <PrivateRoute path='/chat/:id' component={Chat} />
             <PrivateRoute exact path='/profile' component={Profile} />
             <PrivateRoute exact path='/profile/:userId' component={Profile} />
-            <PrivateRoute path='/admin/announcements' component={AdminAnnouncements} />
-            <PrivateRoute exact path='/admin' component={LessonListAdmin} />
-            <PrivateRoute exact path='/admin/users' component={UsersAdmin} />
-            <PrivateRoute
+            <AdminRoute path='/admin/announcements' component={AdminAnnouncements} />
+            <AdminRoute exact path='/admin' component={LessonListAdmin} />
+            <AdminRoute exact path='/admin/users' component={UsersAdmin} />
+            <AdminRoute
               path='/admin/lessons/new'
               component={LessonListAdmin}
             />
