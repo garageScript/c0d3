@@ -12,7 +12,7 @@ export const LESSON_STATUS = gql`
         id
         username
       }
-      comment
+      starComment
     }
   }
 `

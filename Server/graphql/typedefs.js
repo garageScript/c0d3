@@ -218,7 +218,7 @@ type UserLesson {
   isTeaching: String
   isEnrolled: String
   starGiven: User
-  comment: String
+  starComment: String
 }
 
 type Lesson {

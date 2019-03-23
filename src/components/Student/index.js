@@ -31,7 +31,7 @@ const StudentPage = ({ match }) => {
                 return (
                   <div>
                     <h3>Mentor: {lessonStatus.starGiven.username} </h3>
-                    <h3>Comment: {lessonStatus.comment} </h3>
+                    <h3>Comment: {lessonStatus.starComment} </h3>
                   </div>
                 )
               })}
