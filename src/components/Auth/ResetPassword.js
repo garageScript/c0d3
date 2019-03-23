@@ -1,8 +1,8 @@
 import React from 'react'
-import BaseValidationForm from '../helpers/auth/BaseValidationForm'
-import { debounce } from '../helpers/helpers'
+import BaseValidationForm from '../../helpers/auth/BaseValidationForm'
+import { debounce } from '../../helpers/helpers'
 import { withRouter } from 'react-router'
-import { RESET_PASSWORD } from '../db/queries'
+import { FORGOT_RESET_PASSWORD } from '../../db/queries'
 import { Mutation } from 'react-apollo'
 
 class ResetPassword extends BaseValidationForm {
@@ -51,7 +51,8 @@ class ResetPassword extends BaseValidationForm {
             {this.state.passwordConfirm.feedback}
           </div>
         </div>
-        <Mutation mutation={RESET_PASSWORD}>
+        <Mutation mutation={FORGOT_RESET_PASSWORD} onCompleted={() => {
+        }}>
           {(execute) => {
             return (
               <button className='btn btn-primary' type='submit' onClick={() => {
@@ -62,7 +63,7 @@ class ResetPassword extends BaseValidationForm {
                       forgotToken: this.props.match.params.token
                     }
                   }
-                })
+                }).then(() => { this.props.history.push('/signin') })
               }}>
             Submit New Password
               </button>

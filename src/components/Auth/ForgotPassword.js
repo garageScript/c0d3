@@ -1,8 +1,9 @@
 import React from 'react'
 import { Mutation } from 'react-apollo'
-import { SEND_EMAIL } from '../db/queries'
+import { SEND_FORGOT_EMAIL } from '../../db/queries'
+import { withRouter } from 'react-router'
 
-const ForgotPassword = () => {
+const ForgotPasswordComponent = ({ history }) => {
   let emailRef = React.createRef()
   return (
     <div className='container'>
@@ -15,7 +16,7 @@ const ForgotPassword = () => {
         ref={emailRef}
         />
       </label>
-      <Mutation mutation={SEND_EMAIL}>
+      <Mutation mutation={SEND_FORGOT_EMAIL} >
         {(execute) => {
           return (
             <button onClick={() => {
@@ -23,6 +24,8 @@ const ForgotPassword = () => {
                 variables: {
                   input: emailRef.current.value
                 }
+              }).then(() => {
+                history.push('/checkemail')
               })
             }}>Submit</button>)
         }}
@@ -31,4 +34,5 @@ const ForgotPassword = () => {
   )
 }
 
+const ForgotPassword = withRouter(ForgotPasswordComponent)
 export default ForgotPassword
