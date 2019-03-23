@@ -1,4 +1,4 @@
-const mailGun = require('../mailGun/mailGun')
+const mailGun = require('../mailGun/index')
 const { forgotResetPassword } = require('../auth/app')
 const nanoid = require('nanoid')
 
@@ -242,18 +242,20 @@ module.exports = {
   sendPasswordResetEmail: (obj, args, context) => {
     const randomToken = nanoid()
     const { value } = args
-    User.findOne({ where: { email: value } }).then(user => {
-      mailGun.sendPasswordResetEmail(value, randomToken)
+    return User.findOne({ where: { email: value } }).then(user => {
+      if (!user) return 'User not found'
+      mailGun.sendPasswordResetEmail(user, randomToken)
       user.update({ forgotToken: randomToken })
+      return 'Success'
     })
-    return 'Success'
   },
   forgotResetPassword: (obj, args, context) => {
     const { forgotToken, password } = args.input
     User.findOne({ where: { forgotToken: forgotToken } }).then(user => {
+      if (!user) return 'User not found'
       forgotResetPassword(forgotToken, password, user)
       user.update({ forgotToken: '' })
+      return 'Success'
     })
-    return 'Success'
   }
 }

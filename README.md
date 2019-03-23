@@ -100,6 +100,14 @@ If working on local computer, tests can be ran in the chrome browser by followin
 #### API Link
 link `https://api.mattermost.com/#tag/users`
 
+## Mailgun
+
+### Setup
+Ask admin for Mail API key and add them to .env file. This is used for sending emails
+
+### Documentation
+https://documentation.mailgun.com/en/latest/quickstart-sending.html#send-with-smtp-or-api
+
 ## Logging
 The c0d3 codebase uses winston.js for application level logging.  In order to import the logger, use the following technique.
 
@@ -155,10 +163,3 @@ https://dba.stackexchange.com/questions/65662/postgres-how-to-insert-row-with-au
   - belongsTo User
 - UserRoom (unread, isLastRoom)
 
-## Mailgun
-
-### Setup
-Ask admin for Mail API key, Mail Domain and add them to .env file.
-
-### Documentation
-https://documentation.mailgun.com/en/latest/quickstart-sending.html#send-with-smtp-or-api
