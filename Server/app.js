@@ -1,7 +1,7 @@
 const log = require('./log')(__filename)
 const config = require('../config.js')
 const path = require('path')
-const { User, sequelize } = require('./dbload.js')
+const { User, sequelize, Lesson, Challenge } = require('./dbload.js')
 
 const bcrypt = require('bcrypt')
 const passport = require('passport')
@@ -123,6 +123,16 @@ apolloServer.applyMiddleware({
 const drawRoutes = require('./draw/draw')
 const solution = require('./solution')
 app.use('/apis/draw', drawRoutes)
+app.get('/api/lessons', (req, res) => {
+  Lesson.findAll({
+    include: [{
+      model: Challenge
+    }],
+    order: [ ['order', 'ASC'], [Challenge, 'order', 'ASC']]
+  }).then((results) => {
+    res.json(results)
+  })
+})
 app.use('/solution', solution)
 
 // Mobile
