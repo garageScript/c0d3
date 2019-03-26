@@ -54,17 +54,6 @@ const LessonCard = ({
     ? loggedInUser.userLesson
     : { isTeaching: null, isPassed: null }
   const { isTeaching, isPassed } = lessonStatus
-  const log = <Query
-    query={SUBMISSIONS}
-    variables={{
-      in: { id },
-      where: { status: 'open' }
-    }}
-  >
-    {loadComponent(data => (
-      <div> {`${data.submissions.length} pending`} </div>
-    ))}
-  </Query>
   return (
     <div
       className={`card gs-lesson-card ${cardType} ${isPassed ? 'passed' : ''}`}
