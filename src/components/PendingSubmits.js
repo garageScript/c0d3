@@ -11,8 +11,8 @@ export const PendingSubmits = ({ id }) => {
       where: { status: 'open' }
     }}
   >
-    {loadComponent(data => (
-      <div> {`${data.submissions.length} pending`} </div>
+    {loadComponent(({ submissions }) => (
+      <div> {`${submissions.length} pending`} </div>
     ))}
   </Query>
   )

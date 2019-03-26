@@ -74,7 +74,7 @@ const LessonCard = ({
                 ? 'Review student submissions'
                 : 'Continue'}
             </Link>
-            <PendingSubmits id={id} />
+            <PendingSubmits id={id} isPassed={isPassed} />
           </div>
         </div>
       </div>
