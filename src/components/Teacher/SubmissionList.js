@@ -14,7 +14,7 @@ const SubmissionList = ({
   })
 
   let submissionsToShow = adoptedStudentFilter
-    ? (submissions || []).filter(mrInfo => studentMap[mrInfo.user.id])
+    ? (submissions || []).filter(mrInfo => mrInfo.user && studentMap[mrInfo.user.id])
     : submissions || []
 
   submissionsToShow = submissionsToShow.filter(
