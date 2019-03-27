@@ -83,7 +83,7 @@ class ResetPassword extends BaseValidationForm {
                       }
                     }
                   }).then(() => { this.setState({ complete: true }) })
-                }}>
+                }} >
             Submit New Password
                 </button>
               )
