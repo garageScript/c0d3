@@ -378,7 +378,8 @@ export const USER_DATA = gql`
   query userInfo($in: UserInput){
     userInfo(input: $in){
       name, 
-      createdAt
+      createdAt,
+      stars { studentId ,comment, lessonId }
     }
   }
 `
@@ -398,5 +399,12 @@ export const SEND_FORGOT_EMAIL = gql`
 export const FORGOT_RESET_PASSWORD = gql`
   mutation($input: PasswordChange){
     forgotResetPassword(input: $input)
+  }
+`
+export const GET_USERNAME = gql`
+  query getUsername($input: String){
+    getUsername(userId: $input){
+      username
+    }
   }
 `

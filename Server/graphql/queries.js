@@ -212,5 +212,13 @@ module.exports = {
       userData.stars = allStars
       return userData
     })
+  },
+
+  getUsername: (obj, args, context) => {
+    return User.findOne({
+      where: {
+        id: args.userId
+      }
+    })
   }
 }
