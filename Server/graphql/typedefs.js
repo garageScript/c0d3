@@ -166,6 +166,7 @@ input LessonInput {
   videoUrl: String
   order: Int
   title: String
+  chatUrl: String
 }
 
 input SubmissionInput {
@@ -244,6 +245,7 @@ type Lesson {
   challenges: [Challenge]
   users: [User]
   currentUser: User
+  chatUrl: String
 }
 
 type Challenge {

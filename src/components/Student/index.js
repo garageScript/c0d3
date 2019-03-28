@@ -83,6 +83,7 @@ const StudentPage = ({ match }) => {
                 />
               ))}
             </Query>
+            <a type='button' className='btn btn-info' href={data.lessonInfo.chatUrl} style={{ position: 'fixed', right: 0, bottom: 0 }}>Need Help?</a>
           </Fragment>
         )
       }}
