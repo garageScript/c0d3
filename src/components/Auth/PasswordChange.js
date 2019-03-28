@@ -1,7 +1,7 @@
 import React from 'react';
-import authClient from '../helpers/auth/client';
-import BaseValidationForm from '../helpers/auth/BaseValidationForm'
-import { debounce } from '../helpers/helpers'
+import authClient from '../../helpers/auth/client';
+import BaseValidationForm from '../../helpers/auth/BaseValidationForm'
+import { debounce } from '../../helpers/helpers'
 
 class PwChangeForm extends BaseValidationForm {
   constructor(props) {

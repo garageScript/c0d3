@@ -1,8 +1,8 @@
 import React from 'react'
-import authClient from '../helpers/auth/client'
-import BaseValidationForm from '../helpers/auth/BaseValidationForm'
-import { debounce } from '../helpers/helpers'
-import '../css/AuthForm.css'
+import authClient from '../../helpers/auth/client'
+import BaseValidationForm from '../../helpers/auth/BaseValidationForm'
+import { debounce } from '../../helpers/helpers'
+import '../../css/AuthForm.css'
 
 class SignUpForm extends BaseValidationForm {
   constructor (props) {

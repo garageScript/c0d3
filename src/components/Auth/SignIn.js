@@ -1,8 +1,8 @@
 import React from 'react'
 import { Redirect } from 'react-router'
 import { Link } from 'react-router-dom'
-import authClient from '../helpers/auth/client'
-import '../css/AuthForm.css'
+import authClient from '../../helpers/auth/client'
+import '../../css/AuthForm.css'
 
 class SignInForm extends React.Component {
   constructor (props) {
