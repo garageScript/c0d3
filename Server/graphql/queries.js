@@ -89,6 +89,7 @@ module.exports = {
 
   lessonStatus: (obj, args, context) => {
     let lessonStatus = {}
+
     return UserLesson.findOne({
       where: {
         userId: args.input.userId || context.user.id,
@@ -97,6 +98,7 @@ module.exports = {
     })
       .then(res => {
         lessonStatus = res
+        if (!lessonStatus) return null
         return Star.findOne({
           where: {
             studentId: args.input.userId || context.user.id,
