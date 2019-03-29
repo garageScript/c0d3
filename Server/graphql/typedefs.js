@@ -43,9 +43,11 @@ type Query {
   "Get Announcements"
   announcements: [Announcement] 
 
-
   "Get UserInfo"
   userInfo(input: UserInput): UserData
+  
+  "Get username"
+  getUsername(userId: String): User
 }
 
 type Mutation {
@@ -111,6 +113,7 @@ type Mutation {
 
   "Reset password for non-authorized clients"
   forgotResetPassword(input: PasswordChange): String
+
 }
 
 input PasswordChange {
@@ -258,6 +261,7 @@ type Star {
   lessonId: String
   studentId: String
   mentorId: String
+  comment: String
 }
 
 type Announcement {
