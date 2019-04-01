@@ -102,6 +102,7 @@ const NewLessonPage = () => {
                                       { label: 'docUrl', type: 'text' },
                                       { label: 'githubUrl', type: 'text' },
                                       { label: 'videoUrl', type: 'text' },
+                                      { label: 'chatUrl', type: 'text' },
                                       { label: 'order', type: 'text' }
                                     ]}
                                     values={lesson}
@@ -155,6 +156,7 @@ const NewLessonPage = () => {
                     { label: 'docUrl', type: 'text' },
                     { label: 'githubUrl', type: 'text' },
                     { label: 'videoUrl', type: 'text' },
+                    { label: 'chatUrl', type: 'text' },
                     { label: 'order', type: 'text' }
                   ]
                 } else {

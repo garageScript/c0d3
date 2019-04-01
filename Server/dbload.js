@@ -23,7 +23,8 @@ const Lesson = sequelize.define('lesson', {
   githubUrl: Sequelize.STRING,
   videoUrl: Sequelize.STRING,
   order: Sequelize.INTEGER,
-  title: Sequelize.STRING
+  title: Sequelize.STRING,
+  chatUrl: Sequelize.STRING
 })
 
 const User = sequelize.define('user', {

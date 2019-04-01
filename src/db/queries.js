@@ -55,6 +55,7 @@ export const LESSON_INFO = gql`
       videoUrl
       order
       title
+      chatUrl
       challenges {
         id
         description
@@ -161,6 +162,7 @@ export const LESSONS = gql`
       videoUrl
       title
       order
+      chatUrl
       challenges {
         id
         description
@@ -313,6 +315,7 @@ export const SAVE_LESSON = gql`
       videoUrl
       order
       title
+      chatUrl
     }
   }
 `
@@ -327,6 +330,7 @@ export const CREATE_LESSON = gql`
       videoUrl
       order
       title
+      chatUrl
     }
   }
 `
