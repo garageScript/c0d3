@@ -121,7 +121,7 @@ Message.belongsTo(Room)
 Message.belongsTo(User)
 Room.hasMany(Message)
 
-sequelize.sync({ alter: true })
+// sequelize.sync({ alter: true })
 
 module.exports = {
   Announcement,

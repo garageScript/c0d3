@@ -85,10 +85,10 @@ const StudentPage = ({ match }) => {
                 />
               ))}
             </Query>
-            <a type='button' className='btn btn-light' href={data.lessonInfo.chatUrl} style={{ position: 'fixed', right: 0, bottom: 0, width: '105px', height: '105px', borderRadius: '50%' }}>
+            <a type='button' className='btn' href={data.lessonInfo.chatUrl} style={{ position: 'fixed', right: 0, bottom: 0, width: '105px', height: '105px', borderRadius: '50%', padding: '0' }}>
               <div className='font-weight-bold' style={{ position: 'relative', top: '25%', fontSize: 12, color: '#343a40' }}>
                 <i className='fa fas fa-comment fa-3x' />
-                <div style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>Help?</div>
+                <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', marginTop: '6px' }}>Help?</div>
               </div>
             </a>
           </Fragment>
