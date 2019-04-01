@@ -98,7 +98,7 @@ module.exports = {
     })
       .then(res => {
         lessonStatus = res
-        if (!lessonStatus) return null
+        if (!res) return null
         return Star.findOne({
           where: {
             studentId: args.input.userId || context.user.id,
