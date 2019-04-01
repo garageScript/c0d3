@@ -23,7 +23,8 @@ const Lesson = sequelize.define('lesson', {
   githubUrl: Sequelize.STRING,
   videoUrl: Sequelize.STRING,
   order: Sequelize.INTEGER,
-  title: Sequelize.STRING
+  title: Sequelize.STRING,
+  chatUrl: Sequelize.STRING
 })
 
 const User = sequelize.define('user', {
@@ -120,7 +121,7 @@ Message.belongsTo(Room)
 Message.belongsTo(User)
 Room.hasMany(Message)
 
-// sequelize.sync({ alter: true })
+sequelize.sync({ alter: true })
 
 module.exports = {
   Announcement,
