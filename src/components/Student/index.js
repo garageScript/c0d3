@@ -87,7 +87,7 @@ const StudentPage = ({ match }) => {
             </Query>
             <a type='button' className='btn btn-light' href={data.lessonInfo.chatUrl} style={{ position: 'fixed', right: 0, bottom: 0, width: '105px', height: '105px', borderRadius: '50%' }}>
               <div className='font-weight-bold' style={{ position: 'relative', top: '25%', fontSize: 12, color: '#343a40' }}>
-                <i className='fas fa-comment fa-3x' />
+                <i className='fa fas fa-comment fa-3x' />
                 <div style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>Help?</div>
               </div>
             </a>
