@@ -198,6 +198,7 @@ module.exports = {
   },
 
   userInfo: (obj, args, context) => {
+    console.log(args.input)
     const userData = {}
     return User.findOne({
       where: {
@@ -211,7 +212,9 @@ module.exports = {
         where: { mentorId: userData.id }
       })
     }).then(allStars => {
-      userData.stars = allStars
+      userData.stars = allStars.filter(star =>
+        star.mentorId !== userData.id
+      )
       return userData
     })
   },
