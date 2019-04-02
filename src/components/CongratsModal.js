@@ -15,6 +15,7 @@ const Teachers = ({ clientState, lessonInfo, selectUser, mentorSearchVal }) => (
       const searchedMentors = teachers.filter((mentor)=>{
         return mentor.username.toLowerCase().includes(mentorSearchVal.toLowerCase()) 
       })
+      if (!searchedMentors[0]) return <div> No Results </div>
       return (
         <div>
           {searchedMentors.map((teacher, i) => {
@@ -70,7 +71,7 @@ class CongratsModal extends React.Component {
     return(
       <Query query={LESSON_STATUS} variables={{ in: { id: this.props.lessonInfo.id } }}>
         {loadComponent(({lessonStatus})=>{
-           if (
+          if (
              !lessonStatus ||
             !lessonStatus.isPassed ||
             lessonStatus.starGiven
@@ -100,6 +101,11 @@ class CongratsModal extends React.Component {
                           style={{ height: '200px', overflow: 'auto' }}
                         >
                           <h5>Who helped you the most?</h5>
+                            <input type='text' 
+                              onChange={(e)=>{this.mentorSearchHandler(e)}}
+                              style={{width: '100%'}}
+                              placeholder='Search Mentor'
+                          />
                           <Teachers
                             clientState={clientState}
                             lessonInfo={this.props.lessonInfo}
@@ -112,7 +118,6 @@ class CongratsModal extends React.Component {
                           />
                         </div>
                           <div className='modal-footer'>
-                          <input type='text' onChange={(e)=>{this.mentorSearchHandler(e)}} placeholder='Search Mentor'/>
                           <textarea defaultValue={'Thank you!'}  onChange={(e)=>{this.commentHandler(e)}}/>  
 
                           <Mutation mutation={GIVE_STAR}>
