@@ -198,13 +198,13 @@ module.exports = {
   },
 
   userInfo: (obj, args, context) => {
-    console.log(args.input)
     const userData = {}
     return User.findOne({
       where: {
         username: args.input.username
       }
     }).then(user => {
+      if (!user) return []
       userData.id = user.id
       userData.name = user.name
       userData.createdAt = user.createdAt
