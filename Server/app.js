@@ -82,6 +82,11 @@ passport.use(new LocalStrategy(async (username, password, done) => {
   return done(null, userData)
 }))
 
+app.post('/cli/signin', (req, res) => {
+  console.log('body', req.body)
+  res.send(req.body)
+})
+
 app.use(session({
   secret: config.SESSION_SECRET,
   domain: config.HOST_NAME,
