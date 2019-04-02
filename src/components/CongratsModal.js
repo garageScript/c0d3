@@ -71,7 +71,7 @@ class CongratsModal extends React.Component {
     return(
       <Query query={LESSON_STATUS} variables={{ in: { id: this.props.lessonInfo.id } }}>
         {loadComponent(({lessonStatus})=>{
-          if (
+           if (
              !lessonStatus ||
             !lessonStatus.isPassed ||
             lessonStatus.starGiven
@@ -102,7 +102,7 @@ class CongratsModal extends React.Component {
                         >
                           <h5>Who helped you the most?</h5>
                             <input type='text' 
-                              onChange={(e)=>{this.mentorSearchHandler(e)}}
+                              onChange={this.mentorSearchHandler}
                               style={{width: '100%'}}
                               placeholder='Search Mentor'
                           />
