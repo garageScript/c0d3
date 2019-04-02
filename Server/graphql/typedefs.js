@@ -37,7 +37,7 @@ type Query {
   "Given stars"
   givenStars: [Star]
 
- "Recieved Stars"
+ "Received Stars"
   receivedStars(input: UserInput):[Star]
 
   "Get Announcements"
