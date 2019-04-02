@@ -9,12 +9,16 @@ import {
 } from '../db/queries'
 import { loadComponent } from './shared/shared'
 
-const Teachers = ({ clientState, lessonInfo, selectUser }) => (
+const Teachers = ({ clientState, lessonInfo, selectUser, mentorSearchVal }) => (
   <Query query={TEACHERS} variables={{ in: { id: lessonInfo.id } }}>
     {loadComponent(({teachers}) => {
+      const searchedMentors = teachers.filter((mentor)=>{
+        return mentor.username.toLowerCase().includes(mentorSearchVal.toLowerCase()) 
+      })
+      if (!searchedMentors[0]) return <div> No Results </div>
       return (
         <div>
-          {teachers.map((teacher, i) => {
+          {searchedMentors.map((teacher, i) => {
             const style = { cursor: 'pointer' }
             if (clientState.data.starRecipent === teacher.username) {
               style.backgroundColor = 'lightgreen'
@@ -46,13 +50,20 @@ class CongratsModal extends React.Component {
     super(props)
     this.state = {
       commentUpdate: 'Thank you!',
-      selected: {}
+      selected: {},
+      mentorSearchVal: ''
     }
   }
 
   commentHandler = (e)=>{
     this.setState({
       commentUpdate: e.target.value  
+    })
+  }
+
+  mentorSearchHandler = (e)=>{
+    this.setState({
+      mentorSearchVal: e.target.value
     })
   }
 
@@ -64,7 +75,7 @@ class CongratsModal extends React.Component {
              !lessonStatus ||
             !lessonStatus.isPassed ||
             lessonStatus.starGiven
-          ) { return '' }
+          ) { return '' } 
 
         return (
             <div
@@ -90,6 +101,11 @@ class CongratsModal extends React.Component {
                           style={{ height: '200px', overflow: 'auto' }}
                         >
                           <h5>Who helped you the most?</h5>
+                            <input type='text' 
+                              onChange={this.mentorSearchHandler}
+                              style={{width: '100%'}}
+                              placeholder='Search Mentor'
+                          />
                           <Teachers
                             clientState={clientState}
                             lessonInfo={this.props.lessonInfo}
@@ -98,10 +114,10 @@ class CongratsModal extends React.Component {
                                 selected: { userId: uid }
                               })
                             }}
+                            mentorSearchVal={this.state.mentorSearchVal}
                           />
                         </div>
                           <div className='modal-footer'>
-
                           <textarea defaultValue={'Thank you!'}  onChange={(e)=>{this.commentHandler(e)}}/>  
 
                           <Mutation mutation={GIVE_STAR}>
