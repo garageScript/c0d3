@@ -212,6 +212,7 @@ module.exports = {
         where: { mentorId: userData.id }
       })
     }).then(allStars => {
+      if (!allStars) return {}
       userData.stars = allStars.filter(star =>
         star.mentorId !== userData.id
       )
