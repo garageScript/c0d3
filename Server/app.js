@@ -82,9 +82,21 @@ passport.use(new LocalStrategy(async (username, password, done) => {
   return done(null, userData)
 }))
 
-app.post('/cli/signin', (req, res) => {
-  console.log('body', req.body)
-  res.send(req.body)
+app.post('/cli/signin', async (req, res) => {
+  const { username, password } = req.body
+  try {
+    const user = await User.findOne({ where: { username } })
+    const pwIsValid = await bcrypt.compare(password, user.password)
+    if (!pwIsValid) throw {}
+    res.status(200).json({
+      username,
+      token: 'dkfafodfiaf90'
+    })
+    log.info(`Signin to CLI successful: ${username}`)
+  } catch (error) {
+    log.error(`Signin to CLI failed: ${error}`)
+    res.status(403).json({ username, error })
+  }
 })
 
 app.use(session({

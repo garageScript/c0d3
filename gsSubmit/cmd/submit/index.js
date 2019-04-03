@@ -9,7 +9,7 @@ module.exports = async (inputs) => {
   try {
     const credentials = await credService.getCredentials()
     const url = inputs.url
-      ? new URL('/signin', inputs.url) : new URL('/signin', 'https://c0d3.com')
+      ? new URL('/cli/signin', inputs.url) : new URL('/cli/signin', 'https://c0d3.com')
 
     if (!credentials.token) {
       const success = await credService.validate(credentials, url.href)
@@ -32,7 +32,6 @@ module.exports = async (inputs) => {
 
     // From this point onward, all graphql calls are mutating
     // database data.
-    console.log('---------------token--------------------', credentials.token)
     await sendSubmission(currentLesson.id, userId, diff, challengeId, graphqlEndpoint)
   } catch (e) {
     console.error(e)

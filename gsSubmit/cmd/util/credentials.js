@@ -43,9 +43,11 @@ function askForUsernamePassword () {
   })
 }
 
+let getToken
+
 async function validate (credentials, url) {
   try {
-    await axios.post(url, {
+    getToken = await axios.post(url, {
       username: credentials.username,
       password: credentials.password
     })
@@ -73,7 +75,7 @@ function createHiddenDir () {
 
 function createCredentialsFile (dir = credentialsPath, username) {
   return new Promise((resolve, reject) => {
-    fs.writeFile(dir, JSON.stringify({ username, token: 'c0d3' }), err => {
+    fs.writeFile(dir, JSON.stringify({ username, token: getToken.data.token }), err => {
       if (err) return reject('Unable to save credentials')
       resolve()
     })
