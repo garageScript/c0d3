@@ -52,9 +52,6 @@ type Query {
 }
 
 type Mutation {
-  "Create or find student, then Update student enrollment to a lesson"
-  enrollStudent(input: LessonId): UserLesson
-
   "Create a star and assign it to the mentor"
   giveStar(input: LessonUserId): String
   

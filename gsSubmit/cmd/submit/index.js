@@ -6,11 +6,10 @@ const { request } = require('graphql-request')
 const credService = require('../util/credentials.js')
 
 module.exports = async (inputs) => {
-
   try {
     const credentials = await credService.getCredentials()
-    const url = inputs.url ?
-      new URL('/signin', inputs.url) : new URL('/signin', 'https://c0d3.com')
+    const url = inputs.url
+      ? new URL('/signin', inputs.url) : new URL('/signin', 'https://c0d3.com')
 
     if (!credentials.token) {
       const success = await credService.validate(credentials, url.href)
@@ -33,47 +32,50 @@ module.exports = async (inputs) => {
 
     // From this point onward, all graphql calls are mutating
     // database data.
-    await enrollStudent(currentLesson.id, userId, graphqlEndpoint)
+    console.log('---------------token--------------------', credentials.token)
     await sendSubmission(currentLesson.id, userId, diff, challengeId, graphqlEndpoint)
-
-    } catch(e) {
-      console.error(e)
-    }
+  } catch (e) {
+    console.error(e)
+  }
 }
 
-function getGraphqlEndpoint(inputs) {
+function getGraphqlEndpoint (inputs) {
   if (inputs.url) return new URL('/graphql', inputs.url)
   return new URL('/graphql', 'https://c0d3.com')
 }
 
-function checkCurrentBranch() {
+function checkCurrentBranch () {
   return new Promise((resolve, reject) => {
     git.branch((error, stdout, stderr) => {
       if (error || stderr) return reject(error || stderr)
       console.log('\nYou are currently on branch ' +
         chalk.bold.blue(stdout.current))
-      if (stdout.current === 'master') return reject('Submissions ' +
+      if (stdout.current === 'master') {
+        return reject('Submissions ' +
         'must come from branches that are ' + chalk.bold.red('not master. ') +
         'Please make sure that you branch, add, commit, and submit correctly.')
+      }
       resolve(stdout.current)
     })
   })
 }
 
-function getDiffAgainstMaster(current) {
+function getDiffAgainstMaster (current) {
   return new Promise((resolve, reject) => {
     git.diff([`--color`, `master..${current}`], (error, stdout, stderr) => {
       if (error || stderr) return reject(error || stderr)
-      if (stdout.length === 0 || stdout === '\n') return reject(
-        'There are ' + chalk.bold.red('no differences ') +
+      if (stdout.length === 0 || stdout === '\n') {
+        return reject(
+          'There are ' + chalk.bold.red('no differences ') +
         'in your current branch from your master branch.')
+      }
       console.log(`Differences from your current branch to master\n\n`, stdout)
       return resolve()
     })
   })
 }
 
-function getUserId(username, graphqlEndpoint) {
+function getUserId (username, graphqlEndpoint) {
   const usersQuery = `
   query Users($userInfo: UserInput) {
     users(input: $userInfo) {
@@ -83,7 +85,7 @@ function getUserId(username, graphqlEndpoint) {
 
   const usersQueryVar = {
     userInfo: {
-      username,
+      username
     }
   }
 
@@ -91,11 +93,11 @@ function getUserId(username, graphqlEndpoint) {
     .then(({ users }) => {
       const [user] = users
       return user.id
-      }
+    }
     )
 }
 
-function queryForLessons(graphqlEndpoint) {
+function queryForLessons (graphqlEndpoint) {
   const lessonsQuery = `
   {
     lessons {
@@ -112,7 +114,7 @@ function queryForLessons(graphqlEndpoint) {
   return request(graphqlEndpoint, lessonsQuery).then(res => res.lessons)
 }
 
-function promptForLessons(lessons) {
+function promptForLessons (lessons) {
   const lessonsByOrder = lessons
     .sort((a, b) => a.order - b.order)
     .reduce((acc, { order, id, title, challenges }) => {
@@ -153,7 +155,7 @@ function promptForLessons(lessons) {
   })
 }
 
-function promptForChallenge(currentLesson) {
+function promptForChallenge (currentLesson) {
   const challengesByOrder = currentLesson.challenges
     .sort((a, b) => a.order - b.order)
     .reduce((acc, { title, order, id }) => {
@@ -195,7 +197,7 @@ function promptForChallenge(currentLesson) {
   })
 }
 
-function createDiff(currentBranch) {
+function createDiff (currentBranch) {
   return new Promise((resolve, reject) => {
     git.diff([`master..${currentBranch}`], (error, stdout, stderr) => {
       if (error || stderr) return reject(error || stderr)
@@ -204,25 +206,7 @@ function createDiff(currentBranch) {
   })
 }
 
-function enrollStudent(lessonId, userId, graphqlEndpoint) {
-  const enrollMutation = `
-  mutation enrollStudent($input: LessonId) {
-    enrollStudent(input: $input) {
-      isPassed
-      isTeaching
-      isEnrolled
-    }
-  }`
-  const enrollVariables = {
-    input: {
-      id: lessonId,
-      userId: `${userId}`
-    }
-  }
-  return request(graphqlEndpoint, enrollMutation, enrollVariables)
-}
-
-function sendSubmission(lessonId, userId, diff, challengeId, graphqlEndpoint) {
+function sendSubmission (lessonId, userId, diff, challengeId, graphqlEndpoint) {
   const createSubmission = `
   mutation CreateSubmission($submission: SubmissionInput) {
     createSubmission(input: $submission) {
@@ -241,6 +225,6 @@ function sendSubmission(lessonId, userId, diff, challengeId, graphqlEndpoint) {
     }
   }
 
-  return request(graphqlEndpoint, createSubmission,variablesForCreation)
+  return request(graphqlEndpoint, createSubmission, variablesForCreation)
     .then(() => console.log('\nYour submission was successfully received'))
 }

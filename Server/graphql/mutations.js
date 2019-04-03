@@ -14,17 +14,6 @@ const {
 } = require('../dbload')
 
 module.exports = {
-  enrollStudent: (obj, args, context) => {
-    return UserLesson.findOrCreate({
-      where: {
-        lessonId: args.input.id,
-        userId: args.input.userId || context.user.id
-      }
-    }).then(d => {
-      d[0].update({ isEnrolled: Date.now() })
-      return d
-    })
-  },
   rejectSubmission: (obj, args, context) => {
     return Submission.findOne({
       where: {
