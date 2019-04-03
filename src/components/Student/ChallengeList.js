@@ -63,7 +63,7 @@ const SubmissionMessage = ({ submission }) => {
           Your solution was reviewed and accepted by
           {reviewer && reviewer.username ? (
             <span className='gs-bold user-link'>
-              <Link to={`/profile/${reviewer.username}`}>{reviewer.username}</Link>
+              <Link to={`/profile/${reviewer.id}`}>{reviewer.username}</Link>
             </span>
           ) : (
             ' a teacher'
