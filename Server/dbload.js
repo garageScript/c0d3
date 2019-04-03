@@ -38,7 +38,8 @@ const User = sequelize.define('user', {
     type: Sequelize.BOOLEAN,
     defaultValue: false
   },
-  forgotToken: Sequelize.STRING
+  forgotToken: Sequelize.STRING,
+  cliToken: Sequelize.STRING
 })
 
 const UserLesson = sequelize.define('userLesson', {
