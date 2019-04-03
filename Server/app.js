@@ -25,6 +25,7 @@ const pushNotification = require('./lib/pushNotification')
 const gitTrackerHelper = require('./gitTracker/gitTracker')
 const matterMostService = require('./auth/lib/matterMostService')
 const gitLab = require('./auth/lib/helpers')
+const nanoid = require('nanoid')
 
 // Middleware to process requests
 app.use(express.urlencoded({ extended: true }))
@@ -85,12 +86,19 @@ passport.use(new LocalStrategy(async (username, password, done) => {
 app.post('/cli/signin', async (req, res) => {
   const { username, password } = req.body
   try {
+    let createToken
     const user = await User.findOne({ where: { username } })
     const pwIsValid = await bcrypt.compare(password, user.password)
-    if (!pwIsValid) throw {}
+    if (!pwIsValid) throw new Error('Password does not match')
+    if (!user.cliToken) {
+      createToken = nanoid()
+      user.update({
+        cliToken: createToken
+      })
+    }
     res.status(200).json({
       username,
-      token: 'dkfafodfiaf90'
+      token: user.cliToken || createToken
     })
     log.info(`Signin to CLI successful: ${username}`)
   } catch (error) {
