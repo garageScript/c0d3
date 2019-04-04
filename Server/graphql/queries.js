@@ -211,7 +211,7 @@ module.exports = {
       return Star.findAll({
         where: { mentorId: userData.id }
       })
-    }).then((allStars = []) => {
+    }).then(allStars => {
       userData.stars = allStars.filter(star =>
         star.mentorId !== userData.id
       )
