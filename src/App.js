@@ -32,6 +32,7 @@ import ResetPassword from './components/Auth/ResetPassword'
 
 const Home = () => {
   const reset = window.userInfo.mustReset
+  console.log('hello')
   if (reset) {
     window.location.assign(`${window.location}settings?reset=${reset}`)
   }

@@ -204,6 +204,7 @@ module.exports = {
         username: args.input.username
       }
     }).then(user => {
+      if (!user) return []
       userData.id = user.id
       userData.name = user.name
       userData.createdAt = user.createdAt
@@ -211,7 +212,9 @@ module.exports = {
         where: { mentorId: userData.id }
       })
     }).then(allStars => {
-      userData.stars = allStars
+      userData.stars = allStars.filter(star =>
+        star.mentorId !== userData.id
+      )
       return userData
     })
   },
