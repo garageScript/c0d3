@@ -225,5 +225,13 @@ module.exports = {
         id: args.userId
       }
     })
+  },
+
+  getLessonTitle: (obj, args, context) => {
+    return Lesson.findOne({
+      where: {
+        id: args.lessonId
+      }
+    })
   }
 }

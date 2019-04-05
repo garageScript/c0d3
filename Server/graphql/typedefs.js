@@ -48,6 +48,9 @@ type Query {
   
   "Get username"
   getUsername(userId: String): User
+
+  "Get lesson title"
+  getLessonTitle(lessonId: String): Lesson 
 }
 
 type Mutation {

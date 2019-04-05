@@ -412,3 +412,10 @@ export const GET_USERNAME = gql`
     }
   }
 `
+export const GET_LESSON_TITLE = gql`
+  query getLessonTitle($input: String){
+    getLessonTitle(lessonId: $input){
+      title
+    }
+  }
+`

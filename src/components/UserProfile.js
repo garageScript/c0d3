@@ -3,7 +3,7 @@ import { Query } from 'react-apollo'
 import moment from 'moment'
 import 'react-datepicker/dist/react-datepicker.css'
 import '../css/UserProfile.css'
-import { USER_DATA, GET_USERNAME } from '../db/queries'
+import { USER_DATA, GET_USERNAME, GET_LESSON_TITLE } from '../db/queries'
 import { loadComponent } from './shared/shared'
 
 const UserProfile = ({ match }) => {
@@ -28,6 +28,11 @@ const UserProfile = ({ match }) => {
                 </Query>
                 <hr />
                 <p>
+                  <Query query={GET_LESSON_TITLE} variables={{ input: s.lessonId }}>
+                    {loadComponent(({ getLessonTitle }) => {
+                      return <h5 className='card-title'>{ getLessonTitle.title }</h5>
+                    })}
+                  </Query>
                   <i className='fa fa-quote-left' />
                   <span style={{ marginLeft: '10px', marginRight: '10px' }}>
                     {comment}
