@@ -86,19 +86,19 @@ passport.use(new LocalStrategy(async (username, password, done) => {
 app.post('/cli/signin', async (req, res) => {
   const { username, password } = req.body
   try {
-    let createToken
     const user = await User.findOne({ where: { username } })
     const pwIsValid = await bcrypt.compare(password, user.password)
     if (!pwIsValid) throw new Error('Password does not match')
+    let cliToken
     if (!user.cliToken) {
-      createToken = nanoid()
+      cliToken = nanoid()
       user.update({
-        cliToken: createToken
+        cliToken: cliToken
       })
     }
     res.status(200).json({
       username,
-      token: user.cliToken || createToken
+      token: user.cliToken || cliToken
     })
     log.info(`Signin to CLI successful: ${username}`)
   } catch (error) {
