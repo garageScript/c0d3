@@ -19,7 +19,7 @@ const UserProfile = ({ match }) => {
           let comment = s.comment
           if (!comment) comment = 'Thank you for helping me! :)'
           return (
-            <div className='card testimonial-card' style={{ display: 'inline-block', margin: '20px' }}>
+            <div className='card testimonial-card' style={{ display: 'inline-block', margin: '20px', width: '300px' }}>
               <div className='card-body'>
                 <Query query={GET_USERNAME} variables={{ input: s.studentId }}>
                   {loadComponent(({ getUsername }) => {
