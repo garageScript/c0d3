@@ -3,7 +3,7 @@ import { Query } from 'react-apollo'
 import moment from 'moment'
 import 'react-datepicker/dist/react-datepicker.css'
 import '../css/UserProfile.css'
-import { USER_DATA, GET_USERNAME, GET_LESSON_TITLE } from '../db/queries'
+import { USER_DATA, GET_USERNAME, LESSONS } from '../db/queries'
 import { loadComponent } from './shared/shared'
 
 const UserProfile = ({ match }) => {
@@ -16,6 +16,7 @@ const UserProfile = ({ match }) => {
       } }) => {
         const firstName = name.split()[0]
         const userStars = stars.map((s) => {
+          console.log('stars:', stars)
           let comment = s.comment
           if (!comment) comment = 'Thank you for helping me! :)'
           return (
@@ -28,9 +29,11 @@ const UserProfile = ({ match }) => {
                 </Query>
                 <hr />
                 <p>
-                  <Query query={GET_LESSON_TITLE} variables={{ input: s.lessonId }}>
-                    {loadComponent(({ getLessonTitle }) => {
-                      return <h5 className='card-title'>{ getLessonTitle.title }</h5>
+                  <Query query={LESSONS}>
+                    {loadComponent(({ lessons }) => {
+                      console.log('lessons:', lessons)
+                      const lessonTitle = lessons.filter(l => l.id === s.lessonId)
+                      return <h5 className='card-title'>{ lessonTitle }</h5>
                     })}
                   </Query>
                   <i className='fa fa-quote-left' />
