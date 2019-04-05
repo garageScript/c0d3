@@ -89,16 +89,16 @@ app.post('/cli/signin', async (req, res) => {
     const user = await User.findOne({ where: { username } })
     const pwIsValid = await bcrypt.compare(password, user.password)
     if (!pwIsValid) throw new Error('Password does not match')
-    let cliToken
-    if (!user.cliToken) {
+    let cliToken = user.cliToken
+    if (!cliToken) {
       cliToken = nanoid()
       user.update({
         cliToken: cliToken
       })
     }
-    res.status(200).json({
+    res.json({
       username,
-      token: user.cliToken || cliToken
+      cliToken
     })
     log.info(`Signin to CLI successful: ${username}`)
   } catch (error) {

@@ -12,9 +12,9 @@ module.exports = async (inputs) => {
       ? new URL('/cli/signin', inputs.url) : new URL('/cli/signin', 'https://c0d3.com')
 
     if (!credentials.token) {
-      const success = await credService.validate(credentials, url.href)
-      if (!success) return console.error('Invalid Credentials')
-      credService.save(credentials)
+      const cliToken = await credService.validate(credentials, url.href)
+      if (!cliToken) return console.error('Invalid Credentials')
+      credService.save(credentials, cliToken)
     }
 
     const currentBranch = await checkCurrentBranch()
