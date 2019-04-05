@@ -92,7 +92,7 @@ app.post('/cli/signin', async (req, res) => {
     let cliToken = user.cliToken
     if (!cliToken) {
       cliToken = nanoid()
-      user.update({ cliToken })
+      await user.update({ cliToken })
     }
     res.json({ username, cliToken })
     log.info(`Signin to CLI successful: ${username}`)
