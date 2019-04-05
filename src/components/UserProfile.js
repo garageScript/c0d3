@@ -31,9 +31,8 @@ const UserProfile = ({ match }) => {
                 <p>
                   <Query query={LESSONS}>
                     {loadComponent(({ lessons }) => {
-                      console.log('lessons:', lessons)
-                      const lessonTitle = lessons.filter(l => l.id === s.lessonId)
-                      return <h5 className='card-title'>{ lessonTitle }</h5>
+                      const lessonTitle = lessons.find(e => e.id === s.lessonId)
+                      return <h5 className='card-title'>{ lessonTitle.title }</h5>
                     })}
                   </Query>
                   <i className='fa fa-quote-left' />
