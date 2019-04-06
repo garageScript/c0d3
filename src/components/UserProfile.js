@@ -16,8 +16,7 @@ const UserProfile = ({ match }) => {
       } }) => {
         const firstName = name.split()[0]
         const userStars = stars.map((s) => {
-          console.log('stars:', stars)
-          let comment = s.comment
+          let comment = s.comment || 'Thank you for helping me! :)'
           if (!comment) comment = 'Thank you for helping me! :)'
           return (
             <div className='card testimonial-card' style={{ display: 'inline-block', margin: '20px', width: '300px' }}>
@@ -31,8 +30,8 @@ const UserProfile = ({ match }) => {
                 <p>
                   <Query query={LESSONS}>
                     {loadComponent(({ lessons }) => {
-                      const lessonTitle = lessons.find(e => e.id === s.lessonId)
-                      return <h5 className='card-title'>{ lessonTitle.title }</h5>
+                      const lesson = lessons.find(e => e.id === s.lessonId)
+                      return <h5 className='card-title'>{ lesson.title }</h5>
                     })}
                   </Query>
                   <i className='fa fa-quote-left' />
