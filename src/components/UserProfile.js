@@ -22,14 +22,7 @@ const UserProfile = ({ match }) => {
           return (
             <div className='card testimonial-card' style={{ display: 'inline-block', margin: '20px' }}>
               <div className='card-body'>
-
-                <User userId={s.studentId} className='card-title' />
-
-                <Query query={GET_USERNAME} variables={{ input: s.studentId }}>
-                  {loadComponent(({ getUsername }) => {
-                    return <h4 className='card-title'>{ getUsername.username }</h4>
-                  })}
-                </Query>
+                <h4> <User userId={s.studentId} className='card-title' /> </h4>
                 <hr />
                 <p>
                   <i className='fa fa-quote-left' />
