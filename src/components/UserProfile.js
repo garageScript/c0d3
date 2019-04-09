@@ -16,7 +16,7 @@ const UserProfile = ({ match }) => {
       } }) => {
         const firstName = name.split()[0]
         const userStars = stars.map((s) => {
-          let comment = s.comment || 'Thank you for helping me! :)'
+          const comment = s.comment || 'Thank you for helping me! :)'
           return (
             <div className='card testimonial-card' style={{ display: 'inline-block', margin: '20px', width: '300px' }}>
               <div className='card-body'>
