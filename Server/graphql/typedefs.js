@@ -48,6 +48,7 @@ type Query {
   
   "Get username"
   getUsername(userId: String): User
+
 }
 
 type Mutation {
