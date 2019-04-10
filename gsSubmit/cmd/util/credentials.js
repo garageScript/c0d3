@@ -45,20 +45,23 @@ function askForUsernamePassword () {
 
 async function validate (credentials, url) {
   try {
-    await axios.post(url, {
+    const cliToken = await axios.post(url, {
       username: credentials.username,
       password: credentials.password
     })
-    return true
+    if (!cliToken || !cliToken.data || !cliToken.data.cliToken) {
+      return ''
+    }
+    return cliToken.data.cliToken
   } catch (e) {
-    return false
+    return ''
   }
 }
 
-async function save (credentials) {
+async function save (credentials, cliToken) {
   try {
     createHiddenDir()
-    await createCredentialsFile(credentialsPath, credentials.username)
+    await createCredentialsFile(credentialsPath, credentials.username, cliToken)
   } catch (e) {
     console.error('Unable to create hidden directory and save credentials')
   }
@@ -71,9 +74,9 @@ function createHiddenDir () {
   }
 }
 
-function createCredentialsFile (dir = credentialsPath, username) {
+function createCredentialsFile (dir = credentialsPath, username, cliToken) {
   return new Promise((resolve, reject) => {
-    fs.writeFile(dir, JSON.stringify({ username, token: 'c0d3' }), err => {
+    fs.writeFile(dir, JSON.stringify({ username, cliToken }), err => {
       if (err) return reject('Unable to save credentials')
       resolve()
     })
