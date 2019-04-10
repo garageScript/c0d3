@@ -3,11 +3,12 @@ import { Query } from 'react-apollo'
 import { GET_USERNAME } from '../../db/queries.js'
 import { loadComponent } from './shared.js'
 
-const User = ({ userId, className }) => {
+const User = ({ userId }) => {
   return (
     <Query query={GET_USERNAME} variables={{ input: userId }} >
       {loadComponent(({ getUsername }) => {
-        return <span className={className || ''}> {getUsername.username || 'Anonymous'} </span>
+        if (getUsername) return <span> {getUsername.username || 'Anonymous'} </span>
+        return <span> Non-Existing-User </span>
       })}
     </Query>
   )

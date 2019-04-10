@@ -22,7 +22,7 @@ const UserProfile = ({ match }) => {
           return (
             <div className='card testimonial-card' style={{ display: 'inline-block', margin: '20px' }}>
               <div className='card-body'>
-                <h4> <User userId={s.studentId} className='card-title' /> </h4>
+                <h4 className='card-title'> <User userId={s.studentId} /> </h4>
                 <hr />
                 <p>
                   <i className='fa fa-quote-left' />
