@@ -3,7 +3,7 @@ import { Query } from 'react-apollo'
 import moment from 'moment'
 import 'react-datepicker/dist/react-datepicker.css'
 import '../css/UserProfile.css'
-import { USER_DATA, GET_USERNAME } from '../db/queries'
+import { USER_DATA, GET_USERNAME, LESSONS } from '../db/queries'
 import { loadComponent } from './shared/shared'
 
 const UserProfile = ({ match }) => {
@@ -16,10 +16,9 @@ const UserProfile = ({ match }) => {
       } }) => {
         const firstName = name.split()[0]
         const userStars = stars.map((s) => {
-          let comment = s.comment
-          if (!comment) comment = 'Thank you for helping me! :)'
+          const comment = s.comment || 'Thank you for helping me! :)'
           return (
-            <div className='card testimonial-card' style={{ display: 'inline-block', margin: '20px' }}>
+            <div className='card testimonial-card' style={{ display: 'inline-block', margin: '20px', width: '300px' }}>
               <div className='card-body'>
                 <Query query={GET_USERNAME} variables={{ input: s.studentId }}>
                   {loadComponent(({ getUsername }) => {
@@ -28,6 +27,12 @@ const UserProfile = ({ match }) => {
                 </Query>
                 <hr />
                 <p>
+                  <Query query={LESSONS}>
+                    {loadComponent(({ lessons }) => {
+                      const lesson = lessons.find(e => e.id === s.lessonId)
+                      return <h5 className='card-title'>{ lesson.title }</h5>
+                    })}
+                  </Query>
                   <i className='fa fa-quote-left' />
                   <span style={{ marginLeft: '10px', marginRight: '10px' }}>
                     {comment}

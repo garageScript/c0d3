@@ -213,7 +213,7 @@ module.exports = {
       })
     }).then(allStars => {
       userData.stars = allStars.filter(star =>
-        star.mentorId !== userData.id
+        star.studentId !== userData.id
       )
       return userData
     })
