@@ -50,7 +50,7 @@ async function validate (credentials, url) {
       password: credentials.password
     })
     if (!cliToken || !cliToken.data || !cliToken.data.cliToken) {
-      return false
+      return ''
     }
     return cliToken.data.cliToken
   } catch (e) {
