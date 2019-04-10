@@ -4,9 +4,6 @@ const git = require('simple-git')()
 const prompt = require('prompt')
 const { request } = require('graphql-request')
 const credService = require('../util/credentials.js')
-// const path = require('path')
-// const homeDir = require('os').homedir()
-// const cliToken = require(path.join(homeDir, '.c0d3/credentials.json'))
 
 module.exports = async (inputs) => {
   try {
