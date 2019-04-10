@@ -59,10 +59,8 @@ NOTE: If you choose to setup your development server locally, you must install t
 - Install dependencies: `npm install`
 - Link and test with either of 2 ways:
   - (hosted server) Submit challenges from git directory by running cli file: `bin/c0d3 submit --url "https://your-server-url"`
-  - (hosted server) You can also submit as another user: `TEST=true bin/c0d3 submit --url "https://your-server-url" --username "another_user"`
   - (local) Link the c0d3 cli tool to be ran anywhere: `npm link`
   - (local) Submit challenges from git directory: `c0d3 submit --url "https://your-server-url"`
-  - (local) You can also submit as another user: `TEST=true c0d3 submit --url "https://your-server-url" --username "another_user"`
 
 
 ## Tests

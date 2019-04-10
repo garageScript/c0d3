@@ -148,12 +148,16 @@ module.exports = {
       })
   },
   createSubmission: (obj, args, context) => {
-    return Submission.findOrCreate({
-      where: {
-        lessonId: args.input.lessonId,
-        challengeId: args.input.challengeId,
-        userId: args.input.userId
-      }
+    return User.findOne({
+      where: { cliToken: args.input.cliToken }
+    }).then((user) => {
+      return Submission.findOrCreate({
+        where: {
+          lessonId: args.input.lessonId,
+          challengeId: args.input.challengeId,
+          userId: user.id
+        }
+      })
     })
       .then(d => {
         return d[0].update({

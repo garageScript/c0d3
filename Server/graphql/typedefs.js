@@ -177,6 +177,7 @@ input SubmissionInput {
   diff: String
   lessonId: String
   userId: String
+  cliToken: String
 }
 
 input SubmissionEdit {
