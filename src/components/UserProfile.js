@@ -5,6 +5,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import '../css/UserProfile.css'
 import { USER_DATA, GET_USERNAME, LESSONS } from '../db/queries'
 import { loadComponent } from './shared/shared'
+import User from './shared/User.js'
 
 const UserProfile = ({ match }) => {
   return (
@@ -20,11 +21,7 @@ const UserProfile = ({ match }) => {
           return (
             <div className='card testimonial-card' style={{ display: 'inline-block', margin: '20px', width: '300px' }}>
               <div className='card-body'>
-                <Query query={GET_USERNAME} variables={{ input: s.studentId }}>
-                  {loadComponent(({ getUsername }) => {
-                    return <h4 className='card-title'>{ getUsername.username }</h4>
-                  })}
-                </Query>
+                <h4 className='card-title'> <User userId={s.studentId} /> </h4>
                 <hr />
                 <p>
                   <Query query={LESSONS}>
