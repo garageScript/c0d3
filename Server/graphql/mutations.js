@@ -151,6 +151,7 @@ module.exports = {
     return User.findOne({
       where: { cliToken: args.input.cliToken }
     }).then((user) => {
+      if (!user) return
       return Submission.findOrCreate({
         where: {
           lessonId: args.input.lessonId,
