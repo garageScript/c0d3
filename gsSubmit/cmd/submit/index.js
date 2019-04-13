@@ -11,8 +11,9 @@ module.exports = async (inputs) => {
     const url = inputs.url
       ? new URL('/cli/signin', inputs.url) : new URL('/cli/signin', 'https://c0d3.com')
 
-    if (!credentials.token) {
-      const cliToken = await credService.validate(credentials, url.href)
+    let cliToken = credentials.cliToken
+    if (!cliToken) {
+      cliToken = await credService.validate(credentials, url.href)
       if (!cliToken) return console.error('Invalid Credentials')
       credService.save(credentials, cliToken)
     }
@@ -32,8 +33,7 @@ module.exports = async (inputs) => {
 
     // From this point onward, all graphql calls are mutating
     // database data.
-    await enrollStudent(currentLesson.id, userId, graphqlEndpoint)
-    await sendSubmission(currentLesson.id, userId, diff, challengeId, graphqlEndpoint)
+    await sendSubmission(currentLesson.id, cliToken, diff, challengeId, graphqlEndpoint)
   } catch (e) {
     console.error(e)
   }
@@ -206,25 +206,7 @@ function createDiff (currentBranch) {
   })
 }
 
-function enrollStudent (lessonId, userId, graphqlEndpoint) {
-  const enrollMutation = `
-  mutation enrollStudent($input: LessonId) {
-    enrollStudent(input: $input) {
-      isPassed
-      isTeaching
-      isEnrolled
-    }
-  }`
-  const enrollVariables = {
-    input: {
-      id: lessonId,
-      userId: `${userId}`
-    }
-  }
-  return request(graphqlEndpoint, enrollMutation, enrollVariables)
-}
-
-function sendSubmission (lessonId, userId, diff, challengeId, graphqlEndpoint) {
+function sendSubmission (lessonId, cliToken, diff, challengeId, graphqlEndpoint) {
   const createSubmission = `
   mutation CreateSubmission($submission: SubmissionInput) {
     createSubmission(input: $submission) {
@@ -238,7 +220,7 @@ function sendSubmission (lessonId, userId, diff, challengeId, graphqlEndpoint) {
     submission: {
       lessonId,
       challengeId,
-      userId: `${userId}`,
+      cliToken: `${cliToken}`,
       diff
     }
   }

@@ -14,17 +14,6 @@ const {
 } = require('../dbload')
 
 module.exports = {
-  enrollStudent: (obj, args, context) => {
-    return UserLesson.findOrCreate({
-      where: {
-        lessonId: args.input.id,
-        userId: args.input.userId || context.user.id
-      }
-    }).then(d => {
-      d[0].update({ isEnrolled: Date.now() })
-      return d
-    })
-  },
   rejectSubmission: (obj, args, context) => {
     return Submission.findOne({
       where: {
@@ -159,12 +148,17 @@ module.exports = {
       })
   },
   createSubmission: (obj, args, context) => {
-    return Submission.findOrCreate({
-      where: {
-        lessonId: args.input.lessonId,
-        challengeId: args.input.challengeId,
-        userId: args.input.userId
-      }
+    return User.findOne({
+      where: { cliToken: args.input.cliToken }
+    }).then((user) => {
+      if (!user) return
+      return Submission.findOrCreate({
+        where: {
+          lessonId: args.input.lessonId,
+          challengeId: args.input.challengeId,
+          userId: user.id
+        }
+      })
     })
       .then(d => {
         return d[0].update({

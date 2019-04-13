@@ -29,16 +29,6 @@ export const USERS = gql`
   }
 `
 
-export const ENROLL_STUDENT = gql`
-  mutation enrollStudent($in: LessonId) {
-    enrollStudent(input: $in) {
-      isTeaching
-      isPassed
-      isEnrolled
-    }
-  }
-`
-
 export const GIVE_STAR = gql`
   mutation giveStar($in: LessonUserId) {
     giveStar(input: $in)
