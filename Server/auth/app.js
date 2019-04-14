@@ -5,6 +5,8 @@ const matterMostService = require('./lib/matterMostService')
 const axios = require('axios')
 const { User } = require('../dbload')
 const log = require('../log/index')(__filename)
+const mailGun = require('../mailGun/index')
+const nanoid = require('nanoid')
 
 const errorHandler = (req, res, error) => {
   if (error.httpStatus && error.message) {
@@ -42,6 +44,16 @@ helpers.postSignup = async (req, res, next) => {
 
     // add new user info to the database
     const { name, username, confirmEmail, password } = req.body
+    try {
+      log.info('Before email verification sent')
+      const randomToken = nanoid()
+      const sendEmailToken = await mailGun.sendEmailVerifcation({ username, email: confirmEmail }, randomToken)
+      log.info(`Email verification successfully sent ${sendEmailToken}`)
+    } catch (err) {
+      log.error(`Error email verification not sent ${err}`)
+
+      // res.redirect('/signup')
+    }
     try {
       log.info(`Before signup`)
       const gitLabUser = await gitLab.createUser({ name, username, email: confirmEmail, password })

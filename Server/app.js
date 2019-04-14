@@ -58,6 +58,14 @@ passport.deserializeUser((user, done) => {
 passport.use(new LocalStrategy(async (username, password, done) => {
   const user = await User.findOne({ where: { username } })
   if (!user) { return done(null, false) }
+  // Make sure email has been verified, need to add emailVerified in database on signin!
+  // if (!user.emailVerified) {
+  /*
+  const t = true
+  if (t) {
+    return done(null, false, { message: 'email has not been verified' })
+  }
+  */
   const pwIsValid = await bcrypt.compare(password, user.password)
   if (!pwIsValid) { return done(null, false) }
   try {
@@ -197,6 +205,8 @@ const noAuthRouter = (req, res) => {
 app.get('/signup', noAuthRouter)
 app.get('/signin', noAuthRouter)
 app.get('/resetpassword/:token', noAuthRouter)
+// When user confirms their email, they should get access to sign in
+// app.get('/confirmEmail/:token', noAuthRouter)
 
 app.get('/*', (req, res) => {
   if (req.user && req.user.id) { return res.sendFile(path.join(__dirname, '../public/root.html')) }
