@@ -251,5 +251,13 @@ module.exports = {
       user.update({ forgotToken: '' })
       return 'Success'
     })
+  },
+  emailVerification: (obj, args, context) => {
+    const { value } = args
+    User.findOne({ where: { emailVerificationToken: value } }).then(user => {
+      if (!user) return 'User not found'
+      user.update({ emailVerified: true })
+      return 'Success'
+    })
   }
 }

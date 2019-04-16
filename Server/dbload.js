@@ -39,7 +39,9 @@ const User = sequelize.define('user', {
     defaultValue: false
   },
   forgotToken: Sequelize.STRING,
-  cliToken: Sequelize.STRING
+  cliToken: Sequelize.STRING,
+  emailVerificationToken: Sequelize.STRING,
+  emailVerified: Sequelize.BOOLEAN
 })
 
 const UserLesson = sequelize.define('userLesson', {
@@ -122,7 +124,7 @@ Message.belongsTo(Room)
 Message.belongsTo(User)
 Room.hasMany(Message)
 
-sequelize.sync({ alter: false })
+sequelize.sync({ alter: true })
 
 module.exports = {
   Announcement,

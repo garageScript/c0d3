@@ -58,14 +58,13 @@ passport.deserializeUser((user, done) => {
 passport.use(new LocalStrategy(async (username, password, done) => {
   const user = await User.findOne({ where: { username } })
   if (!user) { return done(null, false) }
-  // Make sure email has been verified, need to add emailVerified in database on signin!
-  // if (!user.emailVerified) {
-  /*
-  const t = true
-  if (t) {
-    return done(null, false, { message: 'email has not been verified' })
+
+  // Make sure email has been verified
+  if (!user.emailVerified) {
+    return done(null, false, { message: 'Email has not been verified' })
   }
-  */
+  log.info(`Email has been verified ${user.emailVerified}`)
+
   const pwIsValid = await bcrypt.compare(password, user.password)
   if (!pwIsValid) { return done(null, false) }
   try {
@@ -181,12 +180,15 @@ app.get('/session', authHelpers.getSession)
 app.get('/signout', authHelpers.getSignout)
 app.get('/usernames/:username', authHelpers.getUsername)
 app.post('/signin', passport.authenticate('local', {
-  failureRedirect: '/signin'
+  failureRedirect: '/signin',
+  failureFlash: true
 }), (req, res) => {
   res.status(200).json({ success: true, userInfo: req.user })
 })
 app.post('/signup', authHelpers.postSignup, passport.authenticate('local', {
-  failureRedirect: '/signup'
+  failureRedirect: '/signup',
+  successRedirect: '/sendEmailVerification',
+  failureFlash: true
 }), (req, res) => {
   res.status(200).json({ success: true, userInfo: req.user })
 })
@@ -205,8 +207,8 @@ const noAuthRouter = (req, res) => {
 app.get('/signup', noAuthRouter)
 app.get('/signin', noAuthRouter)
 app.get('/resetpassword/:token', noAuthRouter)
-// When user confirms their email, they should get access to sign in
-// app.get('/confirmEmail/:token', noAuthRouter)
+app.get('/confirmEmail/:token', noAuthRouter)
+app.get('/sendEmailVerification', noAuthRouter)
 
 app.get('/*', (req, res) => {
   if (req.user && req.user.id) { return res.sendFile(path.join(__dirname, '../public/root.html')) }

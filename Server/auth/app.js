@@ -44,16 +44,19 @@ helpers.postSignup = async (req, res, next) => {
 
     // add new user info to the database
     const { name, username, confirmEmail, password } = req.body
+
+    // Send email verification
+    const randomToken = nanoid()
     try {
       log.info('Before email verification sent')
-      const randomToken = nanoid()
       const sendEmailToken = await mailGun.sendEmailVerifcation({ username, email: confirmEmail }, randomToken)
       log.info(`Email verification successfully sent ${sendEmailToken}`)
     } catch (err) {
       log.error(`Error email verification not sent ${err}`)
-
-      // res.redirect('/signup')
+      errorHandler(req, res, { httpStatus: 404, message: 'Email verification failed' })
     }
+
+    // Sign up user to mattermost and gitlab
     try {
       log.info(`Before signup`)
       const gitLabUser = await gitLab.createUser({ name, username, email: confirmEmail, password })
@@ -73,6 +76,7 @@ helpers.postSignup = async (req, res, next) => {
       password: hash,
       email: confirmEmail
     })
+    userRecord.update({ emailVerificationToken: randomToken, emailVerified: false })
 
     // create SSH account if environment is in production
     if (process.env.NODE_ENV === 'production') {

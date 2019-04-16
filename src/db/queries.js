@@ -402,3 +402,8 @@ export const GET_USERNAME = gql`
     }
   }
 `
+export const VERIFY_EMAIL = gql`
+  mutation($input: String){
+    emailVerification(value: $input)
+  }
+`
