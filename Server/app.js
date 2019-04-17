@@ -201,7 +201,6 @@ app.get('/signin', noAuthRouter)
 app.get('/resetpassword/:token', noAuthRouter)
 app.get('/confirmEmail/:token?', async (req, res) => {
   try {
-    console.log('-[-------------he-------------')
     const user = await User.findOne({ where: { emailVerificationToken: req.query.token } }).then(user => user.update({ emailVerificationTaken: '' }))
     res.status(200).json({ success: true, message: 'Email verified' })
   } catch (err) {
