@@ -40,8 +40,7 @@ const User = sequelize.define('user', {
   },
   forgotToken: Sequelize.STRING,
   cliToken: Sequelize.STRING,
-  emailVerificationToken: Sequelize.STRING,
-  emailVerified: Sequelize.BOOLEAN
+  emailVerificationToken: Sequelize.STRING
 })
 
 const UserLesson = sequelize.define('userLesson', {

@@ -74,9 +74,9 @@ helpers.postSignup = async (req, res, next) => {
       name,
       username,
       password: hash,
-      email: confirmEmail
+      email: confirmEmail,
+      emailVerificationToken: randomToken
     })
-    userRecord.update({ emailVerificationToken: randomToken, emailVerified: false })
 
     // create SSH account if environment is in production
     if (process.env.NODE_ENV === 'production') {

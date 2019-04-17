@@ -59,12 +59,6 @@ passport.use(new LocalStrategy(async (username, password, done) => {
   const user = await User.findOne({ where: { username } })
   if (!user) { return done(null, false) }
 
-  // Make sure email has been verified
-  if (!user.emailVerified) {
-    return done(null, false, { message: 'Email has not been verified' })
-  }
-  log.info(`Email has been verified ${user.emailVerified}`)
-
   const pwIsValid = await bcrypt.compare(password, user.password)
   if (!pwIsValid) { return done(null, false) }
   try {
@@ -82,7 +76,8 @@ passport.use(new LocalStrategy(async (username, password, done) => {
     name: user.dataValues.name,
     username: user.dataValues.username,
     createdAt: user.dataValues.createdAt,
-    isAdmin: user.dataValues.isAdmin
+    isAdmin: user.dataValues.isAdmin,
+    emailVerificationToken: user.emailVerificationToken
   }
   if (password.length < 8) {
     userData.mustReset = true
@@ -180,15 +175,12 @@ app.get('/session', authHelpers.getSession)
 app.get('/signout', authHelpers.getSignout)
 app.get('/usernames/:username', authHelpers.getUsername)
 app.post('/signin', passport.authenticate('local', {
-  failureRedirect: '/signin',
-  failureFlash: true
+  failureRedirect: '/signin'
 }), (req, res) => {
   res.status(200).json({ success: true, userInfo: req.user })
 })
 app.post('/signup', authHelpers.postSignup, passport.authenticate('local', {
-  failureRedirect: '/signup',
-  successRedirect: '/sendEmailVerification',
-  failureFlash: true
+  failureRedirect: '/signup'
 }), (req, res) => {
   res.status(200).json({ success: true, userInfo: req.user })
 })
@@ -207,8 +199,15 @@ const noAuthRouter = (req, res) => {
 app.get('/signup', noAuthRouter)
 app.get('/signin', noAuthRouter)
 app.get('/resetpassword/:token', noAuthRouter)
-app.get('/confirmEmail/:token', noAuthRouter)
-app.get('/sendEmailVerification', noAuthRouter)
+app.get('/confirmEmail/:token?', async (req, res) => {
+  try {
+    console.log('-[-------------he-------------')
+    const user = await User.findOne({ where: { emailVerificationToken: req.query.token } }).then(user => user.update({ emailVerificationTaken: '' }))
+    res.status(200).json({ success: true, message: 'Email verified' })
+  } catch (err) {
+    res.status(401).json({ success: false, error: err })
+  }
+})
 
 app.get('/*', (req, res) => {
   if (req.user && req.user.id) { return res.sendFile(path.join(__dirname, '../public/root.html')) }

@@ -27,7 +27,7 @@ emailService.sendEmailVerifcation = async ({ email, username }, randomToken) => 
       from: '<hello@c0d3.com>',
       to: email,
       subject: 'Email Verifcation',
-      text: `Your username is ${username}. Click on this link to verify your email: ${process.env.CLIENT_URL}/confirmEmail/${randomToken}`
+      text: `Your username is ${username}. Click on this link to verify your email: ${process.env.CLIENT_URL}/confirmEmail?token=${randomToken}`
     }, (error, body) => {
       if (error) {
         log.error(`error sending email verification ${error}`)

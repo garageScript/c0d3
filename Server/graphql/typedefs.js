@@ -111,9 +111,6 @@ type Mutation {
 
   "Reset password for non-authorized clients"
   forgotResetPassword(input: PasswordChange): String
-
-  "Check if user verified their email"
-  emailVerification(value: String): String
 }
 
 input PasswordChange {
@@ -222,7 +219,6 @@ type User {
   email: String
   name: String
   isAdmin: Boolean
-  emailVerified: Boolean
 }
 
 type UserLesson {

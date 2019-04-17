@@ -29,10 +29,10 @@ import { Settings } from './components/Auth/Settings'
 import ForgotPassword from './components/Auth/ForgotPassword'
 import CheckEmail from './components/Auth/CheckEmail'
 import ResetPassword from './components/Auth/ResetPassword'
+import ConfirmEmail from './components/Auth/ConfirmEmail'
 
 const Home = () => {
   const reset = window.userInfo.mustReset
-  console.log('hello')
   if (reset) {
     window.location.assign(`${window.location}settings?reset=${reset}`)
   }
@@ -115,6 +115,7 @@ const AppElement = () => (
             <Route exact path='/forgotpassword' component={ForgotPassword} />
             <Route exact path='/checkemail' component={CheckEmail} />
             <Route exact path='/resetpassword/:token' component={ResetPassword} />
+            <Route exact path='/confirmEmail/:token?' component={ConfirmEmail} />
             <Route component={NotFound} />
           </Switch>
         </div>
