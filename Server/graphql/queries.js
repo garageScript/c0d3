@@ -181,12 +181,13 @@ module.exports = {
   },
 
   submissions: (obj, args, context) => {
-    const valuesToMatch = Object.assign({}, args.input, args.where)
-    valuesToMatch.lessonId = args.input.id
-    delete valuesToMatch.id
-
     return Submission.findAll({
-      where: valuesToMatch,
+      where: {
+        lessonId: args.input.id,
+        status: {
+          [Op.ne]: 'passed'
+        }
+      },
       include: ['user', 'challenge', { model: User, as: 'reviewer' }]
     })
   },
