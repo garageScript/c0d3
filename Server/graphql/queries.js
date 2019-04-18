@@ -215,6 +215,31 @@ module.exports = {
       userData.stars = allStars.filter(star =>
         star.studentId !== userData.id
       )
+      return Lesson.findAll({
+        include: [
+          {
+            model: User,
+            required: false,
+            where: {
+              id: userData.id
+            },
+            through: {
+              model: UserLesson,
+              attributes: ['isPassed', 'isTeaching', 'isEnrolled']
+            }
+          }
+        ]
+      })
+    }).then(lessons => {
+      return [...lessons].filter(lesson => {
+        // TODO: filter instead of map, to only get lessons with status of passed
+        lesson.currentUser = lesson.users[0] || {
+          userLesson: { isPassed: '' }
+        }
+        return lesson
+      })
+    }).then(lessons => {
+      userData.lessons = lessons
       return userData
     })
   },
