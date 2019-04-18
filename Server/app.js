@@ -201,12 +201,16 @@ app.get('/signin', noAuthRouter)
 app.get('/resetpassword/:token', noAuthRouter)
 app.get('/confirmEmail/:token?', async (req, res) => {
   try {
-    const user = await User.findOne({ where: { emailVerificationToken: req.query.token } }).then(user => user.update({ emailVerificationTaken: '' }))
-    res.status(200).json({ success: true, message: 'Email verified' })
+    User.findOne({ where: { emailVerificationToken: req.query.token } }).then((user) => {
+      if (!user || !user.emailVerificationToken) return res.redirect(`${process.env.CLIENT_URL}/signin`)
+      if (!user && !user.emailVerificationToken) return res.redirect(`${process.env.CLIENT_URL}/signup`)
+      user.update({ emailVerificationToken: '' })
+      return res.redirect(`${process.env.CLIENT_URL}/confirmEmail?token=${user.emailVerificationToken}`)
+    })
   } catch (err) {
-    res.status(401).json({ success: false, error: err })
+    res.redirect(`${process.env.CLIENT_URL}`)
   }
-})
+}, noAuthRouter)
 
 app.get('/*', (req, res) => {
   if (req.user && req.user.id) { return res.sendFile(path.join(__dirname, '../public/root.html')) }

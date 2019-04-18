@@ -24,7 +24,7 @@ class ConfirmEmailComponent extends React.Component {
     }
   }
   render () {
-    if (!this.state.emailVerified) {
+    if (this.state.emailVerified) {
       return (
         <div className='container'>
           <div className='auth-form' style={{ textAlign: 'center' }}>
