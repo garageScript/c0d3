@@ -12,16 +12,14 @@ export const PendingSubmits = ({ id, isPassed }) => {
       }}
     >
       {loadComponent(({ submissions }) => {
-        let count = submissions.filter((sub) => sub.status.includes('open')).length
+        let subs = submissions.filter((s) => s.status.includes('open'))
         let message = 'review'
         if (!isPassed) {
           message = 'submissions'
-          count = submissions.filter((s) => {
-            return +s.user.id === +window.userInfo.id
-          }).length
+          subs = subs.filter((s) => +s.user.id === +window.userInfo.id)
         }
         return (
-          <div> {`${count} pending ${message}`} </div>
+          <div> {`${subs.length} pending ${message}`} </div>
         )
       })}
     </Query>
