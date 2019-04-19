@@ -8,14 +8,12 @@ export const PendingSubmits = ({ id, isPassed }) => {
     <Query
       query={SUBMISSIONS}
       variables={{
-        in: { id },
-        where: { status: 'open' }
+        in: { id }
       }}
     >
       {loadComponent(({ submissions }) => {
-        let count = submissions.length
+        let count = submissions.filter((sub) => sub.status.includes('open')).length
         let message = 'review'
-        count = submissions.filter((sub) => sub.status.includes('open')).length
         if (!isPassed) {
           message = 'submissions'
           count = submissions.filter((s) => {

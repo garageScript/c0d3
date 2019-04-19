@@ -197,8 +197,8 @@ export const CURRICULUM_STATUS = gql`
 `
 
 export const SUBMISSIONS = gql`
-  query submissions($in: LessonId, $where: SubmissionWhere) {
-    submissions(input: $in, where: $where) {
+  query submissions($in: LessonId) {
+    submissions(input: $in) {
       id
       status
       mrUrl
