@@ -15,6 +15,7 @@ export const PendingSubmits = ({ id, isPassed }) => {
       {loadComponent(({ submissions }) => {
         let count = submissions.length
         let message = 'review'
+        count = submissions.filter((sub) => sub.status.includes('open')).length
         if (!isPassed) {
           message = 'submissions'
           count = submissions.filter((s) => {
