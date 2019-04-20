@@ -199,18 +199,22 @@ const noAuthRouter = (req, res) => {
 app.get('/signup', noAuthRouter)
 app.get('/signin', noAuthRouter)
 app.get('/resetpassword/:token', noAuthRouter)
-app.get('/confirmEmail/:token?', async (req, res) => {
+app.get('/confirmEmail/:token', async (req, res) => {
   try {
-    User.findOne({ where: { emailVerificationToken: req.query.token } }).then((user) => {
+    log.info(`Before email confirmation`)
+    User.findOne({ where: { emailVerificationToken: req.params.token } }).then((user) => {
+      log.info(`Email confirmation values are not defined ${!user} and ${!user.emailVerification}`)
       if (!user || !user.emailVerificationToken) return res.redirect(`${process.env.CLIENT_URL}/signin`)
-      if (!user && !user.emailVerificationToken) return res.redirect(`${process.env.CLIENT_URL}/signup`)
+      log.info(`Email confirmation values are not defined ${!user} and ${!user.emailVerification}`)
       user.update({ emailVerificationToken: '' })
-      return res.redirect(`${process.env.CLIENT_URL}/confirmEmail?token=${user.emailVerificationToken}`)
+      log.info(`Email confirmation successful ${user}`)
+      return res.send('Your email has been confirmed. Please go back to c0d3.com and sign in')
     })
   } catch (err) {
-    res.redirect(`${process.env.CLIENT_URL}`)
+    log.error(`Email confirmation not successful ${err}`)
+    res.send('Your email was not confirmed')
   }
-}, noAuthRouter)
+})
 
 app.get('/*', (req, res) => {
   if (req.user && req.user.id) { return res.sendFile(path.join(__dirname, '../public/root.html')) }
