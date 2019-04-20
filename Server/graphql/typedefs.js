@@ -23,7 +23,7 @@ type Query {
   challengeStatus(input: ChallengeId): Submission
 
   "Get all challenges for a specific lesson"
-  submissions(input: LessonId, where: SubmissionWhere): [Submission]
+  submissions(input: LessonId): [Submission]
 
   "Get all lesson submissons for a specific user"
   userSubmissions(input: LessonUserId): [Submission]
@@ -127,9 +127,6 @@ input UserInput {
   username: String
   userId: String
 }
-  input SubmissionWhere{
-    status: String
-  }
 
 input LessonId {
   id: String
