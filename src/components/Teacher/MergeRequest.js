@@ -5,6 +5,7 @@ import moment from 'moment'
 import Markdown from 'react-markdown'
 import { cacheUpdate } from '../shared/shared'
 import MarkdownComponent from '../shared/Markdown.js'
+import User from '../shared/User.js'
 
 import {
   APPROVE_SUBMISSION,
@@ -145,6 +146,7 @@ const MergeRequest = ({ lid, mrInfo, studentMap }) => {
                 return { students }
               }, { in: { id: lid } })} >
                 {(execute) => {
+                  console.log(mrInfo.user.id)
                   return (
                     <button className={`btn ${adoptButton}`} onClick={execute} style={{
                       position: 'absolute',
@@ -154,7 +156,7 @@ const MergeRequest = ({ lid, mrInfo, studentMap }) => {
                 }}
               </Mutation>
               <Link to={`/profile/${mrInfo.user.id}`}>
-                {mrInfo.user.username}
+                <User userId={mrInfo.user.id} />
               </Link>{' '}
               submitted challenge: {mrInfo.challenge.title}
             </span>
