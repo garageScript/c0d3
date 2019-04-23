@@ -30,6 +30,7 @@ import ForgotPassword from './components/Auth/ForgotPassword'
 import CheckEmail from './components/Auth/CheckEmail'
 import ResetPassword from './components/Auth/ResetPassword'
 import ConfirmEmail from './components/Auth/ConfirmEmail'
+import ResendEmail from './components/Auth/ResendEmail'
 
 const Home = () => {
   if (window.userInfo.emailVerificationToken) {
@@ -119,6 +120,7 @@ const AppElement = () => (
             <Route exact path='/checkemail' component={CheckEmail} />
             <Route exact path='/resetpassword/:token' component={ResetPassword} />
             <PrivateRoute exact path='/confirmEmail' component={ConfirmEmail} />
+            <Route exact path='/resendEmail/' component={ResendEmail} />
             <Route component={NotFound} />
           </Switch>
         </div>
