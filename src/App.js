@@ -32,6 +32,9 @@ import ResetPassword from './components/Auth/ResetPassword'
 import ConfirmEmail from './components/Auth/ConfirmEmail'
 
 const Home = () => {
+  if (window.userInfo.emailVerificationToken) {
+    window.location = '/confirmEmail'
+  }
   const reset = window.userInfo.mustReset
   if (reset) {
     window.location.assign(`${window.location}settings?reset=${reset}`)
