@@ -34,6 +34,7 @@ emailService.sendEmailVerifcation = async ({ email, username }, randomToken) => 
       }
       log.info(`body of email ${body}`)
     })
+    log.info(`mailgun sent email verification successfully`)
   } catch (error) {
     log.error(`mailgun did not send email verification successfully ${error}`)
   }

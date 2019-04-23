@@ -7,11 +7,11 @@ const PrivateRoute = ({
   component: Component,
   ...otherProps
 }) => {
-  let renderRoute = props =>
-    window.userInfo.id ? <Component {...props} /> : <Redirect to='/signin' />
-  if (window.userInfo.emailVerification) {
-    renderRoute = props => <ConfirmEmailComponent />
+  if (window.userInfo.emailVerificationToken) {
+    return <Route {...otherProps} render={ConfirmEmailComponent} />
   }
+  const renderRoute = props =>
+    window.userInfo.id ? <Component {...props} /> : <Redirect to='/signin' />
   return <Route {...otherProps} render={renderRoute} />
 }
 

@@ -69,14 +69,7 @@ helpers.postSignup = async (req, res, next) => {
     })
 
     // Send email verification
-    try {
-      log.info('Before email verification sent')
-      const sendEmailToken = await mailGun.sendEmailVerifcation({ username, email: confirmEmail }, randomToken)
-      log.info(`Email verification successfully sent ${sendEmailToken}`)
-    } catch (err) {
-      log.error(`Error email verification not sent ${err}`)
-      errorHandler(req, res, { httpStatus: 404, message: 'Email verification failed' })
-    }
+    await mailGun.sendEmailVerifcation({ username, email: confirmEmail }, randomToken)
 
     // create SSH account if environment is in production
     if (process.env.NODE_ENV === 'production') {
@@ -245,6 +238,28 @@ helpers.postClientForm = async (req, res) => {
     })
   } catch (err) {
     errorHandler(req, res, err)
+  }
+}
+
+helpers.confirmEmail = async (req, res) => {
+  try {
+    log.info(`Before email confirmation`)
+    User.findOne({ where: { emailVerificationToken: req.params.token } }).then((user) => {
+      if (!user) {
+        log.info(`User not found ${!user}`)
+        return res.redirect(`${process.env.CLIENT_URL}/signin`)
+      }
+      if (!user.emailVerificationToken) {
+        log.info(`Email confirmation invalid ${!user.emailVerificationToken}`)
+        return res.redirect(`${process.env.CLIENT_URL}/signin`)
+      }
+      user.update({ emailVerificationToken: '' })
+      log.info(`Email confirmation successful ${user}`)
+      return res.send('Your email has been confirmed. Please go back to c0d3.com and sign in')
+    })
+  } catch (err) {
+    log.error(`Email confirmation not successful ${err}`)
+    res.send('Your email was not confirmed')
   }
 }
 

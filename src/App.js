@@ -115,7 +115,7 @@ const AppElement = () => (
             <Route exact path='/forgotpassword' component={ForgotPassword} />
             <Route exact path='/checkemail' component={CheckEmail} />
             <Route exact path='/resetpassword/:token' component={ResetPassword} />
-            <PrivateRoute exact path='/confirmEmail/:token' component={ConfirmEmail} />
+            <PrivateRoute exact path='/confirmEmail' component={ConfirmEmail} />
             <Route component={NotFound} />
           </Switch>
         </div>
