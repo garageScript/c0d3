@@ -32,7 +32,7 @@ class ConfirmEmailComponent extends React.Component {
                     onClick={() => {
                       execute({
                         variables: {
-                          input: window.userInfo.username
+                          input: window.userInfo.emailVerificationToken
                         }
                       }).then(() => {
                         this.setState({

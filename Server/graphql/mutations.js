@@ -253,11 +253,10 @@ module.exports = {
     })
   },
   resendEmailConfirmation: (obj, args, context) => {
-    const randomToken = nanoid()
     const { value } = args
-    return User.findOne({ where: { username: value } }).then(user => {
+    return User.findOne({ where: { emailVerificationToken: value } }).then(user => {
       if (!user) return 'User not found'
-      mailGun.sendEmailVerifcation({ email: user.email, username: user.username }, randomToken)
+      mailGun.sendEmailVerifcation({ email: user.email, username: user.username }, user.emailVerificationToken)
       return 'Success'
     })
   }
