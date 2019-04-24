@@ -146,7 +146,6 @@ const MergeRequest = ({ lid, mrInfo, studentMap }) => {
                 return { students }
               }, { in: { id: lid } })} >
                 {(execute) => {
-                  console.log(mrInfo.user.id)
                   return (
                     <button className={`btn ${adoptButton}`} onClick={execute} style={{
                       position: 'absolute',
@@ -155,9 +154,7 @@ const MergeRequest = ({ lid, mrInfo, studentMap }) => {
                   )
                 }}
               </Mutation>
-              <Link to={`/profile/${mrInfo.user.id}`}>
-                <User userId={mrInfo.user.id} />
-              </Link>{' '}
+              <User userId={mrInfo.user.id} />
               submitted challenge: {mrInfo.challenge.title}
             </span>
           </div>
