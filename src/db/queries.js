@@ -373,7 +373,10 @@ export const USER_DATA = gql`
     userInfo(input: $in){
       name, 
       createdAt,
-      stars { studentId ,comment, lessonId }
+      stars { studentId ,comment, lessonId },
+      lessons{
+        title
+      }
     }
   }
 `

@@ -3,7 +3,7 @@ import { Query } from 'react-apollo'
 import moment from 'moment'
 import 'react-datepicker/dist/react-datepicker.css'
 import '../css/UserProfile.css'
-import { USER_DATA, GET_USERNAME, LESSONS } from '../db/queries'
+import { USER_DATA, LESSONS } from '../db/queries'
 import { loadComponent } from './shared/shared'
 import User from './shared/User.js'
 
@@ -13,29 +13,40 @@ const UserProfile = ({ match }) => {
       {loadComponent(({ userInfo: {
         name,
         createdAt,
-        stars
+        stars,
+        lessons
       } }) => {
+        let passedLessons = lessons.map((l, i) => {
+          return (
+            <div className='card testimonial-card' key={i} style={{
+              display: 'inline-block',
+              margin: '20px',
+              width: '300px' }} >
+              {l.title}
+            </div>
+          )
+        })
         const firstName = name.split()[0]
-        const userStars = stars.map((s) => {
+        const userStars = stars.map((s, i) => {
           const comment = s.comment || 'Thank you for helping me! :)'
           return (
-            <div className='card testimonial-card' style={{ display: 'inline-block', margin: '20px', width: '300px' }}>
+            <div className='card testimonial-card' key={i} style={{ display: 'inline-block', margin: '20px', width: '300px' }}>
               <div className='card-body'>
                 <h4 className='card-title'> <User userId={s.studentId} /> </h4>
                 <hr />
-                <p>
-                  <Query query={LESSONS}>
-                    {loadComponent(({ lessons }) => {
-                      const lesson = lessons.find(e => e.id === s.lessonId)
-                      return <h5 className='card-title'>{ lesson.title }</h5>
-                    })}
-                  </Query>
-                  <i className='fa fa-quote-left' />
-                  <span style={{ marginLeft: '10px', marginRight: '10px' }}>
-                    {comment}
-                  </span>
-                  <i className='fa fa-quote-right' />
-                </p>
+
+                <Query query={LESSONS}>
+                  {loadComponent(({ lessons }) => {
+                    const lesson = lessons.find(e => e.id === s.lessonId)
+                    return <h5 className='card-title'>{ lesson.title }</h5>
+                  })}
+                </Query>
+                <i className='fa fa-quote-left' />
+                <span style={{ marginLeft: '10px', marginRight: '10px' }}>
+                  {comment}
+                </span>
+                <i className='fa fa-quote-right' />
+
               </div>
             </div>
           )
@@ -52,7 +63,8 @@ const UserProfile = ({ match }) => {
             <hr />
             <div style={{ textAlign: 'center' }}>{userStars}</div>
             <hr />
-            <h3>SUBMISSIONS</h3>
+            <h3> Curriculum Progress</h3>
+            {passedLessons}
             <hr />
             <h3>Student Stats</h3>
           </div>

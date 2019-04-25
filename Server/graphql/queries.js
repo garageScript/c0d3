@@ -232,11 +232,10 @@ module.exports = {
       })
     }).then(lessons => {
       return [...lessons].filter(lesson => {
-        // TODO: filter instead of map, to only get lessons with status of passed
         lesson.currentUser = lesson.users[0] || {
           userLesson: { isPassed: '' }
         }
-        return lesson
+        return lesson.currentUser.userLesson.isPassed
       })
     }).then(lessons => {
       userData.lessons = lessons
