@@ -255,7 +255,16 @@ helpers.confirmEmail = async (req, res) => {
       }
       user.update({ emailVerificationToken: '' })
       log.info(`Email confirmation successful ${user}`)
-      return res.send('Your email has been confirmed. Please go back to c0d3.com and sign in')
+      return res.send(`
+        <h3 style="margin-top: 50px">
+          Your email has been confirmed. Please go back to <a href="${process.env.CLIENT_URL}/signin">c0d3.com</a> and sign in. Redirecting in 5 seconds...
+        </h3>
+        <script>
+        setTimeout( () => {
+            window.location = "${process.env.CLIENT_URL}/signin"
+        }, 5000)
+        </script>
+        `)
     })
   } catch (err) {
     log.error(`Email confirmation not successful ${err}`)
