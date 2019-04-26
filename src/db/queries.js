@@ -402,3 +402,8 @@ export const GET_USERNAME = gql`
     }
   }
 `
+export const RESEND_EMAIL_CONFIRMATION = gql`
+  mutation($input: String){
+    resendEmailConfirmation(value: $input)
+  }
+`
