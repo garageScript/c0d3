@@ -37,6 +37,20 @@ const matterMostService = {
     } catch (error) {
       console.log('Error changing password with Matter Most API')
     }
+  },
+  getChannelInfo: (roomName) => {
+    return axios.post(`${chatServiceUrl}/teams/name/c0d3-dev/channels/name/${roomName}`, { headers: chatServiceHeader })
+  },
+  sendSubmissionMessage: async (roomName, username, challenge, linkToLesson) => {
+    try {
+      const channelInfo = await matterMostService.getChannelInfo(roomName)
+      await axios.post(`${chatServiceUrl}/posts`, {
+        'channel_id': `${channelInfo.channel_id}`,
+        'message': `@${username} has submitted a solution to ${challenge} ${linkToLesson}`
+      }, { headers: chatServiceHeader })
+    } catch (error) {
+      console.log('Error sending submission to mattermost channel')
+    }
   }
 }
 
