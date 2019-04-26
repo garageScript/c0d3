@@ -39,7 +39,7 @@ const matterMostService = {
     }
   },
   getChannelInfo: async (roomName) => {
-    return axios.get(`${chatServiceUrl}/teams/name/c0d3-dev/channels/name/${roomName}`, { headers: chatServiceHeader })
+    return axios.get(`${chatServiceUrl}/teams/name/c0d3/channels/name/${roomName}`, { headers: chatServiceHeader })
   },
   sendSubmissionMessage: async (roomName, username, challenge, linkToLesson) => {
     try {
