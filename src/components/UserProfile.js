@@ -16,7 +16,7 @@ const UserProfile = ({ match }) => {
         stars,
         lessons
       } }) => {
-        let passedLessons = lessons.map((l, i) => {
+        const passedLessons = lessons.map((l, i) => {
           return (
             <div className='card testimonial-card' key={i} style={{
               display: 'inline-block',
