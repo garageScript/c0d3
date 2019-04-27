@@ -4,6 +4,7 @@ const git = require('simple-git')()
 const prompt = require('prompt')
 const { request } = require('graphql-request')
 const credService = require('../util/credentials.js')
+const matterMostService = require('../../../Server/auth/lib/matterMostService')
 
 module.exports = async (inputs) => {
   try {
@@ -29,14 +30,28 @@ module.exports = async (inputs) => {
     const lessons = await queryForLessons(graphqlEndpoint)
     const currentLesson = await promptForLessons(lessons)
     const challengeId = await promptForChallenge(currentLesson)
+    const challenge = await getChallenge(currentLesson, challengeId)
     const diff = await createDiff(currentBranch)
 
     // From this point onward, all graphql calls are mutating
     // database data.
     await sendSubmission(currentLesson.id, cliToken, diff, challengeId, graphqlEndpoint)
+    const publicChannels = await matterMostService.getPublicChannels()
+    const lessonOrder = await getLessonOrder(lessons, currentLesson, publicChannels)
+    // keeping this dummy date for now just for testing
+    await matterMostService.sendSubmissionMessage('js6-dev', credentials.username, challenge, lessonOrder)
   } catch (e) {
     console.error(e)
   }
+}
+
+function getChallenge (currentLesson, challengeId) {
+  return currentLesson['challenges'].find((chall) => chall.id === challengeId).title
+}
+
+// going to work further on this part, order is not the way to go since c0d3.com lessons have no order
+function getLessonOrder (lessons, currentLesson, publicChannels) {
+  return lessons.find(less => less.title === currentLesson.title).order
 }
 
 function getGraphqlEndpoint (inputs) {
