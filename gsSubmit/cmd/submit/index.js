@@ -37,9 +37,9 @@ module.exports = async (inputs) => {
     // database data.
     await sendSubmission(currentLesson.id, cliToken, diff, challengeId, graphqlEndpoint)
     const publicChannels = await matterMostService.getPublicChannels()
-    const lessonOrder = await getLessonOrder(lessons, currentLesson, publicChannels)
-    // keeping this dummy date for now just for testing
-    await matterMostService.sendSubmissionMessage('js6-dev', credentials.username, challenge, lessonOrder)
+    const lessonOrder = await getLessonOrder(lessons, currentLesson)
+    const lessonTitle = await getLessonTitle(publicChannels, lessonOrder)
+    await matterMostService.sendSubmissionMessage(lessonTitle, credentials.username, challenge, lessonOrder)
   } catch (e) {
     console.error(e)
   }
@@ -49,9 +49,12 @@ function getChallenge (currentLesson, challengeId) {
   return currentLesson['challenges'].find((chall) => chall.id === challengeId).title
 }
 
-// going to work further on this part, order is not the way to go since c0d3.com lessons have no order
-function getLessonOrder (lessons, currentLesson, publicChannels) {
+function getLessonOrder (lessons, currentLesson) {
   return lessons.find(less => less.title === currentLesson.title).order
+}
+
+function getLessonTitle (publicChannels, lessonOrder) {
+  return publicChannels.data.find(channel => parseInt(channel.name.slice(2, 3)) === lessonOrder).name
 }
 
 function getGraphqlEndpoint (inputs) {
