@@ -21,4 +21,23 @@ emailService.sendPasswordResetEmail = async ({ email, username }, randomToken) =
   }
 }
 
+emailService.sendEmailVerifcation = async ({ email, username }, randomToken) => {
+  try {
+    await mailgun.messages().send({
+      from: '<hello@c0d3.com>',
+      to: email,
+      subject: 'Email Verifcation',
+      text: `Your username is ${username}. Click on this link to verify your email: ${process.env.REACT_APP_SERVER_URL}/confirmEmail/${randomToken}`
+    }, (error, body) => {
+      if (error) {
+        log.error(`error sending email verification ${error}`)
+      }
+      log.info(`body of email ${body}`)
+    })
+    log.info(`mailgun sent email verification successfully`)
+  } catch (error) {
+    log.error(`mailgun did not send email verification successfully ${error}`)
+  }
+}
+
 module.exports = emailService

@@ -251,5 +251,13 @@ module.exports = {
       user.update({ forgotToken: '' })
       return 'Success'
     })
+  },
+  resendEmailConfirmation: (obj, args, context) => {
+    const { value } = args
+    return User.findOne({ where: { emailVerificationToken: value } }).then(user => {
+      if (!user) return 'User not found'
+      mailGun.sendEmailVerifcation({ email: user.email, username: user.username }, user.emailVerificationToken)
+      return 'Success'
+    })
   }
 }

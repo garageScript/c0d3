@@ -58,6 +58,7 @@ passport.deserializeUser((user, done) => {
 passport.use(new LocalStrategy(async (username, password, done) => {
   const user = await User.findOne({ where: { username } })
   if (!user) { return done(null, false) }
+
   const pwIsValid = await bcrypt.compare(password, user.password)
   if (!pwIsValid) { return done(null, false) }
   try {
@@ -75,7 +76,8 @@ passport.use(new LocalStrategy(async (username, password, done) => {
     name: user.dataValues.name,
     username: user.dataValues.username,
     createdAt: user.dataValues.createdAt,
-    isAdmin: user.dataValues.isAdmin
+    isAdmin: user.dataValues.isAdmin,
+    emailVerificationToken: user.emailVerificationToken
   }
   if (password.length < 8) {
     userData.mustReset = true
@@ -197,6 +199,7 @@ const noAuthRouter = (req, res) => {
 app.get('/signup', noAuthRouter)
 app.get('/signin', noAuthRouter)
 app.get('/resetpassword/:token', noAuthRouter)
+app.get('/confirmEmail/:token', authHelpers.confirmEmail)
 
 app.get('/*', (req, res) => {
   if (req.user && req.user.id) { return res.sendFile(path.join(__dirname, '../public/root.html')) }

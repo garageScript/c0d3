@@ -5,6 +5,8 @@ const matterMostService = require('./lib/matterMostService')
 const axios = require('axios')
 const { User } = require('../dbload')
 const log = require('../log/index')(__filename)
+const mailGun = require('../mailGun/index')
+const nanoid = require('nanoid')
 
 const errorHandler = (req, res, error) => {
   if (error.httpStatus && error.message) {
@@ -42,6 +44,9 @@ helpers.postSignup = async (req, res, next) => {
 
     // add new user info to the database
     const { name, username, confirmEmail, password } = req.body
+    const randomToken = nanoid()
+
+    // Sign up user to mattermost and gitlab
     try {
       log.info(`Before signup`)
       const gitLabUser = await gitLab.createUser({ name, username, email: confirmEmail, password })
@@ -59,8 +64,12 @@ helpers.postSignup = async (req, res, next) => {
       name,
       username,
       password: hash,
-      email: confirmEmail
+      email: confirmEmail,
+      emailVerificationToken: randomToken
     })
+
+    // Send email verification
+    await mailGun.sendEmailVerifcation({ username, email: confirmEmail }, randomToken)
 
     // create SSH account if environment is in production
     if (process.env.NODE_ENV === 'production') {
@@ -229,6 +238,37 @@ helpers.postClientForm = async (req, res) => {
     })
   } catch (err) {
     errorHandler(req, res, err)
+  }
+}
+
+helpers.confirmEmail = async (req, res) => {
+  try {
+    log.info(`Before email confirmation`)
+    User.findOne({ where: { emailVerificationToken: req.params.token } }).then((user) => {
+      if (!user) {
+        log.info(`User not found ${!user}`)
+        return res.redirect(`${process.env.CLIENT_URL}/signin`)
+      }
+      if (!user.emailVerificationToken) {
+        log.info(`Email confirmation invalid ${!user.emailVerificationToken}`)
+        return res.redirect(`${process.env.CLIENT_URL}/signin`)
+      }
+      user.update({ emailVerificationToken: '' })
+      log.info(`Email confirmation successful ${user}`)
+      return res.send(`
+        <h3 style="margin-top: 50px">
+          Your email has been confirmed. Please go back to <a href="${process.env.CLIENT_URL}/signin">c0d3.com</a> and sign in. Redirecting in 5 seconds...
+        </h3>
+        <script>
+        setTimeout( () => {
+            window.location = "${process.env.CLIENT_URL}/signin"
+        }, 5000)
+        </script>
+        `)
+    })
+  } catch (err) {
+    log.error(`Email confirmation not successful ${err}`)
+    res.send('Your email was not confirmed')
   }
 }
 
