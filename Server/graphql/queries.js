@@ -1,6 +1,24 @@
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 
+const getLessonListDetails = (userId) => {
+  return Lesson.findAll({
+    include: [
+      {
+        model: User,
+        required: false,
+        where: {
+          id: userId
+        },
+        through: {
+          model: UserLesson,
+          attributes: ['isPassed', 'isTeaching', 'isEnrolled']
+        }
+      }
+    ]
+  })
+}
+
 const {
   Lesson,
   UserLesson,
@@ -63,21 +81,7 @@ module.exports = {
   },
 
   curriculumStatus: (obj, args, context) => {
-    return Lesson.findAll({
-      include: [
-        {
-          model: User,
-          required: false,
-          where: {
-            id: context.user.id
-          },
-          through: {
-            model: UserLesson,
-            attributes: ['isPassed', 'isTeaching', 'isEnrolled']
-          }
-        }
-      ]
-    }).then(lessons => {
+    return getLessonListDetails(context.user.id).then(lessons => {
       return [...lessons].map(lesson => {
         lesson.currentUser = lesson.users[0] || {
           userLesson: { isTeaching: '', isPassed: '' }
@@ -216,6 +220,13 @@ module.exports = {
       userData.stars = allStars.filter(star =>
         star.studentId !== userData.id
       )
+      return getLessonListDetails(userData.id)
+    }).then(lessons => {
+      return [...lessons].filter(lesson => {
+        return lesson.currentUser.userLesson.isPassed
+      })
+    }).then(lessons => {
+      userData.lessons = lessons
       return userData
     })
   },
