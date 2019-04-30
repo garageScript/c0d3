@@ -4,7 +4,6 @@ const git = require('simple-git')()
 const prompt = require('prompt')
 const { request } = require('graphql-request')
 const credService = require('../util/credentials.js')
-const matterMostService = require('../../../Server/auth/lib/matterMostService')
 
 module.exports = async (inputs) => {
   try {
@@ -30,31 +29,14 @@ module.exports = async (inputs) => {
     const lessons = await queryForLessons(graphqlEndpoint)
     const currentLesson = await promptForLessons(lessons)
     const challengeId = await promptForChallenge(currentLesson)
-    const challenge = await getChallenge(currentLesson, challengeId)
     const diff = await createDiff(currentBranch)
 
     // From this point onward, all graphql calls are mutating
     // database data.
     await sendSubmission(currentLesson.id, cliToken, diff, challengeId, graphqlEndpoint)
-    const publicChannels = await matterMostService.getPublicChannels()
-    const lessonOrder = await getLessonOrder(lessons, currentLesson)
-    const lessonTitle = await getLessonTitle(publicChannels, lessonOrder)
-    await matterMostService.sendSubmissionMessage(lessonTitle, credentials.username, challenge, lessonOrder)
   } catch (e) {
     console.error(e)
   }
-}
-
-function getChallenge (currentLesson, challengeId) {
-  return currentLesson['challenges'].find((chall) => chall.id === challengeId).title
-}
-
-function getLessonOrder (lessons, currentLesson) {
-  return lessons.find(less => less.title === currentLesson.title).order
-}
-
-function getLessonTitle (publicChannels, lessonOrder) {
-  return publicChannels.data.find(channel => parseInt(channel.name.slice(2, 3)) === lessonOrder).name
 }
 
 function getGraphqlEndpoint (inputs) {

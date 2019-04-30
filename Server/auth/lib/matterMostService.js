@@ -1,7 +1,5 @@
 const axios = require('axios')
-// was getting undefined so keeping this here for now
-const accessToken = 'tjmsbwembpbxigrcj9su3yqpfh'
-// const accessToken = process.env.MATTERMOST_ACCESS_TOKEN
+const accessToken = process.env.MATTERMOST_ACCESS_TOKEN
 const chatServiceHeader = { Authorization: `Bearer ${accessToken}` }
 let chatServiceUrl = process.env.NODE_ENV === 'production' ? 'https://chat.c0d3.com/api/v4' : 'https://chat-dev.c0d3.com/api/v4'
 
@@ -41,7 +39,8 @@ const matterMostService = {
     }
   },
   getChannelInfo: async (roomName) => {
-    return axios.get(`${chatServiceUrl}/teams/name/c0d3-dev/channels/name/${roomName}`, { headers: chatServiceHeader })
+    let devOrProd = process.env.NODE_ENV === 'production' ? 'c0d3' : 'c0d3-dev'
+    return axios.get(`${chatServiceUrl}/teams/name/${devOrProd}/channels/name/${roomName}`, { headers: chatServiceHeader })
   },
   getTeams: async () => {
     return axios.get(`${chatServiceUrl}/teams`, { headers: chatServiceHeader })
@@ -50,12 +49,12 @@ const matterMostService = {
     const teamId = await matterMostService.getTeams()
     return axios.get(`${chatServiceUrl}/teams/${teamId.data[0].id}/channels`, { headers: chatServiceHeader })
   },
-  sendSubmissionMessage: async (roomName, username, challenge, lessonOrder) => {
+  sendMessage: async (roomName, username, challenge, lessonOrder) => {
     try {
       const channelInfo = await matterMostService.getChannelInfo(roomName)
       await axios.post(`${chatServiceUrl}/posts`, {
         'channel_id': `${channelInfo.data.id}`,
-        'message': `@${username} has submitted a solution ${challenge}. Click here to see code: <https://c0d3.com/teacher/${lessonOrder}>`
+        'message': `@${username} has submitted a solution **_${challenge}_**. Click here to review the code: <https://c0d3.com/teacher/${lessonOrder}>`
       }, { headers: chatServiceHeader })
     } catch (error) {
       console.log('Error sending submission to mattermost channel')

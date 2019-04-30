@@ -1,6 +1,7 @@
 const mailGun = require('../mailGun/index')
 const { forgotResetPassword } = require('../auth/app')
 const nanoid = require('nanoid')
+const matterMostService = require('../auth/lib/matterMostService')
 
 const {
   Announcement,
@@ -148,6 +149,7 @@ module.exports = {
       })
   },
   createSubmission: (obj, args, context) => {
+    let res, challenge, user, lesson
     return User.findOne({
       where: { cliToken: args.input.cliToken }
     }).then((user) => {
@@ -169,8 +171,30 @@ module.exports = {
           viewCount: 0
         })
       })
-      .then(d => {
-        return d
+      .then((d) => {
+        res = d
+        return Challenge.findById(d.challengeId).then(challenge => {
+          return challenge
+        })
+      }).then((chall) => {
+        challenge = chall
+        return User.findById(res.userId).then(user => {
+          return user
+        })
+      }).then((use) => {
+        user = use
+        return Lesson.findById(res.lessonId).then(lesson => {
+          return lesson
+        })
+      }).then((less) => {
+        lesson = less
+        matterMostService.getPublicChannels().then((publicChannels) => {
+          if (!publicChannels || !user || !challenge) return
+          const lessonName = publicChannels.data.find((channel) => parseInt(channel.name.slice(2, 3)) === lesson.order).name
+          matterMostService.sendMessage(lessonName, user.username, challenge.title, lesson.order)
+        })
+      }).then(() => {
+        return res
       })
   },
   createLesson: (obj, args) => {
