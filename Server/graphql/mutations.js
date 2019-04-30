@@ -189,7 +189,7 @@ module.exports = {
       }).then((less) => {
         lesson = less
         matterMostService.getPublicChannels().then((publicChannels) => {
-          if (!publicChannels || !user || !challenge) return
+          if (!publicChannels || !user || !challenge || !lesson) return
           const lessonName = publicChannels.data.find((channel) => parseInt(channel.name.slice(2, 3)) === lesson.order).name
           matterMostService.sendMessage(lessonName, user.username, challenge.title, lesson.order)
         })
