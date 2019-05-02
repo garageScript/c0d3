@@ -49,15 +49,26 @@ const matterMostService = {
     const teamId = await matterMostService.getTeams()
     return axios.get(`${chatServiceUrl}/teams/${teamId.data[0].id}/channels`, { headers: chatServiceHeader })
   },
-  sendMessage: async (roomName, username, challenge, lessonOrder) => {
+  sendMessage: async (channelId, message) => {
     try {
-      const channelInfo = await matterMostService.getChannelInfo(roomName)
       await axios.post(`${chatServiceUrl}/posts`, {
-        'channel_id': `${channelInfo.data.id}`,
-        'message': `@${username} has submitted a solution **_${challenge}_**. Click here to review the code: <https://c0d3.com/teacher/${lessonOrder}>`
+        'channel_id': channelId,
+        'message': message
       }, { headers: chatServiceHeader })
     } catch (error) {
-      console.log('Error sending submission to mattermost channel')
+      console.log('Error sending message to mattermost channel')
+    }
+  },
+  directMessageChannel: async (submitterEmail, reviewerEmail) => {
+    try {
+      const submitter = await matterMostService.getUserInfo(submitterEmail)
+      const reviewer = await matterMostService.getUserInfo(reviewerEmail)
+      return axios.post(`${chatServiceUrl}/channels/direct`, [
+        `${submitter.data.id}`,
+        `${reviewer.data.id}`
+      ], { headers: chatServiceHeader })
+    } catch (error) {
+      console.log('Error creating direct message channel')
     }
   }
 }

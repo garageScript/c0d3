@@ -16,6 +16,7 @@ const {
 
 module.exports = {
   rejectSubmission: (obj, args, context) => {
+    let rejectionInfo; let comment = args.input.comment || ''
     return Submission.findOne({
       where: {
         lessonId: args.input.lessonId,
@@ -25,9 +26,20 @@ module.exports = {
     }).then(d => {
       return d.update({
         status: 'needMoreWork',
-        comment: args.input.comment || '',
+        comment: comment,
         reviewerId: context.user.id
       })
+    }).then((d) => {
+      rejectionInfo = d
+      return Promise.all([User.findById(args.input.userId), User.findById(context.user.id)])
+    }).then(([submitter, reviewer]) => {
+      return Promise.all([matterMostService.directMessageChannel(submitter.email, reviewer.email), Lesson.findById(args.input.lessonId), submitter, reviewer])
+    }).then(([cid, less, sub, rev]) => {
+      const channelId = cid.data.id
+      const message = `Hi, I @${rev.username} have reviewed your submission, please check your progress here https://c0d3.com/teacher/${less.order}. Please let me know if you have further questions! ${comment}`
+      matterMostService.sendMessage(channelId, message)
+    }).then(() => {
+      return rejectionInfo
     })
   },
   makeTeacher: (obj, args, context) => {
@@ -149,10 +161,11 @@ module.exports = {
       })
   },
   createSubmission: (obj, args, context) => {
-    let res, challenge, user, lesson
+    let res, use
     return User.findOne({
       where: { cliToken: args.input.cliToken }
     }).then((user) => {
+      use = user
       if (!user) return
       return Submission.findOrCreate({
         where: {
@@ -170,28 +183,17 @@ module.exports = {
           status: 'open',
           viewCount: 0
         })
-      })
-      .then((d) => {
+      }).then((d) => {
         res = d
-        return Challenge.findById(d.challengeId).then(challenge => {
-          return challenge
-        })
-      }).then((chall) => {
-        challenge = chall
-        return User.findById(res.userId).then(user => {
-          return user
-        })
-      }).then((use) => {
-        user = use
-        return Lesson.findById(res.lessonId).then(lesson => {
-          return lesson
-        })
-      }).then((less) => {
-        lesson = less
-        matterMostService.getPublicChannels().then((publicChannels) => {
-          if (!publicChannels || !user || !challenge || !lesson) return
-          const lessonName = publicChannels.data.find((channel) => parseInt(channel.name.slice(2, 3)) === lesson.order).name
-          matterMostService.sendMessage(lessonName, user.username, challenge.title, lesson.order)
+        return Promise.all([Challenge.findById(d.challengeId), Lesson.findById(res.lessonId)])
+      }).then(([challenge, lesson]) => {
+        if (!use || !challenge || !lesson) return
+        const lessonName = lesson.chatUrl.split('/').pop()
+        matterMostService.getChannelInfo(lessonName).then((chan) => {
+          if (!chan) return
+          const channelId = chan.data.id
+          const message = `@${use.username} has submitted a solution **_${challenge.title}_**. Click here to review the code: <https://c0d3.com/teacher/${lesson.order}>`
+          matterMostService.sendMessage(channelId, message)
         })
       }).then(() => {
         return res
