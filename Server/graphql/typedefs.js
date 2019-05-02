@@ -273,5 +273,6 @@ type UserData {
   name: String,
   createdAt: String,
   stars: [Star]
+  lessons: [Lesson]
 }
 `
