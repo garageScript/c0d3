@@ -42,13 +42,6 @@ const matterMostService = {
     let devOrProd = process.env.NODE_ENV === 'production' ? 'c0d3' : 'c0d3-dev'
     return axios.get(`${chatServiceUrl}/teams/name/${devOrProd}/channels/name/${roomName}`, { headers: chatServiceHeader })
   },
-  getTeams: async () => {
-    return axios.get(`${chatServiceUrl}/teams`, { headers: chatServiceHeader })
-  },
-  getPublicChannels: async () => {
-    const teamId = await matterMostService.getTeams()
-    return axios.get(`${chatServiceUrl}/teams/${teamId.data[0].id}/channels`, { headers: chatServiceHeader })
-  },
   sendMessage: async (channelId, message) => {
     try {
       await axios.post(`${chatServiceUrl}/posts`, {
