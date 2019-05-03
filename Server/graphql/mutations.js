@@ -17,7 +17,7 @@ const {
 module.exports = {
   rejectSubmission: (obj, args, context) => {
     let userSubmission
-    let comment = args.input.comment || ''
+    const comment = args.input.comment || ''
     return Submission.findOne({
       where: {
         lessonId: args.input.lessonId,
@@ -34,11 +34,11 @@ module.exports = {
       userSubmission = d
       return Promise.all([User.findById(args.input.userId), User.findById(context.user.id)])
     }).then(([submitter, reviewer]) => {
-      return Promise.all([matterMostService.directMessageChannel(submitter.email, reviewer.email), Lesson.findById(args.input.lessonId), submitter, reviewer])
-    }).then(([cid, less, sub, rev]) => {
-      const channelId = cid.data.id
-      const message = `Hi, I @${rev.username} have reviewed your submission, please check your progress [here](<https://c0d3.com/student/${less.id}>). Please let me know if you have further questions! ${comment}`
-      matterMostService.sendMessage(channelId, message)
+      return Promise.all([Lesson.findById(args.input.lessonId), Challenge.findById(args.input.challengeId), submitter, reviewer])
+    }).then(([lesson, challenge, submitter, reviewer]) => {
+      if (!lesson || !challenge || !submitter || !reviewer) return
+      const message = `Hi, I @${reviewer.username} have reviewed your submission  **_${lesson.title}: ${challenge.title}_**, please check your progress [here](<https://c0d3.com/student/${lesson.id}>). Please let me know if you have further questions! ${comment}`
+      matterMostService.directMessage(submitter.email, reviewer.email, message)
     }).then(() => {
       return userSubmission
     })
@@ -99,7 +99,7 @@ module.exports = {
   },
   approveSubmission: (obj, args, context) => {
     let submissionToApprove
-    let comment = args.input.comment || ''
+    const comment = args.input.comment || ''
     return Submission.findOne({
       where: {
         lessonId: args.input.lessonId,
@@ -117,12 +117,9 @@ module.exports = {
       }).then(() => {
         return Promise.all([User.findById(args.input.userId), User.findById(context.user.id), Challenge.findById(args.input.challengeId), Lesson.findById(args.input.lessonId)])
       }).then(([submitter, reviewer, challenge, lesson]) => {
-        if (!submitter || !reviewer || !challenge) return
-        matterMostService.directMessageChannel(submitter.email, reviewer.email).then((channelId) => {
-          if (!channelId) return
-          const message = `I @${context.user.username} have approved your submission **_${lesson.title}: ${challenge.title}_**! ${comment}`
-          matterMostService.sendMessage(channelId.data.id, message)
-        })
+        if (!submitter || !reviewer || !challenge || !lesson) return
+        const message = `I @${context.user.username} have approved your submission **_${lesson.title}: ${challenge.title}_**! ${comment}`
+        matterMostService.directMessage(submitter.email, reviewer.email, message)
       })
       .then(() => {
         return Submission.findAll({
@@ -172,11 +169,11 @@ module.exports = {
       })
   },
   createSubmission: (obj, args, context) => {
-    let res, use
+    let userSubmission, author
     return User.findOne({
       where: { cliToken: args.input.cliToken }
     }).then((user) => {
-      use = user
+      author = user
       if (!user) return
       return Submission.findOrCreate({
         where: {
@@ -195,19 +192,19 @@ module.exports = {
           viewCount: 0
         })
       }).then((d) => {
-        res = d
-        return Promise.all([Challenge.findById(d.challengeId), Lesson.findById(res.lessonId)])
+        userSubmission = d
+        return Promise.all([Challenge.findById(d.challengeId), Lesson.findById(userSubmission.lessonId)])
       }).then(([challenge, lesson]) => {
-        if (!use || !challenge || !lesson) return
+        if (!author || !challenge || !lesson) return
         const lessonName = lesson.chatUrl.split('/').pop()
         matterMostService.getChannelInfo(lessonName).then((chan) => {
           if (!chan) return
           const channelId = chan.data.id
-          const message = `@${use.username} has submitted a solution **_${challenge.title}_**. Click [here](<https://c0d3.com/teacher/${lesson.order}>) to review the code.`
+          const message = `@${author.username} has submitted a solution **_${challenge.title}_**. Click [here](<https://c0d3.com/teacher/${lesson.order}>) to review the code.`
           matterMostService.sendMessage(channelId, message)
         })
       }).then(() => {
-        return res
+        return userSubmission
       })
   },
   createLesson: (obj, args) => {
