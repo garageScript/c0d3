@@ -161,7 +161,30 @@ module.exports = {
                 userId: args.input.userId
               }
             }
-          )
+          ).then(() => {
+            return Promise.all([Lesson.findById(args.input.lessonId), User.findById(args.input.userId)])
+          })
+            .then(([lesson, user]) => {
+              const message = `Congratulations to @${user.username} for passing and completing **_${lesson.title}_**! @${user.username} is now a guardian angel for the students in this channel.`
+              const channelName = lesson.chatUrl.split('/').pop()
+              matterMostService.publicChannelMessage(channelName, message)
+              return [lesson, user]
+            }).then(([lesson, user]) => {
+              const nextUrl = Lesson.findAll({
+                attributes: ['chatUrl']
+              }).then((lessons) => {
+                return lessons.find((l) => l.chatUrl === lesson.chatUrl)
+              })
+              return Promise.all([lesson, user, nextUrl])
+            }).then(([lesson, user, nextUrl]) => {
+              if (!nextUrl) return
+              const message = `We have a new student joining us! @${user.username} just completed **_${lesson.title}_**.`
+              let channelName = lesson.chatUrl.split('/').pop()
+              const channelNameArr = channelName.split('')
+              channelNameArr.splice(2, 1, lesson.order + 1)
+              channelName = channelNameArr.join('')
+              matterMostService.publicChannelMessage(channelName, message)
+            })
         }
       })
       .then(() => {
@@ -237,12 +260,20 @@ module.exports = {
     )
   },
   giveStar: (obj, args, context) => {
+    const mentorId = args.input.userId || context.user.id
     Star.create({
       lessonId: args.input.lessonId,
       studentId: context.user.id,
-      mentorId: args.input.userId || context.user.id,
+      mentorId,
       comment: args.input.comment
+    }).then(() => {
+      return Promise.all([User.findById(mentorId), Lesson.findById(args.input.lessonId)])
     })
+      .then(([user, lesson]) => {
+        const channelName = lesson.chatUrl.split('/').pop()
+        const message = `@${user.username} received a star!`
+        matterMostService.publicChannelMessage(channelName, message)
+      })
     return 'Success'
   },
   createAnnouncement: (obj, args, context) => {

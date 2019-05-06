@@ -67,6 +67,10 @@ const matterMostService = {
   directMessage: async (submitterEmail, reviewerEmail, message) => {
     const channelId = await matterMostService.createDirectMessageChannel(submitterEmail, reviewerEmail)
     await matterMostService.sendMessage(channelId.data.id, message)
+  },
+  publicChannelMessage: async (channelName, message) => {
+    const channelId = await matterMostService.getChannelInfo(channelName)
+    await matterMostService.sendMessage(channelId.data.id, message)
   }
 }
 
