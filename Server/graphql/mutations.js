@@ -32,9 +32,7 @@ module.exports = {
       })
     }).then((d) => {
       userSubmission = d
-      return Promise.all([User.findById(args.input.userId), User.findById(context.user.id)])
-    }).then(([submitter, reviewer]) => {
-      return Promise.all([Lesson.findById(args.input.lessonId), Challenge.findById(args.input.challengeId), submitter, reviewer])
+      return Promise.all([Lesson.findById(args.input.lessonId), Challenge.findById(args.input.challengeId), User.findById(args.input.userId), User.findById(context.user.id)])
     }).then(([lesson, challenge, submitter, reviewer]) => {
       if (!lesson || !challenge || !submitter || !reviewer) return
       const message = `Hi, I @${reviewer.username} have reviewed your submission  **_${lesson.title}: ${challenge.title}_**, please check your progress [here](<https://c0d3.com/student/${lesson.id}>). Please let me know if you have further questions! ${comment}`
@@ -226,7 +224,6 @@ module.exports = {
           const message = `@${author.username} has submitted a solution **_${challenge.title}_**. Click [here](<https://c0d3.com/teacher/${lesson.order}>) to review the code.`
           matterMostService.sendMessage(channelId, message)
         })
-      }).then(() => {
         return userSubmission
       })
   },

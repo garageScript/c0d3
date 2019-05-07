@@ -39,7 +39,7 @@ const matterMostService = {
     }
   },
   getChannelInfo: async (roomName) => {
-    let devOrProd = process.env.NODE_ENV === 'production' ? 'c0d3' : 'c0d3-dev'
+    const devOrProd = process.env.NODE_ENV === 'production' ? 'c0d3' : 'c0d3-dev'
     return axios.get(`${chatServiceUrl}/teams/name/${devOrProd}/channels/name/${roomName}`, { headers: chatServiceHeader })
   },
   sendMessage: async (channelId, message) => {
