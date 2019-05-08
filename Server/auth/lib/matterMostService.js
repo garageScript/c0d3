@@ -52,7 +52,7 @@ const matterMostService = {
       console.log('Error sending message to mattermost channel')
     }
   },
-  createDirectMessageChannel: async (submitterEmail, reviewerEmail) => {
+  findOrCreateDirectMessageChannel: async (submitterEmail, reviewerEmail) => {
     try {
       const submitter = await matterMostService.getUserInfo(submitterEmail)
       const reviewer = await matterMostService.getUserInfo(reviewerEmail)
@@ -64,8 +64,8 @@ const matterMostService = {
       console.log('Error creating direct message channel')
     }
   },
-  directMessage: async (submitterEmail, reviewerEmail, message) => {
-    const channelId = await matterMostService.createDirectMessageChannel(submitterEmail, reviewerEmail)
+  sendDirectMessage: async (submitterEmail, reviewerEmail, message) => {
+    const channelId = await matterMostService.findOrCreateDirectMessageChannel(submitterEmail, reviewerEmail)
     await matterMostService.sendMessage(channelId.data.id, message)
   },
   publicChannelMessage: async (channelName, message) => {
