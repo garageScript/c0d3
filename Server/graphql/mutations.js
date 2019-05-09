@@ -164,7 +164,6 @@ module.exports = {
             const message = `Congratulations to @${author.username} for passing and completing **_${currentLesson.title}_**! @${author.username} is now a guardian angel for the students in this channel.`
             const channelName = currentLesson.chatUrl.split('/').pop()
             matterMostService.publicChannelMessage(channelName, message)
-          }).then(() => {
             return Lesson.findOne({
               where: {
                 order: `${+currentLesson.order + 1}`
