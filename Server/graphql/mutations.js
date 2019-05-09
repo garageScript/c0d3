@@ -165,17 +165,15 @@ module.exports = {
             const channelName = currentLesson.chatUrl.split('/').pop()
             matterMostService.publicChannelMessage(channelName, message)
           }).then(() => {
-            return Lesson.findAll({
-              attributes: ['chatUrl']
+            return Lesson.findOne({
+              where: {
+                order: `${+currentLesson.order + 1}`
+              }
             })
-          }).then((urls) => {
-            const chatUrlLength = urls.map((chatUrl) => urls.chatUrl).length
-            if (currentLesson.order + 1 > chatUrlLength - 1) return
+          }).then((nextLesson) => {
+            if (!nextLesson) return
+            const channelName = nextLesson.chatUrl.split('/').pop()
             const message = `We have a new student joining us! @${author.username} just completed **_${currentLesson.title}_**.`
-            let channelName = currentLesson.chatUrl.split('/').pop()
-            const channelNameArr = channelName.split('')
-            channelNameArr.splice(2, 1, currentLesson.order + 1)
-            channelName = channelNameArr.join('')
             matterMostService.publicChannelMessage(channelName, message)
           })
         }
@@ -211,7 +209,7 @@ module.exports = {
         userSubmission = d
         return Promise.all([Challenge.findById(d.challengeId), Lesson.findById(userSubmission.lessonId)])
       }).then(([challenge, lesson]) => {
-        if (!author || !challenge || !lesson) return
+        if (!author || !challenge || !lesson) return userSubmission
         const lessonName = lesson.chatUrl.split('/').pop()
         const message = `@${author.username} has submitted a solution **_${challenge.title}_**. Click [here](<https://c0d3.com/teacher/${lesson.order}>) to review the code.`
         matterMostService.publicChannelMessage(lessonName, message)
