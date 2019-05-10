@@ -12,9 +12,17 @@ module.exports = async (inputs) => {
       ? new URL('/cli/signin', inputs.url) : new URL('/cli/signin', 'https://c0d3.com')
 
     let cliToken = credentials.cliToken
+    /*
     if (!cliToken) {
       cliToken = await credService.validate(credentials, url.href)
-      if (!cliToken) return console.error('Invalid Credentials')
+      if (!cliToken) {
+        await credService.deletion(credentials)
+        return credService.getCredentials()
+      }
+      */
+    if (!cliToken) {
+      cliToken = await credService.validate(credentials, url.href)
+      if (!cliToken) return console.log('Invalid Credentials')
       credService.save(credentials, cliToken)
     }
 
@@ -198,6 +206,7 @@ function promptForChallenge (currentLesson) {
 }
 
 function createDiff (currentBranch) {
+  console.log('------currentBranch---------', currentBranch)
   return new Promise((resolve, reject) => {
     git.diff([`master..${currentBranch}`], (error, stdout, stderr) => {
       if (error || stderr) return reject(error || stderr)
