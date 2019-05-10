@@ -35,7 +35,7 @@ module.exports = {
       return Promise.all([Lesson.findById(args.input.lessonId), Challenge.findById(args.input.challengeId), User.findById(args.input.userId), User.findById(context.user.id)])
     }).then(([lesson, challenge, submitter, reviewer]) => {
       if (!lesson || !challenge || !submitter || !reviewer) return userSubmission
-      const message = `Hi, I @${reviewer.username} have reviewed your submission  **_${lesson.title}: ${challenge.title}_**, please check your progress [here](<https://c0d3.com/student/${lesson.id}>). Please let me know if you have further questions! \n\n ${comment}`
+      const message = `Hi, I have reviewed your submission  **_${lesson.title}: ${challenge.title}_**, please check your progress [here](<https://c0d3.com/student/${lesson.id}>). Please let me know if you have further questions! \n\n ${comment}`
       matterMostService.sendDirectMessage(submitter.email, reviewer.email, message)
       return userSubmission
     })
@@ -117,7 +117,7 @@ module.exports = {
         if (!submitter || !reviewer || !challenge || !lesson) return
         author = submitter
         currentLesson = lesson
-        const message = `I @${context.user.username} have approved your submission **_${lesson.title}: ${challenge.title}_**! \n\n ${comment}`
+        const message = `I have approved your submission **_${lesson.title}: ${challenge.title}_**! \n\n ${comment}`
         matterMostService.sendDirectMessage(submitter.email, reviewer.email, message)
       })
       .then(() => {
