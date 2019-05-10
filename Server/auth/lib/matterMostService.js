@@ -54,8 +54,10 @@ const matterMostService = {
   },
   findOrCreateDirectMessageChannel: async (submitterEmail, reviewerEmail) => {
     try {
-      const submitter = await matterMostService.getUserInfo(submitterEmail)
-      const reviewer = await matterMostService.getUserInfo(reviewerEmail)
+      const [submitter, reviewer] = await Promise.all([
+        matterMostService.getUserInfo(submitterEmail),
+        matterMostService.getUserInfo(reviewerEmail)
+      ])
       return axios.post(`${chatServiceUrl}/channels/direct`, [
         `${submitter.data.id}`,
         `${reviewer.data.id}`
