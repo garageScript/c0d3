@@ -373,7 +373,10 @@ export const USER_DATA = gql`
     userInfo(input: $in){
       name, 
       createdAt,
-      stars { studentId ,comment, lessonId }
+      stars { studentId ,comment, lessonId },
+      lessons{
+        title
+      }
     }
   }
 `
@@ -400,5 +403,10 @@ export const GET_USERNAME = gql`
     getUsername(userId: $input){
       username
     }
+  }
+`
+export const RESEND_EMAIL_CONFIRMATION = gql`
+  mutation($input: String){
+    resendEmailConfirmation(value: $input)
   }
 `

@@ -112,6 +112,8 @@ type Mutation {
   "Reset password for non-authorized clients"
   forgotResetPassword(input: PasswordChange): String
 
+  "Resend email confirmation"
+  resendEmailConfirmation(value: String): String
 }
 
 input PasswordChange {
@@ -271,5 +273,6 @@ type UserData {
   name: String,
   createdAt: String,
   stars: [Star]
+  lessons: [Lesson]
 }
 `
