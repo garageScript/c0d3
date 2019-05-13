@@ -18,7 +18,7 @@ const getLessonListDetails = (userId) => {
     ]
   }).then(lessons => {
     return lessons.map(l => {
-      const lesson = { ...l }
+      const lesson = { ...l.dataValues }
       lesson.currentUser = lesson.users[0] || {
         userLesson: { isTeaching: '', isPassed: '' }
       }
