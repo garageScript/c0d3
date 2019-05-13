@@ -97,89 +97,57 @@ module.exports = {
   approveSubmission: (obj, args, context) => {
     let submissionToApprove, author, currentLesson
     const comment = args.input.comment || ''
+    const { userId, lessonId, challengeId } = args.input
     return Submission.findOne({
-      where: {
-        lessonId: args.input.lessonId,
-        challengeId: args.input.challengeId,
-        userId: args.input.userId
+      where: { lessonId, challengeId, userId }
+    }).then(d => {
+      submissionToApprove = d
+      return d.update({
+        status: 'passed',
+        reviewerId: context.user.id,
+        comment
+      })
+    }).then(() => {
+      return Promise.all([
+        User.findById(userId),
+        User.findById(context.user.id),
+        Challenge.findById(challengeId),
+        Lesson.findById(lessonId)])
+    }).then(([submitter, reviewer, challenge, lesson]) => {
+      if (!submitter || !reviewer || !challenge || !lesson) return submissionToApprove
+      author = submitter
+      currentLesson = lesson
+      const message = `I have approved your submission **_${lesson.title}: ${challenge.title}_**! \n\n ${comment}`
+      matterMostService.sendDirectMessage(submitter.email, reviewer.email, message)
+      return Promise.all([
+        Submission.findAll({
+          where: { userId, lessonId },
+          include: [{ model: Challenge }, { model: User, as: 'reviewer' }]
+        }),
+        Challenge.count({ where: { lessonId } }),
+        UserLesson.findOrCreate({ where: { userId, lessonId } })
+      ])
+    }).then(([submissions, challengeCount, userLesson]) => {
+      const passedSubmissions = submissions.filter(s => s.status === 'passed')
+      const isPassed = passedSubmissions.length === challengeCount
+      if (isPassed && !userLesson.isPassed) {
+        userLesson[0].update({ isPassed: Date.now() })
       }
-    })
-      .then(d => {
-        submissionToApprove = d
-        return d.update({
-          status: 'passed',
-          reviewerId: context.user.id,
-          comment
-        })
-      }).then(() => {
-        return Promise.all([User.findById(args.input.userId), User.findById(context.user.id), Challenge.findById(args.input.challengeId), Lesson.findById(args.input.lessonId)])
-      }).then(([submitter, reviewer, challenge, lesson]) => {
-        if (!submitter || !reviewer || !challenge || !lesson) return
-        author = submitter
-        currentLesson = lesson
-        const message = `I have approved your submission **_${lesson.title}: ${challenge.title}_**! \n\n ${comment}`
-        matterMostService.sendDirectMessage(submitter.email, reviewer.email, message)
-      })
-      .then(() => {
-        return Submission.findAll({
-          where: {
-            lessonId: args.input.lessonId,
-            userId: args.input.userId
-          }
-        })
-      })
-      .then(submissions => {
-        return Challenge.findAll({
-          where: {
-            lessonId: args.input.lessonId
-          }
-        }).then(challenges => {
-          let challengeId = {}
-          challenges.map(challenge => {
-            return (challengeId[challenge.id] = false)
-          })
-          submissions.forEach(submission => {
-            if (submission.status === 'passed') {
-              challengeId[submission.challengeId] = true
-            }
-          })
-          let passed = true
-          Object.values(challengeId).forEach(v => {
-            if (!v) passed = false
-          })
-          return passed
-        })
-      })
-      .then(updateIsPassed => {
-        if (updateIsPassed) {
-          return UserLesson.update(
-            { isPassed: Date.now() },
-            {
-              where: {
-                lessonId: args.input.lessonId,
-                userId: args.input.userId
-              }
-            }
-          ).then(() => {
-            const message = `Congratulations to @${author.username} for passing and completing **_${currentLesson.title}_**! @${author.username} is now a guardian angel for the students in this channel.`
-            const channelName = currentLesson.chatUrl.split('/').pop()
-            matterMostService.publicChannelMessage(channelName, message)
-            return Lesson.findOne({
-              where: {
-                order: `${+currentLesson.order + 1}`
-              }
-            })
-          }).then((nextLesson) => {
-            if (!nextLesson) return
-            const channelName = nextLesson.chatUrl.split('/').pop()
-            const message = `We have a new student joining us! @${author.username} just completed **_${currentLesson.title}_**.`
-            matterMostService.publicChannelMessage(channelName, message)
-          })
+      const message = `Congratulations to @${author.username} for passing and completing **_${currentLesson.title}_**! @${author.username} is now a guardian angel for the students in this channel.`
+      const channelName = currentLesson.chatUrl.split('/').pop()
+      matterMostService.publicChannelMessage(channelName, message)
+      return Lesson.findOne({
+        where: {
+          order: `${+currentLesson.order + 1}`
         }
       })
-      .then(() => {
-        return submissionToApprove
-      })
+    }).then(nextLesson => {
+      if (!nextLesson) return
+      const channelName = nextLesson.chatUrl.split('/').pop()
+      const message = `We have a new student joining us! @${author.username} just completed **_${currentLesson.title}_**.`
+      matterMostService.publicChannelMessage(channelName, message)
+      return submissionToApprove
+    })
   },
   createSubmission: (obj, args, context) => {
     let userSubmission, author
