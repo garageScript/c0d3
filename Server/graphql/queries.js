@@ -158,12 +158,28 @@ module.exports = {
   },
 
   userSubmissions: (obj, args, context) => {
-    return Submission.findAll({
-      where: {
-        userId: args.input.userId || context.user.id,
-        lessonId: args.input.lessonId
-      },
-      include: [{ model: Challenge }, { model: User, as: 'reviewer' }]
+    const userId = args.input.userId || context.user.id
+    const lessonId = args.input.lessonId
+    return Promise.all([
+      Submission.findAll({
+        where: { userId, lessonId },
+        include: [{ model: Challenge }, { model: User, as: 'reviewer' }]
+      }),
+      Challenge.count({ where: { lessonId } }),
+      UserLesson.findOrCreate({ where: { userId, lessonId } })
+    ]).then(([submissions, challengeCount, userLesson]) => {
+      /* Remove the following after 2 months.
+       *   This should be addressed in the mutation call for submissin approvals.
+       *   For 3 - 6 months, no UserLesson were created for certain users.
+       *   Therefore, the following code must exist to remedy the issue.
+       *   Implemented on May 12, 2019, should be removed after July 12, 2019
+       */
+      const passedSubmissions = submissions.filter(s => s.status === 'passed')
+      if (passedSubmissions.length === challengeCount && !userLesson.isPassed) {
+        userLesson[0].update({ isPassed: Date.now() })
+        return submissions
+      }
+      return submissions
     })
   },
 
