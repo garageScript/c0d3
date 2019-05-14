@@ -22,7 +22,13 @@ const UserProfile = ({ match }) => {
               display: 'inline-block',
               margin: '20px',
               width: '300px' }} >
-              {l.title}
+              <div className='card-body'>
+                <h5 className='card-title'>
+                  <strong>
+                    {l.title}
+                  </strong>
+                </h5>
+              </div>
             </div>
           )
         })

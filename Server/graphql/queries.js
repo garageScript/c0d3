@@ -16,6 +16,14 @@ const getLessonListDetails = (userId) => {
         }
       }
     ]
+  }).then(lessons => {
+    return lessons.map(l => {
+      const lesson = { ...l.dataValues }
+      lesson.currentUser = lesson.users[0] || {
+        userLesson: { isTeaching: '', isPassed: '' }
+      }
+      return lesson
+    })
   })
 }
 
@@ -81,14 +89,7 @@ module.exports = {
   },
 
   curriculumStatus: (obj, args, context) => {
-    return getLessonListDetails(context.user.id).then(lessons => {
-      return [...lessons].map(lesson => {
-        lesson.currentUser = lesson.users[0] || {
-          userLesson: { isTeaching: '', isPassed: '' }
-        }
-        return lesson
-      })
-    })
+    return getLessonListDetails(context.user.id)
   },
 
   lessonStatus: (obj, args, context) => {
@@ -238,11 +239,11 @@ module.exports = {
       )
       return getLessonListDetails(userData.id)
     }).then(lessons => {
-      return [...lessons].filter(lesson => {
+      return lessons.filter(lesson => {
         return lesson.currentUser.userLesson.isPassed
       })
     }).then(lessons => {
-      userData.lessons = lessons
+      userData.lessons = lessons.map(l => l.dataValues)
       return userData
     })
   },
