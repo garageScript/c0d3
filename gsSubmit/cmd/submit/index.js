@@ -12,17 +12,13 @@ module.exports = async (inputs) => {
       ? new URL('/cli/signin', inputs.url) : new URL('/cli/signin', 'https://c0d3.com')
 
     let cliToken = credentials.cliToken
-    /*
+
     if (!cliToken) {
       cliToken = await credService.validate(credentials, url.href)
       if (!cliToken) {
-        await credService.deletion(credentials)
-        return credService.getCredentials()
+        await credService.deletion(credentials, url.href)
+        return console.log(chalk.bold.red('Invalid credentials, please try again!'))
       }
-      */
-    if (!cliToken) {
-      cliToken = await credService.validate(credentials, url.href)
-      if (!cliToken) return console.log('Invalid Credentials')
       credService.save(credentials, cliToken)
     }
 
@@ -206,7 +202,6 @@ function promptForChallenge (currentLesson) {
 }
 
 function createDiff (currentBranch) {
-  console.log('------currentBranch---------', currentBranch)
   return new Promise((resolve, reject) => {
     git.diff([`master..${currentBranch}`], (error, stdout, stderr) => {
       if (error || stderr) return reject(error || stderr)
@@ -235,5 +230,11 @@ function sendSubmission (lessonId, cliToken, diff, challengeId, graphqlEndpoint)
   }
 
   return request(graphqlEndpoint, createSubmission, variablesForCreation)
-    .then(() => console.log('\nYour submission was successfully received'))
+    .then((result) => {
+      if (!result.createSubmission) {
+        credService.deletion()
+        return console.log(chalk.bold.red('\nYour submission was not successfully sent. Please try again.'))
+      }
+      console.log('\nYour submission was successfully received')
+    })
 }

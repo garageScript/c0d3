@@ -165,6 +165,7 @@ module.exports = {
       })
     })
       .then(d => {
+        if (!d) return
         return d[0].update({
           order: args.input.order,
           diff: args.input.diff,

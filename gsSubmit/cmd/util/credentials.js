@@ -7,8 +7,8 @@ const axios = require('axios')
 module.exports = {
   getCredentials,
   validate,
-  save
-  //  deletion
+  save,
+  deletion
 }
 
 const credentialsPath = path.join(homeDir, '.c0d3', 'credentials.json')
@@ -67,16 +67,15 @@ async function save (credentials, cliToken) {
     console.error('Unable to create hidden directory and save credentials')
   }
 }
-/*
-async function deletion (credentials) {
+
+async function deletion () {
   try {
     await deleteCredentialsFile(credentialsPath)
     deleteHiddenDir()
   } catch (e) {
-    console.error('Unable to delete hidden directory and delete credentials')
+    return ''
   }
 }
-*/
 
 function createHiddenDir () {
   const hiddenDir = path.join(homeDir, '.c0d3')
@@ -84,14 +83,13 @@ function createHiddenDir () {
     fs.mkdirSync(hiddenDir)
   }
 }
-/*
+
 function deleteHiddenDir () {
   const hiddenDir = path.join(homeDir, '.c0d3')
   if (fs.existsSync(hiddenDir)) {
     fs.rmdirSync(hiddenDir)
   }
 }
-*/
 
 function createCredentialsFile (dir = credentialsPath, cliToken) {
   return new Promise((resolve, reject) => {
@@ -101,7 +99,7 @@ function createCredentialsFile (dir = credentialsPath, cliToken) {
     })
   })
 }
-/*
+
 function deleteCredentialsFile (dir = credentialsPath) {
   return new Promise((resolve, reject) => {
     fs.unlink(dir, err => {
@@ -110,4 +108,3 @@ function deleteCredentialsFile (dir = credentialsPath) {
     })
   })
 }
-*/
