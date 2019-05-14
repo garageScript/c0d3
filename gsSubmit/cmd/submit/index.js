@@ -16,7 +16,7 @@ module.exports = async (inputs) => {
     if (!cliToken) {
       cliToken = await credService.validate(credentials, url.href)
       if (!cliToken) {
-        await credService.deletion(credentials, url.href)
+        await credService.deletion()
         return console.log(chalk.bold.red('Invalid credentials, please try again!'))
       }
       credService.save(credentials, cliToken)
