@@ -243,7 +243,7 @@ module.exports = {
         return lesson.currentUser.userLesson.isPassed
       })
     }).then(lessons => {
-      userData.lessons = lessons.map(l => l.dataValues)
+      userData.lessons = lessons
       return userData
     })
   },
