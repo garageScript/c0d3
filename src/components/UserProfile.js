@@ -27,6 +27,7 @@ const StarsComments = ({ stars }) => {
   return (
     <div>
       { stars }
+      <hr />
     </div>
   )
 }
@@ -91,7 +92,6 @@ const UserProfile = ({ match }) => {
               <p>{firstName} joined C0D3.com on { moment(parseInt(createdAt)).calendar() }, { moment(parseInt(createdAt)).fromNow() } </p>
             </div>
             <StarsComments stars={userStars} />
-            <hr />
             <CurriculumProgress passedLessons={passedLessons} />
           </div>
         )
