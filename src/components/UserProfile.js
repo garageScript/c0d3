@@ -91,7 +91,7 @@ const UserProfile = ({ match }) => {
               <h3>{ name }</h3>
               <p>{firstName} joined C0D3.com on { moment(parseInt(createdAt)).calendar() }, { moment(parseInt(createdAt)).fromNow() } </p>
             </div>
-            <StarsComments stars={userStars} />
+            <StarsComments stars={userStars} style={{ textAlign: 'center' }} />
             <CurriculumProgress passedLessons={passedLessons} style={{ textAlign: 'center' }} />
           </div>
         )
