@@ -200,6 +200,15 @@ app.get('/signup', noAuthRouter)
 app.get('/signin', noAuthRouter)
 app.get('/resetpassword/:token', noAuthRouter)
 app.get('/confirmEmail/:token', authHelpers.confirmEmail)
+app.get('/verifySubmission', async (req, res) => {
+  try {
+    const token = req.query.token
+    const user = await User.findOne({ where: { cliToken: token } })
+    return res.json({ userId: user.id })
+  } catch (e) {
+    return res.json({ userId: false })
+  }
+})
 
 app.get('/*', (req, res) => {
   if (req.user && req.user.id) { return res.sendFile(path.join(__dirname, '../public/root.html')) }

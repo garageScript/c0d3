@@ -7,18 +7,15 @@ const credService = require('../util/credentials.js')
 
 module.exports = async (inputs) => {
   try {
-    const credentials = await credService.getCredentials()
     const url = inputs.url
       ? new URL('/cli/signin', inputs.url) : new URL('/cli/signin', 'https://c0d3.com')
+    const credentials = await credService.getCredentials(url)
 
     let cliToken = credentials.cliToken
 
     if (!cliToken) {
       cliToken = await credService.validate(credentials, url.href)
-      if (!cliToken) {
-        await credService.deletion()
-        return console.log(chalk.bold.red('Invalid credentials, please try again!'))
-      }
+      if (!cliToken) return console.log(chalk.bold.red('Invalid credentials, please try again!'))
       credService.save(credentials, cliToken)
     }
 
