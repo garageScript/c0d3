@@ -7,14 +7,15 @@ const credService = require('../util/credentials.js')
 
 module.exports = async (inputs) => {
   try {
-    const credentials = await credService.getCredentials()
     const url = inputs.url
       ? new URL('/cli/signin', inputs.url) : new URL('/cli/signin', 'https://c0d3.com')
+    const credentials = await credService.getCredentials(url)
 
     let cliToken = credentials.cliToken
+
     if (!cliToken) {
       cliToken = await credService.validate(credentials, url.href)
-      if (!cliToken) return console.error('Invalid Credentials')
+      if (!cliToken) return console.log(chalk.bold.red('Invalid credentials, please try again!'))
       credService.save(credentials, cliToken)
     }
 
@@ -25,7 +26,6 @@ module.exports = async (inputs) => {
     if (process.env.TEST && (inputs.username || inputs.u)) {
       credentials.username = inputs.username || inputs.u
     }
-    const userId = await getUserId(credentials.username, graphqlEndpoint)
     const lessons = await queryForLessons(graphqlEndpoint)
     const currentLesson = await promptForLessons(lessons)
     const challengeId = await promptForChallenge(currentLesson)
@@ -226,5 +226,10 @@ function sendSubmission (lessonId, cliToken, diff, challengeId, graphqlEndpoint)
   }
 
   return request(graphqlEndpoint, createSubmission, variablesForCreation)
-    .then(() => console.log('\nYour submission was successfully received'))
+    .then((result) => {
+      if (!result || !result.createSubmission) {
+        return console.log(chalk.bold.red('\nYour submission was not successfully sent. Please try again.'))
+      }
+      console.log('\nYour submission was successfully received')
+    })
 }
