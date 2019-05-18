@@ -26,7 +26,6 @@ module.exports = async (inputs) => {
     if (process.env.TEST && (inputs.username || inputs.u)) {
       credentials.username = inputs.username || inputs.u
     }
-    const userId = await getUserId(credentials.username, graphqlEndpoint)
     const lessons = await queryForLessons(graphqlEndpoint)
     const currentLesson = await promptForLessons(lessons)
     const challengeId = await promptForChallenge(currentLesson)
@@ -228,8 +227,7 @@ function sendSubmission (lessonId, cliToken, diff, challengeId, graphqlEndpoint)
 
   return request(graphqlEndpoint, createSubmission, variablesForCreation)
     .then((result) => {
-      if (!result.createSubmission) {
-        credService.deletion()
+      if (!result || !result.createSubmission) {
         return console.log(chalk.bold.red('\nYour submission was not successfully sent. Please try again.'))
       }
       console.log('\nYour submission was successfully received')

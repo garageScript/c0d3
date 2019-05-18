@@ -7,21 +7,16 @@ const axios = require('axios')
 module.exports = {
   getCredentials,
   validate,
-  save,
-  deletion
+  save
 }
 
 const credentialsPath = path.join(homeDir, '.c0d3', 'credentials.json')
 
 async function getCredentials (url, dir = credentialsPath) {
-  try {
-    const token = require(dir)
-    const uId = await axios.get(`${url.origin}/verifySubmission?token=${token.cliToken}`)
-    if (!uId.data.userId) throw new Error()
-    return token
-  } catch (e) {
-    return askForUsernamePassword()
-  }
+  const creds = require(dir)
+  const uId = await axios.get(`${url.origin}/verifySubmissionToken?token=${creds.cliToken}`)
+  if (!uId || !uId.data || !uId.data.userId) return askForUsernamePassword()
+  return creds
 }
 
 function askForUsernamePassword () {
@@ -71,15 +66,6 @@ async function save (credentials, cliToken) {
   }
 }
 
-async function deletion () {
-  try {
-    await deleteCredentialsFile(credentialsPath)
-    deleteHiddenDir()
-  } catch (e) {
-    return ''
-  }
-}
-
 function createHiddenDir () {
   const hiddenDir = path.join(homeDir, '.c0d3')
   if (!fs.existsSync(hiddenDir)) {
@@ -87,26 +73,10 @@ function createHiddenDir () {
   }
 }
 
-function deleteHiddenDir () {
-  const hiddenDir = path.join(homeDir, '.c0d3')
-  if (fs.existsSync(hiddenDir)) {
-    fs.rmdirSync(hiddenDir)
-  }
-}
-
 function createCredentialsFile (dir = credentialsPath, cliToken) {
   return new Promise((resolve, reject) => {
     fs.writeFile(dir, JSON.stringify({ cliToken }), err => {
       if (err) return reject('Unable to save credentials')
-      resolve()
-    })
-  })
-}
-
-function deleteCredentialsFile (dir = credentialsPath) {
-  return new Promise((resolve, reject) => {
-    fs.unlink(dir, err => {
-      if (err) return reject('Unable to delete credentials')
       resolve()
     })
   })
