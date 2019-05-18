@@ -9,12 +9,16 @@ import {
 } from '../db/queries'
 import { loadComponent } from './shared/shared'
 
-const Teachers = ({ clientState, lessonInfo, selectUser }) => (
+const Teachers = ({ clientState, lessonInfo, selectUser, mentorSearchVal }) => (
   <Query query={TEACHERS} variables={{ in: { id: lessonInfo.id } }}>
-    {loadComponent(({ teachers }) => {
+    {loadComponent(({teachers}) => {
+      const searchedMentors = teachers.filter((mentor)=>{
+        return mentor.username.toLowerCase().includes(mentorSearchVal.toLowerCase()) 
+      })
+      if (!searchedMentors[0]) return <div> No Results </div>
       return (
         <div>
-          {teachers.map((teacher, i) => {
+          {searchedMentors.map((teacher, i) => {
             const style = { cursor: 'pointer' }
             if (clientState.data.starRecipent === teacher.username) {
               style.backgroundColor = 'lightgreen'
@@ -35,118 +39,132 @@ const Teachers = ({ clientState, lessonInfo, selectUser }) => (
               </div>
             )
           })}
-          <div
-            onClick={execute => {
-              selectUser(0)
-              clientState.client.writeData({
-                data: { starRecipent: 0 }
-              })
-            }}
-            style={{
-              cursor: 'pointer',
-              backgroundColor:
-                clientState.data.starRecipent === 0 ? 'lightgreen' : null
-            }}
-          >
-            No one helped me
-          </div>
         </div>
       )
     })}
   </Query>
 )
 
-const CongratsModal = ({ lessonInfo }) => {
-  const selected = {}
-  return (
-    <Query query={LESSON_STATUS} variables={{ in: { id: lessonInfo.id } }}>
-      {({ loading, error, data }) => {
-        if (error || loading) return ''
-        if (!data || !data.lessonStatus) return ''
-        if (
-          !data.lessonStatus.isTeaching ||
-          !data.lessonStatus.isPassed ||
-          data.lessonStatus.starGiven
-        ) { return '' } 
+class CongratsModal extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      commentUpdate: 'Thank you!',
+      selected: {},
+      mentorSearchVal: ''
+    }
+  }
+
+  commentHandler = (e)=>{
+    this.setState({
+      commentUpdate: e.target.value  
+    })
+  }
+
+  mentorSearchHandler = (e)=>{
+    this.setState({
+      mentorSearchVal: e.target.value
+    })
+  }
+
+  render () {
+    return(
+      <Query query={LESSON_STATUS} variables={{ in: { id: this.props.lessonInfo.id } }}>
+        {loadComponent(({lessonStatus})=>{
+           if (
+             !lessonStatus ||
+            !lessonStatus.isPassed ||
+            lessonStatus.starGiven
+          ) { return '' } 
 
         return (
-          <div
-            className='modal fade show'
-            id='basicExampleModal'
-            tabIndex='-1'
-            role='dialog'
-            aria-labelledby='exampleModalLabel'
-            style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.8)' }}
-          >
-            <Query query={STAR_RECIPIENT}>
-              {clientState => {
-                return (
-                  <div className='modal-dialog' role='document'>
-                    <div className='modal-content'>
-                      <div className='modal-header'>
-                        <h5 className='modal-title' id='exampleModalLabel'>
-                          Congratulation on passing {lessonInfo.title}
-                        </h5>
-                      </div>
-                      <div
-                        className='modal-body'
-                        style={{ height: '200px', overflow: 'auto' }}
-                      >
-                        <h5>Who helped you the most?</h5>
-                        <Teachers
-                          clientState={clientState}
-                          lessonInfo={lessonInfo}
-                          selected={selected}
-                          selectUser={uid => {
-                            selected.userId = uid
-                          }}
-                        />
-                      </div>
-                      <div className='modal-footer'>
-                        <Mutation mutation={GIVE_STAR}>
-                          {execute => {
-                            const starRecipent =
-                              clientState.data.starRecipent || 'no one'
-                            return (
-                              <div>
-                                <textarea />
-                                <button
-                                  type='button'
-                                  className='btn btn-default btn-lg btn-block'
-                                  data-dismiss='modal'
-                                  aria-label='Close'
-                                  onClick={() => {
-                                    execute({
-                                      variables: {
-                                        in: {
-                                          lessonId: lessonInfo.id,
-                                          userId: selected.userId,
-                                          comment: 'good job!'
+            <div
+              className='modal fade show'
+              id='basicExampleModal'
+              tabIndex='-1'
+              role='dialog'
+              aria-labelledby='exampleModalLabel'
+              style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.8)' }}
+            >
+              <Query query={STAR_RECIPIENT}>
+                {clientState => {
+                  return (
+                    <div className='modal-dialog' role='document'>
+                      <div className='modal-content'>
+                        <div className='modal-header'>
+                          <h5 className='modal-title' id='exampleModalLabel'>
+                          Congratulation on passing {this.props.lessonInfo.title}
+                          </h5>
+                        </div>
+                        <div
+                          className='modal-body'
+                          style={{ height: '200px', overflow: 'auto' }}
+                        >
+                          <h5>Who helped you the most?</h5>
+                            <input type='text' 
+                              onChange={this.mentorSearchHandler}
+                              style={{width: '100%'}}
+                              placeholder='Search Mentor'
+                          />
+                          <Teachers
+                            clientState={clientState}
+                            lessonInfo={this.props.lessonInfo}
+                            selectUser={uid => {
+                              this.setState({
+                                selected: { userId: uid }
+                              })
+                            }}
+                            mentorSearchVal={this.state.mentorSearchVal}
+                          />
+                        </div>
+                          <div className='modal-footer'>
+                          <textarea defaultValue={'Thank you!'}  onChange={(e)=>{this.commentHandler(e)}}/>  
+
+                          <Mutation mutation={GIVE_STAR}>
+                            {execute => {
+                              const starRecipent =
+                              clientState.data.starRecipent || '(someone)'
+                              return (
+                                <div>
+                                  <button
+                                    type='button'
+                                    className='btn btn-default btn-lg btn-block'
+                                    data-dismiss='modal'
+                                    aria-label='Close'
+                                    disabled={!this.state.selected.userId || !this.state.commentUpdate}
+                                    onClick={() => {
+                                      execute({
+                                        variables: {
+                                          in: {
+                                            lessonId: this.props.lessonInfo.id,
+                                            userId: this.state.selected.userId,
+                                            comment: this.state.commentUpdate
+                                          }
                                         }
-                                      }
-                                    }).then(() => window.location.reload())
+                                      }).then(() => window.location.reload())
                                     // TODO: close the modal in a more classy way
-                                  }}
-                                >
-                                  <span aria-hidden='true'>
+                                    }}
+                                  >
+                                    <span aria-hidden='true'>
                                   Give Star to {starRecipent}
-                                  </span>
-                                </button>
-                              </div>
-                            )
-                          }}
-                        </Mutation>
+                                    </span>
+                                  </button>
+                                </div>
+                              )
+                            }}
+                          </Mutation>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )
-              }}
-            </Query>
-          </div>
-        )
-      }}
-    </Query>
-  )
+                  )
+                }}
+              </Query>
+            </div>
+          )
+        })}
+      </Query>  
+    )
+  }
 }
 
 export default CongratsModal

@@ -23,7 +23,7 @@ type Query {
   challengeStatus(input: ChallengeId): Submission
 
   "Get all challenges for a specific lesson"
-  submissions(input: LessonId, where: SubmissionWhere): [Submission]
+  submissions(input: LessonId): [Submission]
 
   "Get all lesson submissons for a specific user"
   userSubmissions(input: LessonUserId): [Submission]
@@ -37,20 +37,21 @@ type Query {
   "Given stars"
   givenStars: [Star]
 
- "Recieved Stars"
+ "Received Stars"
   receivedStars(input: UserInput):[Star]
 
   "Get Announcements"
   announcements: [Announcement] 
 
-
   "Get UserInfo"
   userInfo(input: UserInput): UserData
-}
-type Mutation {
-  "Create or find student, then Update student enrollment to a lesson"
-  enrollStudent(input: LessonId): UserLesson
+  
+  "Get username"
+  getUsername(userId: String): User
 
+}
+
+type Mutation {
   "Create a star and assign it to the mentor"
   giveStar(input: LessonUserId): String
   
@@ -102,15 +103,32 @@ type Mutation {
   "Delete an announcement"
   deleteAnnouncement(value: String): [Announcement]
 
+  "Toggle User Admin"
+  toggleAdmin(input: UserAdmin): User 
+
+  "Send email with Mailgun"
+  sendPasswordResetEmail(value: String): String
+
+  "Reset password for non-authorized clients"
+  forgotResetPassword(input: PasswordChange): String
+
+  "Resend email confirmation"
+  resendEmailConfirmation(value: String): String
 }
 
+input PasswordChange {
+  forgotToken: String!
+  password: String!
+}
+
+input UserAdmin {
+  userId: String
+  isAdmin: Boolean
+}
 input UserInput {
   username: String
   userId: String
 }
-  input SubmissionWhere{
-    status: String
-  }
 
 input LessonId {
   id: String
@@ -148,6 +166,7 @@ input LessonInput {
   videoUrl: String
   order: Int
   title: String
+  chatUrl: String
 }
 
 input SubmissionInput {
@@ -157,6 +176,7 @@ input SubmissionInput {
   diff: String
   lessonId: String
   userId: String
+  cliToken: String
 }
 
 input SubmissionEdit {
@@ -191,14 +211,17 @@ type Submission {
 
 type AdoptedStudent {
   userId: String,
-  studentId: String,
-  lessonId: String,
+  studentId: String
+  lessonId: String
 }
 
 type User {
   id: String
   username: String
   userLesson: UserLesson
+  email: String
+  name: String
+  isAdmin: Boolean
 }
 
 type UserLesson {
@@ -209,6 +232,7 @@ type UserLesson {
   isTeaching: String
   isEnrolled: String
   starGiven: User
+  starComment: String
 }
 
 type Lesson {
@@ -222,6 +246,7 @@ type Lesson {
   challenges: [Challenge]
   users: [User]
   currentUser: User
+  chatUrl: String
 }
 
 type Challenge {
@@ -236,6 +261,7 @@ type Star {
   lessonId: String
   studentId: String
   mentorId: String
+  comment: String
 }
 
 type Announcement {
@@ -247,5 +273,6 @@ type UserData {
   name: String,
   createdAt: String,
   stars: [Star]
+  lessons: [Lesson]
 }
 `

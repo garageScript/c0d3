@@ -21,7 +21,9 @@
     "graphql": "^14.0.2",
     "graphql-tag": "^2.10.0",
     "graphql-tools": "^4.0.3",
+    "mailgun-js": "^0.22.0",
     "morgan": "^1.9.1",
+    "nanoid": "^2.0.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "pg": "^7.7.1",
@@ -45,7 +47,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint .",
+    "ci:build": "./scripts/build.sh",
+    "ci:deploy": "./scripts/deploy.sh",
+    "ci:test": "./scripts/test.sh",
     "cypress:open": "cypress open",
     "tf": "cypress run",
     "tfs": "cypress run --spec"
@@ -61,7 +65,6 @@
   ],
   "devDependencies": {
     "cypress": "^3.1.5",
-    "enzyme": "^3.8.0",
-    "eslint-plugin-cypress": "^2.2.1"
+    "enzyme": "^3.8.0"
   }
 }

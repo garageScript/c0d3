@@ -15,9 +15,9 @@ const gitLab = {
     return response.data
   },
 
-  getUser: async (username, url = gitLab.url()) => {
+  getUser: async (email, url = gitLab.url()) => {
     const response = await axios.get(
-      `${url}&username=${username}&per_page=100000000`
+      `${url}&search=${email}&per_page=100000000`
     )
     return (response.data || [])[0]
   },
@@ -25,7 +25,7 @@ const gitLab = {
   findOrCreate: async (
     { username, password, email, name },
     url = gitLab.url()) => {
-    const find = await gitLab.getUser(username)
+    const find = await gitLab.getUser(email)
     if (find) return find
     return gitLab.createUser({ username: username, password: password, email: email, name: name })
   },
@@ -44,14 +44,24 @@ const gitLab = {
     return (response.data || [])[0]
   },
 
-  changePassword: async (userName, password) => {
-    const userInfo = await gitLab.getUser(userName)
+  changePasswordOrCreateUser: async ({ username, name, email }, password) => {
+    const userInfo = await gitLab.getUser(email)
+    if (!userInfo || !userInfo.id) {
+      return gitLab.createUser({
+        username, name, email, password
+      })
+    }
+    return gitLab.changePassword(email, password)
+  },
+
+  changePassword: async (email, password) => {
+    const userInfo = await gitLab.getUser(email)
     const url = gitLab.url(`/${userInfo.id}`)
     const response = await axios.put(`${url}`, {
       password,
       skip_reconfirmation: true
     })
-    return (response.data || [])[0]
+    return response.data
   },
 
   data: async (url = gitLab.url(), page = 1, data = []) => {

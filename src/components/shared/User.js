@@ -1,27 +1,18 @@
-import React, { Component } from 'react'
-// import db from '../../db/db'
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { Query } from 'react-apollo'
+import { GET_USERNAME } from '../../db/queries.js'
+import { loadComponent } from './shared.js'
 
-class User extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      name: this.props.userId ? '...' : ''
-    }
-    if (this.props.userId) {
-      /*
-      db.getNames(this.props.userId, name => {
-        this.setState({ name })
-      })
-      */
-    }
-  }
-
-  render () {
-    return (
-      <span className={this.props.className || ''}>
-        {this.state.name || ''}
-      </span>
-    )
-  }
+const User = ({ userId }) => {
+  return (
+    <Query query={GET_USERNAME} variables={{ input: userId }} >
+      {loadComponent(({ getUsername }) => {
+        if (getUsername) return <span><Link to={`/profile/${getUsername.username}`}> {getUsername.username || 'Anonymous'}</Link> </span>
+        return <span> Non-Existing-User </span>
+      })}
+    </Query>
+  )
 }
+
 export default User

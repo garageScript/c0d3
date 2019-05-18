@@ -1,6 +1,32 @@
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 
+const getLessonListDetails = (userId) => {
+  return Lesson.findAll({
+    include: [
+      {
+        model: User,
+        required: false,
+        where: {
+          id: userId
+        },
+        through: {
+          model: UserLesson,
+          attributes: ['isPassed', 'isTeaching', 'isEnrolled']
+        }
+      }
+    ]
+  }).then(lessons => {
+    return lessons.map(l => {
+      const lesson = { ...l.dataValues }
+      lesson.currentUser = lesson.users[0] || {
+        userLesson: { isTeaching: '', isPassed: '' }
+      }
+      return lesson
+    })
+  })
+}
+
 const {
   Lesson,
   UserLesson,
@@ -14,8 +40,11 @@ const {
 
 module.exports = {
   users: (obj, args, context) => {
-    const variablesToMatch = {}
+    if (!Object.keys(args.input || {}).length) {
+      return User.findAll()
+    }
     const { username, userId } = args.input
+    const variablesToMatch = {}
     if (username) {
       variablesToMatch.username = username
     }
@@ -60,32 +89,12 @@ module.exports = {
   },
 
   curriculumStatus: (obj, args, context) => {
-    return Lesson.findAll({
-      include: [
-        {
-          model: User,
-          required: false,
-          where: {
-            id: context.user.id
-          },
-          through: {
-            model: UserLesson,
-            attributes: ['isPassed', 'isTeaching', 'isEnrolled']
-          }
-        }
-      ]
-    }).then(lessons => {
-      return [...lessons].map(lesson => {
-        lesson.currentUser = lesson.users[0] || {
-          userLesson: { isTeaching: '', isPassed: '' }
-        }
-        return lesson
-      })
-    })
+    return getLessonListDetails(context.user.id)
   },
 
   lessonStatus: (obj, args, context) => {
     let lessonStatus = {}
+
     return UserLesson.findOne({
       where: {
         userId: args.input.userId || context.user.id,
@@ -93,6 +102,7 @@ module.exports = {
       }
     })
       .then(res => {
+        if (!res) return null
         lessonStatus = res
         return Star.findOne({
           where: {
@@ -105,6 +115,7 @@ module.exports = {
       .then(star => {
         if (star && star.mentor) {
           lessonStatus.starGiven = star.mentor
+          lessonStatus.starComment = star.comment
         }
         return lessonStatus
       })
@@ -148,12 +159,28 @@ module.exports = {
   },
 
   userSubmissions: (obj, args, context) => {
-    return Submission.findAll({
-      where: {
-        userId: args.input.userId || context.user.id,
-        lessonId: args.input.lessonId
-      },
-      include: [{ model: Challenge }, { model: User, as: 'reviewer' }]
+    const userId = args.input.userId || context.user.id
+    const lessonId = args.input.lessonId
+    return Promise.all([
+      Submission.findAll({
+        where: { userId, lessonId },
+        include: [{ model: Challenge }, { model: User, as: 'reviewer' }]
+      }),
+      Challenge.count({ where: { lessonId } }),
+      UserLesson.findOrCreate({ where: { userId, lessonId } })
+    ]).then(([submissions, challengeCount, userLesson]) => {
+      /* Remove the following after 2 months.
+       *   This should be addressed in the mutation call for submissin approvals.
+       *   For 3 - 6 months, no UserLesson were created for certain users.
+       *   Therefore, the following code must exist to remedy the issue.
+       *   Implemented on May 12, 2019, should be removed after July 12, 2019
+       */
+      const passedSubmissions = submissions.filter(s => s.status === 'passed')
+      if (passedSubmissions.length === challengeCount && !userLesson.isPassed) {
+        userLesson[0].update({ isPassed: Date.now() })
+        return submissions
+      }
+      return submissions
     })
   },
 
@@ -175,12 +202,13 @@ module.exports = {
   },
 
   submissions: (obj, args, context) => {
-    const valuesToMatch = Object.assign({}, args.input, args.where)
-    valuesToMatch.lessonId = args.input.id
-    delete valuesToMatch.id
-
     return Submission.findAll({
-      where: valuesToMatch,
+      where: {
+        lessonId: args.input.id,
+        status: {
+          [Op.ne]: 'passed'
+        }
+      },
       include: ['user', 'challenge', { model: User, as: 'reviewer' }]
     })
   },
@@ -198,6 +226,7 @@ module.exports = {
         username: args.input.username
       }
     }).then(user => {
+      if (!user) return []
       userData.id = user.id
       userData.name = user.name
       userData.createdAt = user.createdAt
@@ -205,8 +234,25 @@ module.exports = {
         where: { mentorId: userData.id }
       })
     }).then(allStars => {
-      userData.stars = allStars
+      userData.stars = allStars.filter(star =>
+        star.studentId !== userData.id
+      )
+      return getLessonListDetails(userData.id)
+    }).then(lessons => {
+      return lessons.filter(lesson => {
+        return lesson.currentUser.userLesson.isPassed
+      })
+    }).then(lessons => {
+      userData.lessons = lessons
       return userData
+    })
+  },
+
+  getUsername: (obj, args, context) => {
+    return User.findOne({
+      where: {
+        id: args.userId
+      }
     })
   }
 }

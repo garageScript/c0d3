@@ -22,6 +22,27 @@ const StudentPage = ({ match }) => {
         const { docUrl, title, videoUrl } = data.lessonInfo
         return (
           <Fragment>
+            <Query
+              query={LESSON_STATUS}
+              variables={{ in: { id: match.params.lid } }}
+            >
+              {loadComponent((data) => {
+                const lessonStatus = data.lessonStatus || {}
+                if (!lessonStatus.starGiven) return ''
+                return (
+                  <div className='card' style={{ position: 'fixed', top: 70, right: 10, width: '11%' }}>
+                    <div className='card-body text-center'>
+                      <i className='fa fa-star fas' style={{ color: 'yellow', WebkitTextStrokeWidth: '3px', WebkitTextStrokeColor: ' black', fontSize: 30 }} />
+                      <h4 className='font-weight-bold indigo-text py-2' style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        <Link to={`/profile/${lessonStatus.starGiven.username}`}> {lessonStatus.starGiven.username}  </Link>
+                      </h4>
+                      <p className='card-text'>{lessonStatus.starComment} </p>
+                    </div>
+                  </div>
+                )
+              })}
+            </Query>
+
             <div className='gs-container-1'>
               <div className='container'>
                 <CongratsModal lessonInfo={data.lessonInfo} />
@@ -64,6 +85,12 @@ const StudentPage = ({ match }) => {
                 />
               ))}
             </Query>
+            <a type='button' className='btn' href={data.lessonInfo.chatUrl} style={{ position: 'fixed', right: 0, bottom: 0, width: '105px', height: '105px', borderRadius: '50%', padding: '0' }}>
+              <div className='font-weight-bold' style={{ position: 'relative', top: '25%', fontSize: 12, color: '#343a40' }}>
+                <i className='fa fas fa-comment fa-3x' />
+                <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', marginTop: '6px' }}>Help?</div>
+              </div>
+            </a>
           </Fragment>
         )
       }}

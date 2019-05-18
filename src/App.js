@@ -10,22 +10,32 @@ import Student from './components/Student'
 import Teacher from './components/Teacher'
 import Diff from './components/Diff'
 import LessonList from './components/LessonList'
-import SignIn from './components/SignIn'
-import SignUp from './components/SignUp'
+import SignIn from './components/Auth/SignIn'
+import SignUp from './components/Auth/SignUp'
 import Chat from './components/Chat/Chat'
 import Profile from './components/UserProfile'
 import NotFound from './components/NotFound'
-import PrivateRoute from './components/PrivateRoute'
+import PrivateRoute from './components/Auth/PrivateRoute'
+import AdminRoute from './components/Auth/AdminRoute'
 import NavBar from './components/NavBar'
+import UsersAdmin from './components/Admin/Users'
 import LessonListAdmin from './components/Admin/LessonList'
 import AdminAnnouncements from './components/Admin/Announcements'
 import chatdb from './db/chatdb'
 import Markdown from 'react-markdown'
 import { GET_ANNOUNCEMENTS } from './db/queries.js'
 import { loadComponent } from './components/shared/shared.js'
-import { Settings } from './components/Settings'
+import { Settings } from './components/Auth/Settings'
+import ForgotPassword from './components/Auth/ForgotPassword'
+import CheckEmail from './components/Auth/CheckEmail'
+import ResetPassword from './components/Auth/ResetPassword'
+import ConfirmEmail from './components/Auth/ConfirmEmail'
 
 const Home = () => {
+  const reset = window.userInfo.mustReset
+  if (reset) {
+    window.location.assign(`${window.location}settings?reset=${reset}`)
+  }
   return (
     <div>
       <div className='gs-container-2'>
@@ -83,7 +93,7 @@ const AppElement = () => (
         <div>
           <NavBar />
           <Switch>
-            <Route exact path='/' component={Home} />
+            <PrivateRoute exact path='/' component={Home} />
             <PrivateRoute path='/curriculum' component={LessonList} />
             <PrivateRoute path='/home' component={Home} />
             <PrivateRoute path='/student/:lid' component={Student} />
@@ -91,16 +101,21 @@ const AppElement = () => (
             <PrivateRoute path='/chat/:id' component={Chat} />
             <PrivateRoute exact path='/profile' component={Profile} />
             <PrivateRoute exact path='/profile/:userId' component={Profile} />
-            <PrivateRoute path='/admin/announcements' component={AdminAnnouncements} />
-            <PrivateRoute path='/admin' component={LessonListAdmin} />
-            <PrivateRoute
+            <AdminRoute path='/admin/announcements' component={AdminAnnouncements} />
+            <AdminRoute exact path='/admin' component={LessonListAdmin} />
+            <AdminRoute exact path='/admin/users' component={UsersAdmin} />
+            <AdminRoute
               path='/admin/lessons/new'
               component={LessonListAdmin}
             />
             <PrivateRoute path='/submissions/:lid/:cid' component={Diff} />
             <PrivateRoute path='/settings' component={Settings} />
-            <Route path='/signup' component={SignUp} />
-            <Route path='/signin' component={SignIn} />
+            <Route exact path='/signup' component={SignUp} />
+            <Route exact path='/signin' component={SignIn} />
+            <Route exact path='/forgotpassword' component={ForgotPassword} />
+            <Route exact path='/checkemail' component={CheckEmail} />
+            <Route exact path='/resetpassword/:token' component={ResetPassword} />
+            <PrivateRoute path='/confirmEmail' component={ConfirmEmail} />
             <Route component={NotFound} />
           </Switch>
         </div>

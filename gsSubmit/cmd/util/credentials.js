@@ -7,14 +7,18 @@ const axios = require('axios')
 module.exports = {
   getCredentials,
   validate,
-  save
+  save,
+  deletion
 }
 
 const credentialsPath = path.join(homeDir, '.c0d3', 'credentials.json')
 
-function getCredentials (dir = credentialsPath) {
+async function getCredentials (url, dir = credentialsPath) {
   try {
-    return Promise.resolve(require(dir))
+    const token = require(dir)
+    const uId = await axios.get(`${url.origin}/verifySubmission?token=${token.cliToken}`)
+    if (!uId.data.userId) throw new Error()
+    return token
   } catch (e) {
     return askForUsernamePassword()
   }
@@ -45,22 +49,34 @@ function askForUsernamePassword () {
 
 async function validate (credentials, url) {
   try {
-    await axios.post(url, {
+    const cliToken = await axios.post(url, {
       username: credentials.username,
       password: credentials.password
     })
-    return true
+    if (!cliToken || !cliToken.data || !cliToken.data.cliToken) {
+      return ''
+    }
+    return cliToken.data.cliToken
   } catch (e) {
-    return false
+    return ''
   }
 }
 
-async function save (credentials) {
+async function save (credentials, cliToken) {
   try {
     createHiddenDir()
-    await createCredentialsFile(credentialsPath, credentials.username)
+    await createCredentialsFile(credentialsPath, cliToken)
   } catch (e) {
     console.error('Unable to create hidden directory and save credentials')
+  }
+}
+
+async function deletion () {
+  try {
+    await deleteCredentialsFile(credentialsPath)
+    deleteHiddenDir()
+  } catch (e) {
+    return ''
   }
 }
 
@@ -71,10 +87,26 @@ function createHiddenDir () {
   }
 }
 
-function createCredentialsFile (dir = credentialsPath, username) {
+function deleteHiddenDir () {
+  const hiddenDir = path.join(homeDir, '.c0d3')
+  if (fs.existsSync(hiddenDir)) {
+    fs.rmdirSync(hiddenDir)
+  }
+}
+
+function createCredentialsFile (dir = credentialsPath, cliToken) {
   return new Promise((resolve, reject) => {
-    fs.writeFile(dir, JSON.stringify({ username, token: 'c0d3' }), err => {
+    fs.writeFile(dir, JSON.stringify({ cliToken }), err => {
       if (err) return reject('Unable to save credentials')
+      resolve()
+    })
+  })
+}
+
+function deleteCredentialsFile (dir = credentialsPath) {
+  return new Promise((resolve, reject) => {
+    fs.unlink(dir, err => {
+      if (err) return reject('Unable to delete credentials')
       resolve()
     })
   })

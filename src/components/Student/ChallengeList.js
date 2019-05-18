@@ -6,6 +6,7 @@ import { USER_SUBMISSIONS, CHALLENGE_INDEX } from '../../db/queries'
 import { loadComponent } from '../shared/shared'
 import StudentDiff from './StudentDiff'
 import './ChallengeList.css'
+import User from '../shared/User'
 
 const submissionToClassName = submission => {
   switch (submission && submission.status) {
@@ -35,7 +36,7 @@ const SubmissionMessage = ({ submission }) => {
           Being reviewed by
           {reviewer && reviewer.username ? (
             <span className='gs-bold user-link'>
-              <Link to={`/profile/${reviewer.id}`}>{reviewer.username}</Link>
+              <User userId={reviewer.id} />
             </span>
           ) : (
             ' a teacher'
@@ -48,7 +49,7 @@ const SubmissionMessage = ({ submission }) => {
           Changes requested by
           {reviewer && reviewer.username ? (
             <span className='gs-bold user-link'>
-              <Link to={`/profile/${reviewer.id}`}>{reviewer.username}</Link>
+              <User userId={reviewer.id} />
             </span>
           ) : (
             ' a teacher'
@@ -63,7 +64,7 @@ const SubmissionMessage = ({ submission }) => {
           Your solution was reviewed and accepted by
           {reviewer && reviewer.username ? (
             <span className='gs-bold user-link'>
-              <Link to={`/profile/${reviewer.id}`}>{reviewer.username}</Link>
+              <Link to={`/profile/${reviewer.username}`}>{reviewer.username}</Link>
             </span>
           ) : (
             ' a teacher'

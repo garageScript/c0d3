@@ -4,6 +4,8 @@ import { Mutation } from 'react-apollo'
 import moment from 'moment'
 import Markdown from 'react-markdown'
 import { cacheUpdate } from '../shared/shared'
+import MarkdownComponent from '../shared/Markdown.js'
+import User from '../shared/User.js'
 
 import {
   APPROVE_SUBMISSION,
@@ -71,15 +73,13 @@ const MergeRequestBody = ({ mrInfo, lid }) => {
         </div>
       ) : null}
 
-      <div className='form-group'>
-        <label htmlFor='submission-comment'>
+      <label htmlFor='submission-comment'>
                   Add your comments to address here
-        </label>
-        <textarea
-          className='form-control rounded-0'
-          id='submission-comment'
-          rows='10'
-          ref={node => (comment = node)}
+      </label>
+      <div style={{ width: '100%', height: '300px' }}>
+        <MarkdownComponent setRef={node => {
+          comment = node
+        }}
         />
       </div>
 
@@ -154,9 +154,7 @@ const MergeRequest = ({ lid, mrInfo, studentMap }) => {
                   )
                 }}
               </Mutation>
-              <Link to={`/profile/${mrInfo.user.id}`}>
-                {mrInfo.user.username}
-              </Link>{' '}
+              <User userId={mrInfo.user.id} />
               submitted challenge: {mrInfo.challenge.title}
             </span>
           </div>

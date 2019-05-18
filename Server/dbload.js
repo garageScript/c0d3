@@ -23,7 +23,8 @@ const Lesson = sequelize.define('lesson', {
   githubUrl: Sequelize.STRING,
   videoUrl: Sequelize.STRING,
   order: Sequelize.INTEGER,
-  title: Sequelize.STRING
+  title: Sequelize.STRING,
+  chatUrl: Sequelize.STRING
 })
 
 const User = sequelize.define('user', {
@@ -32,7 +33,14 @@ const User = sequelize.define('user', {
   password: Sequelize.STRING,
   email: Sequelize.STRING,
   gsId: Sequelize.INTEGER,
-  isOnline: Sequelize.BOOLEAN
+  isOnline: Sequelize.BOOLEAN,
+  isAdmin: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
+  },
+  forgotToken: Sequelize.STRING,
+  cliToken: Sequelize.STRING,
+  emailVerificationToken: Sequelize.STRING
 })
 
 const UserLesson = sequelize.define('userLesson', {
@@ -115,7 +123,7 @@ Message.belongsTo(Room)
 Message.belongsTo(User)
 Room.hasMany(Message)
 
-sequelize.sync({ alter: true })
+// sequelize.sync({ alter: true })
 
 module.exports = {
   Announcement,

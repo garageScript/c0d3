@@ -36,7 +36,8 @@ const constraints = {
       maximum: 64,
       tooShort: 'too short (minimum is %{count} characters)',
       tooLong: 'too long (maximum is %{count} characters)'
-    }
+    },
+    emailIsAvailable: true
   },
   password: {
     presence: { allowEmpty: false },

@@ -28,12 +28,14 @@ const curriculumSchema = makeExecutableSchema({
 
 const linkTypeDefs = `
   type User {
-    id: String,
-    username: String,
-    name: String,
-    userLesson: UserLesson,
-    online: Boolean,
+    id: String
+    username: String
+    name: String
+    email: String
+    userLesson: UserLesson
+    online: Boolean
     lastroomId: Int
+    isAdmin: Boolean
   }
 `
 

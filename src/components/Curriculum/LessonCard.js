@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Query } from 'react-apollo'
 import { SUBMISSIONS } from '../../db/queries.js'
 import { loadComponent } from '../shared/shared.js'
+import { PendingSubmits } from './PendingSubmits'
 import './lessoncard.css'
 
 const colors = [
@@ -53,17 +54,6 @@ const LessonCard = ({
     ? loggedInUser.userLesson
     : { isTeaching: null, isPassed: null }
   const { isTeaching, isPassed } = lessonStatus
-  const log = !isPassed ? '' : <Query
-    query={SUBMISSIONS}
-    variables={{
-      in: { id },
-      where: { status: 'open' }
-    }}
-  >
-    {loadComponent(data => (
-      <div> {`${data.submissions.length} pending`} </div>
-    ))}
-  </Query>
   return (
     <div
       className={`card gs-lesson-card ${cardType} ${isPassed ? 'passed' : ''}`}
@@ -84,7 +74,7 @@ const LessonCard = ({
                 ? 'Review student submissions'
                 : 'Continue'}
             </Link>
-            {log}
+            <PendingSubmits id={id} isPassed={isPassed} />
           </div>
         </div>
       </div>

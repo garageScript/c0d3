@@ -1,3 +1,7 @@
+const mailGun = require('../mailGun/index')
+const { forgotResetPassword } = require('../auth/app')
+const nanoid = require('nanoid')
+const matterMostService = require('../auth/lib/matterMostService')
 
 const {
   Announcement,
@@ -6,22 +10,14 @@ const {
   Lesson,
   Star,
   Submission,
+  User,
   UserLesson
 } = require('../dbload')
 
 module.exports = {
-  enrollStudent: (obj, args, context) => {
-    return UserLesson.findOrCreate({
-      where: {
-        lessonId: args.input.id,
-        userId: args.input.userId || context.user.id
-      }
-    }).then(d => {
-      d[0].update({ isEnrolled: Date.now() })
-      return d
-    })
-  },
   rejectSubmission: (obj, args, context) => {
+    let userSubmission
+    const comment = args.input.comment || ''
     return Submission.findOne({
       where: {
         lessonId: args.input.lessonId,
@@ -31,9 +27,17 @@ module.exports = {
     }).then(d => {
       return d.update({
         status: 'needMoreWork',
-        comment: args.input.comment || '',
+        comment,
         reviewerId: context.user.id
       })
+    }).then((d) => {
+      userSubmission = d
+      return Promise.all([Lesson.findById(args.input.lessonId), Challenge.findById(args.input.challengeId), User.findById(args.input.userId), User.findById(context.user.id)])
+    }).then(([lesson, challenge, submitter, reviewer]) => {
+      if (!lesson || !challenge || !submitter || !reviewer) return userSubmission
+      const message = `Hi, I have reviewed your submission  **_${lesson.title}: ${challenge.title}_**, please check your progress [here](<https://c0d3.com/student/${lesson.id}>). Please let me know if you have further questions! \n\n ${comment}`
+      matterMostService.sendDirectMessage(submitter.email, reviewer.email, message)
+      return userSubmission
     })
   },
   makeTeacher: (obj, args, context) => {
@@ -91,78 +95,77 @@ module.exports = {
     })
   },
   approveSubmission: (obj, args, context) => {
-    let submissionToApprove
+    let submissionToApprove, author, currentLesson
+    const comment = args.input.comment || ''
+    const { userId, lessonId, challengeId } = args.input
     return Submission.findOne({
-      where: {
-        lessonId: args.input.lessonId,
-        challengeId: args.input.challengeId,
-        userId: args.input.userId
+      where: { lessonId, challengeId, userId }
+    }).then(d => {
+      submissionToApprove = d
+      return d.update({
+        status: 'passed',
+        reviewerId: context.user.id,
+        comment
+      })
+    }).then(() => {
+      return Promise.all([
+        User.findById(userId),
+        User.findById(context.user.id),
+        Challenge.findById(challengeId),
+        Lesson.findById(lessonId)])
+    }).then(([submitter, reviewer, challenge, lesson]) => {
+      if (!submitter || !reviewer || !challenge || !lesson) return submissionToApprove
+      author = submitter
+      currentLesson = lesson
+      const message = `I have approved your submission **_${lesson.title}: ${challenge.title}_**! \n\n ${comment}`
+      matterMostService.sendDirectMessage(submitter.email, reviewer.email, message)
+      return Promise.all([
+        Submission.findAll({
+          where: { userId, lessonId },
+          include: [{ model: Challenge }, { model: User, as: 'reviewer' }]
+        }),
+        Challenge.count({ where: { lessonId } }),
+        UserLesson.findOrCreate({ where: { userId, lessonId } })
+      ])
+    }).then(([submissions, challengeCount, userLesson]) => {
+      const passedSubmissions = submissions.filter(s => s.status === 'passed')
+      const isPassed = passedSubmissions.length === challengeCount
+      if (isPassed && !userLesson.isPassed) {
+        userLesson[0].update({ isPassed: Date.now() })
       }
-    })
-      .then(d => {
-        submissionToApprove = d
-        return d.update({
-          status: 'passed',
-          reviewerId: context.user.id,
-          comment: args.input.comment || ''
-        })
-      })
-      .then(() => {
-        return Submission.findAll({
-          where: {
-            lessonId: args.input.lessonId,
-            userId: args.input.userId
-          }
-        })
-      })
-      .then(submissions => {
-        return Challenge.findAll({
-          where: {
-            lessonId: args.input.lessonId
-          }
-        }).then(challenges => {
-          let challengeId = {}
-          challenges.map(challenge => {
-            return (challengeId[challenge.id] = false)
-          })
-          submissions.forEach(submission => {
-            if (submission.status === 'passed') {
-              challengeId[submission.challengeId] = true
-            }
-          })
-          let passed = true
-          Object.values(challengeId).forEach(v => {
-            if (!v) passed = false
-          })
-          return passed
-        })
-      })
-      .then(updateIsPassed => {
-        if (updateIsPassed) {
-          return UserLesson.update(
-            { isPassed: Date.now() },
-            {
-              where: {
-                lessonId: args.input.lessonId,
-                userId: args.input.userId
-              }
-            }
-          )
+      const message = `Congratulations to @${author.username} for passing and completing **_${currentLesson.title}_**! @${author.username} is now a guardian angel for the students in this channel.`
+      const channelName = currentLesson.chatUrl.split('/').pop()
+      matterMostService.publicChannelMessage(channelName, message)
+      return Lesson.findOne({
+        where: {
+          order: `${+currentLesson.order + 1}`
         }
       })
-      .then(() => {
-        return submissionToApprove
-      })
+    }).then(nextLesson => {
+      if (!nextLesson) return
+      const channelName = nextLesson.chatUrl.split('/').pop()
+      const message = `We have a new student joining us! @${author.username} just completed **_${currentLesson.title}_**.`
+      matterMostService.publicChannelMessage(channelName, message)
+      return submissionToApprove
+    })
   },
   createSubmission: (obj, args, context) => {
-    return Submission.findOrCreate({
-      where: {
-        lessonId: args.input.lessonId,
-        challengeId: args.input.challengeId,
-        userId: args.input.userId
-      }
+    let userSubmission, author
+    return User.findOne({
+      where: { cliToken: args.input.cliToken }
+    }).then((user) => {
+      author = user
+      if (!user) return
+      return Submission.findOrCreate({
+        where: {
+          lessonId: args.input.lessonId,
+          challengeId: args.input.challengeId,
+          userId: user.id
+        }
+      })
     })
       .then(d => {
+        if (!d) return
         return d[0].update({
           order: args.input.order,
           diff: args.input.diff,
@@ -170,9 +173,15 @@ module.exports = {
           status: 'open',
           viewCount: 0
         })
-      })
-      .then(d => {
-        return d
+      }).then((d) => {
+        userSubmission = d
+        return Promise.all([Challenge.findById(d.challengeId), Lesson.findById(userSubmission.lessonId)])
+      }).then(([challenge, lesson]) => {
+        if (!author || !challenge || !lesson) return userSubmission
+        const lessonName = lesson.chatUrl.split('/').pop()
+        const message = `@${author.username} has submitted a solution **_${challenge.title}_**. Click [here](<https://c0d3.com/teacher/${lesson.order}>) to review the code.`
+        matterMostService.publicChannelMessage(lessonName, message)
+        return userSubmission
       })
   },
   createLesson: (obj, args) => {
@@ -205,11 +214,18 @@ module.exports = {
     )
   },
   giveStar: (obj, args, context) => {
+    const mentorId = args.input.userId || context.user.id
     Star.create({
       lessonId: args.input.lessonId,
       studentId: context.user.id,
-      mentorId: args.input.userId || context.user.id,
+      mentorId,
       comment: args.input.comment
+    }).then(() => {
+      return Promise.all([User.findById(mentorId), Lesson.findById(args.input.lessonId)])
+    }).then(([user, lesson]) => {
+      const channelName = lesson.chatUrl.split('/').pop()
+      const message = `@${user.username} received a star!`
+      matterMostService.publicChannelMessage(channelName, message)
     })
     return 'Success'
   },
@@ -218,7 +234,7 @@ module.exports = {
       description: args.value
     })
   },
-  deleteAnnouncement: (obj, args, conext) => {
+  deleteAnnouncement: (obj, args, context) => {
     return Announcement.destroy({
       where: {
         id: args.value
@@ -227,6 +243,39 @@ module.exports = {
       return Announcement.findAll({
         order: [ ['id', 'DESC' ] ]
       })
+    })
+  },
+  toggleAdmin: (obj, args, context) => {
+    const { userId, isAdmin } = args.input
+    return User.findById(userId).then(user => {
+      return user.update({ isAdmin })
+    })
+  },
+  sendPasswordResetEmail: (obj, args, context) => {
+    const randomToken = nanoid()
+    const { value } = args
+    return User.findOne({ where: { email: value } }).then(user => {
+      if (!user) return 'User not found'
+      mailGun.sendPasswordResetEmail(user, randomToken)
+      user.update({ forgotToken: randomToken })
+      return 'Success'
+    })
+  },
+  forgotResetPassword: (obj, args, context) => {
+    const { forgotToken, password } = args.input
+    User.findOne({ where: { forgotToken: forgotToken } }).then(user => {
+      if (!user) return 'User not found'
+      forgotResetPassword(forgotToken, password, user)
+      user.update({ forgotToken: '' })
+      return 'Success'
+    })
+  },
+  resendEmailConfirmation: (obj, args, context) => {
+    const { value } = args
+    return User.findOne({ where: { emailVerificationToken: value } }).then(user => {
+      if (!user) return 'User not found'
+      mailGun.sendEmailVerifcation({ email: user.email, username: user.username }, user.emailVerificationToken)
+      return 'Success'
     })
   }
 }

@@ -12,6 +12,7 @@ export const LESSON_STATUS = gql`
         id
         username
       }
+      starComment
     }
   }
 `
@@ -20,16 +21,10 @@ export const USERS = gql`
   query users($in: UserInput) {
     users(input: $in) {
       username
-    }
-  }
-`
-
-export const ENROLL_STUDENT = gql`
-  mutation enrollStudent($in: LessonId) {
-    enrollStudent(input: $in) {
-      isTeaching
-      isPassed
-      isEnrolled
+      name
+      email
+      id
+      isAdmin
     }
   }
 `
@@ -50,6 +45,7 @@ export const LESSON_INFO = gql`
       videoUrl
       order
       title
+      chatUrl
       challenges {
         id
         description
@@ -156,6 +152,7 @@ export const LESSONS = gql`
       videoUrl
       title
       order
+      chatUrl
       challenges {
         id
         description
@@ -200,8 +197,8 @@ export const CURRICULUM_STATUS = gql`
 `
 
 export const SUBMISSIONS = gql`
-  query submissions($in: LessonId, $where: SubmissionWhere) {
-    submissions(input: $in, where: $where) {
+  query submissions($in: LessonId) {
+    submissions(input: $in) {
       id
       status
       mrUrl
@@ -308,6 +305,7 @@ export const SAVE_LESSON = gql`
       videoUrl
       order
       title
+      chatUrl
     }
   }
 `
@@ -322,6 +320,7 @@ export const CREATE_LESSON = gql`
       videoUrl
       order
       title
+      chatUrl
     }
   }
 `
@@ -373,7 +372,41 @@ export const USER_DATA = gql`
   query userInfo($in: UserInput){
     userInfo(input: $in){
       name, 
-      createdAt
+      createdAt,
+      stars { studentId ,comment, lessonId },
+      lessons{
+        title
+      }
     }
+  }
+`
+export const SET_ADMIN = gql`
+  mutation($in: UserAdmin){
+    toggleAdmin(input: $in){
+      id,
+      isAdmin
+    }
+  }
+`
+export const SEND_FORGOT_EMAIL = gql`
+  mutation($input: String){
+    sendPasswordResetEmail(value: $input )
+  }
+`
+export const FORGOT_RESET_PASSWORD = gql`
+  mutation($input: PasswordChange){
+    forgotResetPassword(input: $input)
+  }
+`
+export const GET_USERNAME = gql`
+  query getUsername($input: String){
+    getUsername(userId: $input){
+      username
+    }
+  }
+`
+export const RESEND_EMAIL_CONFIRMATION = gql`
+  mutation($input: String){
+    resendEmailConfirmation(value: $input)
   }
 `
