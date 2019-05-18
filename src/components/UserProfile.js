@@ -7,6 +7,31 @@ import { USER_DATA, LESSONS } from '../db/queries'
 import { loadComponent } from './shared/shared'
 import User from './shared/User.js'
 
+const CurriculumProgress = ({ passedLessons }) => {
+  if (passedLessons.length === 0) {
+    return null
+  }
+  return (
+    <div>
+      <h3> Curriculum Progress</h3>
+      {passedLessons}
+      <hr />
+    </div>
+  )
+}
+
+const StarsComments = ({ stars }) => {
+  if (stars.length === 0) {
+    return null
+  }
+  return (
+    <div>
+      { stars }
+      <hr />
+    </div>
+  )
+}
+
 const UserProfile = ({ match }) => {
   return (
     <Query query={USER_DATA} variables={{ in: { username: match.params.userId } }}>
@@ -66,13 +91,8 @@ const UserProfile = ({ match }) => {
               <h3>{ name }</h3>
               <p>{firstName} joined C0D3.com on { moment(parseInt(createdAt)).calendar() }, { moment(parseInt(createdAt)).fromNow() } </p>
             </div>
-            <hr />
-            <div style={{ textAlign: 'center' }}>{userStars}</div>
-            <hr />
-            <h3> Curriculum Progress</h3>
-            {passedLessons}
-            <hr />
-            <h3>Student Stats</h3>
+            <StarsComments stars={userStars} style={{ textAlign: 'center' }} />
+            <CurriculumProgress passedLessons={passedLessons} style={{ textAlign: 'center' }} />
           </div>
         )
       }) }
