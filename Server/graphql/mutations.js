@@ -131,16 +131,16 @@ module.exports = {
       const passedSubmissions = submissions.filter(s => s.status === 'passed')
       const isPassed = passedSubmissions.length === challengeCount
       if (isPassed && !userLesson.isPassed) {
+        const message = `Congratulations to @${author.username} for passing and completing **_${currentLesson.title}_**! @${author.username} is now a guardian angel for the students in this channel.`
+        const channelName = currentLesson.chatUrl.split('/').pop()
+        matterMostService.publicChannelMessage(channelName, message)
         userLesson[0].update({ isPassed: Date.now() })
+        return Lesson.findOne({
+          where: {
+            order: `${+currentLesson.order + 1}`
+          }
+        })
       }
-      const message = `Congratulations to @${author.username} for passing and completing **_${currentLesson.title}_**! @${author.username} is now a guardian angel for the students in this channel.`
-      const channelName = currentLesson.chatUrl.split('/').pop()
-      matterMostService.publicChannelMessage(channelName, message)
-      return Lesson.findOne({
-        where: {
-          order: `${+currentLesson.order + 1}`
-        }
-      })
     }).then(nextLesson => {
       if (!nextLesson) return
       const channelName = nextLesson.chatUrl.split('/').pop()
