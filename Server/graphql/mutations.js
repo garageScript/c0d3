@@ -224,7 +224,6 @@ module.exports = {
       return Promise.all([User.findById(mentorId), Lesson.findById(args.input.lessonId)])
     }).then(([user, lesson]) => {
       const channelName = lesson.chatUrl.split('/').pop()
-      console.log('channelName:', channelName)
       const message = `@${user.username} received a star!`
       matterMostService.publicChannelMessage(channelName, message)
     })
