@@ -13,10 +13,14 @@ module.exports = {
 const credentialsPath = path.join(homeDir, '.c0d3', 'credentials.json')
 
 async function getCredentials (url, dir = credentialsPath) {
-  const creds = require(dir)
-  const uId = await axios.get(`${url.origin}/verifySubmissionToken?token=${creds.cliToken}`)
-  if (!uId || !uId.data || !uId.data.userId) return askForUsernamePassword()
-  return creds
+  try {
+    const creds = require(dir)
+    const uId = await axios.get(`${url.origin}/verifySubmissionToken?token=${creds.cliToken}`)
+    if (!uId || !uId.data || !uId.data.userId) throw new Error('Token Invalid')
+    return creds
+  } catch (e) {
+    return askForUsernamePassword()
+  }
 }
 
 function askForUsernamePassword () {
