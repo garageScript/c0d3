@@ -1,6 +1,6 @@
 import React from 'react'
 import { Mutation } from 'react-apollo'
-import { SEND_INVITE_EMAIL } from '../../db/queries'
+import { INVITE_TO_COHORT } from '../../db/queries'
 
 const Waitlist = () => {
   return (
@@ -21,7 +21,7 @@ const Waitlist = () => {
       <div className='waitlist' style={{ padding: '30px' }}>
         <h2 style={{ padding: '20px' }}>Waitlist:</h2>
         <div style={{ display: 'block' }}>
-          <Mutation mutation={SEND_INVITE_EMAIL}>
+          <Mutation mutation={INVITE_TO_COHORT}>
             {(execute) => {
               return (
                 <div>

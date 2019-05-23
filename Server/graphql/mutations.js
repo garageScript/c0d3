@@ -261,8 +261,8 @@ module.exports = {
       return 'Success'
     })
   },
-  sendInviteEmail: (obj, args, context) => {
-    mailGun.sendInviteEmail({ email: 'rkalra247@gmail.com', username: 'noob101' })
+  inviteToCohort: (obj, args, context) => {
+    mailGun.sendInviteEmail({ email: 'rkalra247@gmail.com' })
     return 'Success'
   },
   forgotResetPassword: (obj, args, context) => {

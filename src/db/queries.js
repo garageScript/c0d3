@@ -393,9 +393,9 @@ export const SEND_FORGOT_EMAIL = gql`
     sendPasswordResetEmail(value: $input )
   }
 `
-export const SEND_INVITE_EMAIL = gql`
+export const INVITE_TO_COHORT = gql`
   mutation($input: String){
-    sendInviteEmail(value: $input)
+    inviteToCohort(value: $input)
   }
 `
 export const FORGOT_RESET_PASSWORD = gql`

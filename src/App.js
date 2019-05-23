@@ -105,7 +105,7 @@ const AppElement = () => (
             <AdminRoute path='/admin/announcements' component={AdminAnnouncements} />
             <AdminRoute exact path='/admin' component={LessonListAdmin} />
             <AdminRoute exact path='/admin/users' component={UsersAdmin} />
-            <Route exact path='/admin/waitlist' component={Waitlist} />
+            <AdminRoute exact path='/admin/waitlist' component={Waitlist} />
             <AdminRoute
               path='/admin/lessons/new'
               component={LessonListAdmin}
