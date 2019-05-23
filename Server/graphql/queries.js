@@ -35,7 +35,8 @@ const {
   Challenge,
   Submission,
   AdoptedStudent,
-  Announcement
+  Announcement,
+  Cohort
 } = require('../dbload')
 
 module.exports = {
@@ -253,6 +254,11 @@ module.exports = {
       where: {
         id: args.userId
       }
+    })
+  },
+  getCohorts: (obj, args, context) => {
+    return Cohort.findAll({
+      order: [['cohortId', 'ASC']]
     })
   }
 }

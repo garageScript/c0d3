@@ -5,6 +5,7 @@ const matterMostService = require('../auth/lib/matterMostService')
 
 const {
   Announcement,
+  Cohort,
   AdoptedStudent,
   Challenge,
   Lesson,
@@ -232,6 +233,11 @@ module.exports = {
   createAnnouncement: (obj, args, context) => {
     return Announcement.create({
       description: args.value
+    })
+  },
+  createCohort: (obj, args, context) => {
+    return Cohort.create({
+      cohortId: args.value
     })
   },
   deleteAnnouncement: (obj, args, context) => {
