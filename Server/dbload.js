@@ -110,6 +110,10 @@ const Message = sequelize.define('message', {
   isEdited: Sequelize.BOOLEAN
 })
 
+const Cohort = sequelize.define('cohort', {
+  cohortID: Sequelize.STRING
+})
+
 const UserRoom = sequelize.define('userRoom', {
   unread: Sequelize.INTEGER,
   isLastRoom: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false }
@@ -123,11 +127,12 @@ Message.belongsTo(Room)
 Message.belongsTo(User)
 Room.hasMany(Message)
 
-// sequelize.sync({ alter: true })
+sequelize.sync({ alter: true })
 
 module.exports = {
   Announcement,
   Lesson,
+  Cohort,
   Challenge,
   Submission,
   User,
