@@ -110,7 +110,7 @@ type Mutation {
   sendPasswordResetEmail(value: String): String
 
   "Send invite email to join C0d3 using Mailgun"
-  inviteToCohort(input: String): String 
+  inviteToCohort(value: String): String 
 
   "Reset password for non-authorized clients"
   forgotResetPassword(input: PasswordChange): String
