@@ -393,6 +393,11 @@ export const SEND_FORGOT_EMAIL = gql`
     sendPasswordResetEmail(value: $input )
   }
 `
+export const SEND_INVITE_EMAIL = gql`
+  mutation($input: String){
+    sendInviteEmail(value: $input)
+  }
+`
 export const FORGOT_RESET_PASSWORD = gql`
   mutation($input: PasswordChange){
     forgotResetPassword(input: $input)

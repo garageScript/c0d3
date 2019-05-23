@@ -3,6 +3,24 @@ const log = require('../log/index')(__filename)
 
 const emailService = {}
 
+emailService.sendInviteEmail = async ({ email }) => {
+  try {
+    await mailgun.messages().send({
+      from: '<hello@c0d3.com>',
+      to: email,
+      subject: 'Congratulations! You are approved to join C0d3.com',
+      text: `Congratulations Noob!, We are super excited for you join our next cohort. Please sign up at https://c0d3.com/signup `
+    }, (error, body) => {
+      if (error) {
+        log.error(`error sending email ${error}`)
+      }
+      log.info(`body of email ${body}`)
+    })
+  } catch (error) {
+    log.error(`mailgun did not send email successful ${error}`)
+  }
+}
+
 emailService.sendPasswordResetEmail = async ({ email, username }, randomToken) => {
   try {
     await mailgun.messages().send({

@@ -109,6 +109,9 @@ type Mutation {
   "Send email with Mailgun"
   sendPasswordResetEmail(value: String): String
 
+  "Send invite email to join C0d3 using Mailgun"
+  sendInviteEmail(value: String): String 
+
   "Reset password for non-authorized clients"
   forgotResetPassword(input: PasswordChange): String
 

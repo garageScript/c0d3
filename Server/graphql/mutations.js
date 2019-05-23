@@ -261,6 +261,10 @@ module.exports = {
       return 'Success'
     })
   },
+  sendInviteEmail: (obj, args, context) => {
+    mailGun.sendInviteEmail({ email: 'rkalra247@gmail.com', username: 'noob101' })
+    return 'Success'
+  },
   forgotResetPassword: (obj, args, context) => {
     const { forgotToken, password } = args.input
     User.findOne({ where: { forgotToken: forgotToken } }).then(user => {
