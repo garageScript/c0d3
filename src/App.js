@@ -30,6 +30,7 @@ import ForgotPassword from './components/Auth/ForgotPassword'
 import CheckEmail from './components/Auth/CheckEmail'
 import ResetPassword from './components/Auth/ResetPassword'
 import ConfirmEmail from './components/Auth/ConfirmEmail'
+import Waitlist from './components/Admin/Waitlist'
 
 const Home = () => {
   const reset = window.userInfo.mustReset
@@ -104,6 +105,7 @@ const AppElement = () => (
             <AdminRoute path='/admin/announcements' component={AdminAnnouncements} />
             <AdminRoute exact path='/admin' component={LessonListAdmin} />
             <AdminRoute exact path='/admin/users' component={UsersAdmin} />
+            <Route exact path='/admin/waitlist' component={Waitlist} />
             <AdminRoute
               path='/admin/lessons/new'
               component={LessonListAdmin}
