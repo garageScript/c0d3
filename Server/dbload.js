@@ -123,7 +123,12 @@ Message.belongsTo(Room)
 Message.belongsTo(User)
 Room.hasMany(Message)
 
-// sequelize.sync({ alter: true })
+const WaitList = sequelize.define('waitList', {
+  email: Sequelize.STRING,
+  token: Sequelize.STRING
+})
+
+sequelize.sync({ alter: true })
 
 module.exports = {
   Announcement,
@@ -137,5 +142,6 @@ module.exports = {
   UserRoom,
   Room,
   Message,
+  WaitList,
   sequelize
 }

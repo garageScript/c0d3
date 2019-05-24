@@ -3,7 +3,7 @@ const form = require('./lib/form')
 const gitLab = require('./lib/helpers')
 const matterMostService = require('./lib/matterMostService')
 const axios = require('axios')
-const { User } = require('../dbload')
+const { User, WaitList } = require('../dbload')
 const log = require('../log/index')(__filename)
 const mailGun = require('../mailGun/index')
 const nanoid = require('nanoid')
@@ -270,6 +270,21 @@ helpers.confirmEmail = async (req, res) => {
     log.error(`Email confirmation not successful ${err}`)
     res.send('Your email was not confirmed')
   }
+}
+
+// handle request to join waitlist
+helpers.joinWaitList = (req, res) => {
+  const emailToken = nanoid()
+
+  WaitList.create({
+    email: req.body.email,
+    token: emailToken
+  })
+    .then(response => {
+      res.send('finished inserting into WaitList Table')
+      mailGun.sendWaitListRequestResponse({ email: req.body.email }, emailToken)
+    })
+    .catch(error => console.log('error'))
 }
 
 module.exports = helpers
