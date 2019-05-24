@@ -42,8 +42,6 @@ emailService.sendEmailVerifcation = async ({ email, username }, randomToken) => 
 
 emailService.sendWaitListRequestResponse = async ({ email }, randomToken) => {
   try {
-    console.log('input email', email)
-
     await mailgun.messages().send({
       from: '<hello@c0d3.com>',
       to: email,

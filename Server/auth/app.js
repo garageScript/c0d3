@@ -284,7 +284,7 @@ helpers.joinWaitList = (req, res) => {
       res.send('finished inserting into WaitList Table')
       mailGun.sendWaitListRequestResponse({ email: req.body.email }, emailToken)
     })
-    .catch(error => console.log('error'))
+    .catch(error => log.error(`${error}`))
 }
 
 module.exports = helpers
