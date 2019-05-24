@@ -403,6 +403,11 @@ export const CREATE_A_COHORT = gql`
     createCohort(value: $input)
   } 
 `
+export const GET_COHORTS = gql`
+  query getCohorts{
+    getCohorts{ cohortId } 
+  }
+`
 
 export const FORGOT_RESET_PASSWORD = gql`
   mutation($input: PasswordChange){
