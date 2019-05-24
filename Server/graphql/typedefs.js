@@ -282,8 +282,8 @@ type UserData {
   lessons: [Lesson]
 }
 
-type inviteToCohort {
-  userEmail: String
+input inviteToCohort {
+  waitListId: String
   cohortID: String
 }
 `
