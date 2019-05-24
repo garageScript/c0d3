@@ -49,6 +49,9 @@ type Query {
   "Get username"
   getUsername(userId: String): User
 
+  "Get all the Cohorts"
+  getCohorts: [ Cohort] 
+
 }
 
 type Mutation {
@@ -280,6 +283,10 @@ type UserData {
   createdAt: String,
   stars: [Star]
   lessons: [Lesson]
+}
+
+type Cohort {
+  cohortId: String 
 }
 
 input inviteToCohort {

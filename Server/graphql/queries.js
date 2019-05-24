@@ -220,6 +220,12 @@ module.exports = {
     })
   },
 
+  getCohorts: (obj, args, context) => {
+    return Cohort.findAll({
+      order: [[ 'cohortId', 'DESC' ]]
+    })
+  },
+
   userInfo: (obj, args, context) => {
     const userData = {}
     return User.findOne({
