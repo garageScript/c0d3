@@ -111,7 +111,7 @@ const Message = sequelize.define('message', {
 })
 
 const Cohort = sequelize.define('cohort', {
-  cohortID: Sequelize.STRING
+  cohortId: Sequelize.STRING
 })
 
 const UserRoom = sequelize.define('userRoom', {

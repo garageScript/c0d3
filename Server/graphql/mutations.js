@@ -236,9 +236,10 @@ module.exports = {
     })
   },
   createCohort: (obj, args, context) => {
-    return Cohort.create({
+    Cohort.create({
       cohortId: args.value
     })
+    return 'Success'
   },
   deleteAnnouncement: (obj, args, context) => {
     return Announcement.destroy({

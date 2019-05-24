@@ -255,10 +255,5 @@ module.exports = {
         id: args.userId
       }
     })
-  },
-  getCohorts: (obj, args, context) => {
-    return Cohort.findAll({
-      order: [['cohortId', 'ASC']]
-    })
   }
 }

@@ -398,6 +398,12 @@ export const INVITE_TO_COHORT = gql`
     inviteToCohort(value: $input)
   }
 `
+export const CREATE_A_COHORT = gql`
+  mutation($input: String){
+    createCohort(value: $input)
+  } 
+`
+
 export const FORGOT_RESET_PASSWORD = gql`
   mutation($input: PasswordChange){
     forgotResetPassword(input: $input)
