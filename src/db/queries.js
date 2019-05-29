@@ -405,7 +405,7 @@ export const CREATE_A_COHORT = gql`
 `
 export const GET_COHORTS = gql`
   query getCohorts{
-    getCohorts{ cohortId } 
+    getCohorts{ chatroomId } 
   }
 `
 

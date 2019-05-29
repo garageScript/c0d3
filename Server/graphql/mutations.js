@@ -236,9 +236,11 @@ module.exports = {
     })
   },
   createCohort: (obj, args, context) => {
-    Cohort.create({
-      cohortId: args.value
-    })
+    matterMostService.createCohortChannel().then(data =>
+      Cohort.create({
+        chatroomId: data.id
+      })
+    )
     return 'Success'
   },
   deleteAnnouncement: (obj, args, context) => {

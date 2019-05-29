@@ -66,6 +66,23 @@ const matterMostService = {
       console.log('Error creating direct message channel')
     }
   },
+  getTeams: () => {
+    return axios.get(`${chatServiceUrl}/teams`, { headers: chatServiceHeader })
+  },
+  createCohortChannel: async () => {
+    const teamId = await matterMostService.getTeams()
+    const cohort = {
+      team_id: teamId.data[0].id,
+      name: `${Date.now()}`,
+      display_name: 'Testing Private Channel',
+      purpose: 'To create a classroomof students for c0d3. Students are able to ask questions/help here.',
+      header: 'TESTING THIS PART OF THE API CALL',
+      type: 'P'
+    }
+    return axios.post(`${chatServiceUrl}/channels`,
+      cohort,
+      { headers: chatServiceHeader })
+  },
   sendDirectMessage: async (submitterEmail, reviewerEmail, message) => {
     const channelId = await matterMostService.findOrCreateDirectMessageChannel(submitterEmail, reviewerEmail)
     await matterMostService.sendMessage(channelId.data.id, message)

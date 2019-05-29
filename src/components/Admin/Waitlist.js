@@ -1,6 +1,8 @@
 import React from 'react'
-import { Mutation } from 'react-apollo'
-import { INVITE_TO_COHORT, CREATE_A_COHORT } from '../../db/queries'
+import { Mutation, Query } from 'react-apollo'
+import { INVITE_TO_COHORT, CREATE_A_COHORT, GET_COHORTS } from '../../db/queries'
+import { loadComponent } from '../shared/shared.js'
+import Markdown from 'react-markdown'
 
 class Waitlist extends React.Component {
   constructor (props) {
@@ -14,22 +16,14 @@ class Waitlist extends React.Component {
       <div style={{ display: 'flex' }}>
         <div className='cohortInput'>
           <h1>New Cohorts</h1>
-            Cohort Number: <input onChange={(value) => {
-            this.setState({
-              cohortId: value.target.value
-            })
-          }} />
           <Mutation mutation={CREATE_A_COHORT}>
             {(execute) => {
               return (
                 <button onClick={() => {
                   execute({
                     variables: {
-                      input: this.state.cohortId
+                      input: 'testing@gmail.com'
                     }
-                  })
-                  this.setState({
-                    cohortId: ''
                   })
                 }}>CREATE</button>
               )

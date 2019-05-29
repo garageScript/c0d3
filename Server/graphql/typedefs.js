@@ -286,11 +286,11 @@ type UserData {
 }
 
 type Cohort {
-  cohortId: String 
+  chatroomId: String 
 }
 
 input inviteToCohort {
   waitListId: String
-  cohortID: String
+  chatroomId: String
 }
 `
