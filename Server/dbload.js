@@ -111,7 +111,7 @@ const Message = sequelize.define('message', {
 })
 
 const Cohort = sequelize.define('cohort', {
-  cohortId: Sequelize.STRING
+  chatroomId: Sequelize.STRING
 })
 
 const UserRoom = sequelize.define('userRoom', {
@@ -126,6 +126,11 @@ Room.belongsToMany(User, { through: { model: UserRoom } })
 Message.belongsTo(Room)
 Message.belongsTo(User)
 Room.hasMany(Message)
+
+const WaitList = sequelize.define('waitList', {
+  email: Sequelize.STRING,
+  token: Sequelize.STRING
+})
 
 sequelize.sync({ alter: true })
 
@@ -142,5 +147,6 @@ module.exports = {
   UserRoom,
   Room,
   Message,
+  WaitList,
   sequelize
 }
