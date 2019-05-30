@@ -274,33 +274,23 @@ helpers.confirmEmail = async (req, res) => {
 
 // handle request to join waitlist
 helpers.joinWaitList = (req, res) => {
-  User.findOne({ where: { email: `${req.body.email}` } })
-    .then(response => {
-      if (response) {
-        // already an active member
-        res.send('already an active member')
-      } else {
-        // Not active, check if already on waitlist
-        WaitList.findOne({ where: { email: `${req.body.email}` } })
-          .then(response => {
-            if (response) {
-              // already on WaitList
-              res.send('you are already on the waitlist')
-            } else {
-              // User is added to WaitList
-              const emailToken = nanoid()
-              WaitList.create({
-                email: req.body.email,
-                token: emailToken
-              })
-                .then(response => {
-                  res.send('finished inserting into WaitList Table')
-                  mailGun.sendWaitListRequestResponse({ email: req.body.email }, emailToken)
-                })
-                .catch(error => log.error(`${error}`))
-            }
-          })
-      }
+  const userTableStatus = User.findOne({ where: { email: req.body.email } })
+  const waitListTableStatus = WaitList.findOne({ where: { email: req.body.email } })
+
+  Promise.all([userTableStatus, waitListTableStatus])
+    .then(([userTableStatusRes, waitListTableStatusRes]) => {
+      if (userTableStatusRes) return res.send('already an active member')
+      if (waitListTableStatusRes) return res.send('already in the waitList')
+      const emailToken = nanoid()
+      WaitList.create({
+        email: req.body.email,
+        token: emailToken
+      })
+        .then(response => {
+          res.send('finished inserting into WaitList Table')
+          mailGun.sendWaitListRequestResponse({ email: req.body.email }, emailToken)
+        })
+        .catch(error => log.error(`${error}`))
     })
 }
 
