@@ -236,11 +236,11 @@ module.exports = {
     })
   },
   createCohort: (obj, args, context) => {
-    matterMostService.createCohortChannel().then(data =>
+    const channelData = matterMostService.createCohortChannel().then(result => {
       Cohort.create({
-        chatroomId: data.id
+        chatroomId: result.data.id
       })
-    )
+    })
     return 'Success'
   },
   deleteAnnouncement: (obj, args, context) => {
