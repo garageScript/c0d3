@@ -279,19 +279,20 @@ helpers.joinWaitList = (req, res) => {
 
   Promise.all([userTableStatus, waitListTableStatus])
     .then(([userTableStatusRes, waitListTableStatusRes]) => {
-      if (userTableStatusRes) return res.send('already an active member')
-      if (waitListTableStatusRes) return res.send('already in the waitList')
+      if (userTableStatusRes) return res.send({ inUserTable: true })
+      if (waitListTableStatusRes) return res.send({ inWaitListTable: true })
       const emailToken = nanoid()
       WaitList.create({
         email: req.body.email,
         token: emailToken
       })
         .then(response => {
-          res.send('finished inserting into WaitList Table')
           mailGun.sendWaitListRequestResponse({ email: req.body.email }, emailToken)
+          res.send({ waitListSuccess: true })
         })
         .catch(error => log.error(`${error}`))
     })
+    .catch(error => console.log(error))
 }
 
 module.exports = helpers
