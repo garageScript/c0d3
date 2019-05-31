@@ -274,17 +274,24 @@ helpers.confirmEmail = async (req, res) => {
 
 // handle request to join waitlist
 helpers.joinWaitList = (req, res) => {
-  const emailToken = nanoid()
+  const userTableStatus = User.findOne({ where: { email: req.body.email } })
+  const waitListTableStatus = WaitList.findOne({ where: { email: req.body.email } })
 
-  WaitList.create({
-    email: req.body.email,
-    token: emailToken
-  })
-    .then(response => {
-      res.send('finished inserting into WaitList Table')
-      mailGun.sendWaitListRequestResponse({ email: req.body.email }, emailToken)
+  Promise.all([userTableStatus, waitListTableStatus])
+    .then(([userTableStatusRes, waitListTableStatusRes]) => {
+      if (userTableStatusRes) return res.send('already an active member')
+      if (waitListTableStatusRes) return res.send('already in the waitList')
+      const emailToken = nanoid()
+      WaitList.create({
+        email: req.body.email,
+        token: emailToken
+      })
+        .then(response => {
+          res.send('finished inserting into WaitList Table')
+          mailGun.sendWaitListRequestResponse({ email: req.body.email }, emailToken)
+        })
+        .catch(error => log.error(`${error}`))
     })
-    .catch(error => log.error(`${error}`))
 }
 
 module.exports = helpers
