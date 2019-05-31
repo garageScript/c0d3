@@ -10,7 +10,7 @@ const startApp = () => {
       invalidFeedback.innerHTML = 'Please Enter an Email Address'
       return document.getElementById('invalidFeedback').style.display = 'block'
     }
-    fetch('https://petecs.c0d3.com/waitlist', {
+    fetch('/waitlist', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
