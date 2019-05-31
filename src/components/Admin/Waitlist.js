@@ -24,12 +24,20 @@ const Waitlist = () => {
         </Mutation>
         <hr />
         <h1>Previous Cohorts:</h1>
-        <div className='listOfAllCohorts'>
-        Cohort 1 <button style={{ margin: '10px', display: 'block' }}>EDIT</button>
-        Cohort 2 <button style={{ margin: '10px', display: 'block' }}>EDIT</button>
-        Cohort 3 <button style={{ margin: '10px', display: 'block' }}>EDIT</button>
-          <hr />
-        </div>
+        <Query query={GET_COHORTS}>
+          { loadComponent(({ getCohorts }) => {
+            return getCohorts.map((v, i) => {
+              return (
+                <div style={{ textAlign: 'center' }}>
+                  <div>Cohort {i + 1}: </div>
+                  <button>EDIT</button>
+                  <hr />
+                </div>
+              )
+            })
+          })
+          }
+        </Query>
       </div>
       <div className='waitlist' style={{ padding: '30px' }}>
         <h2 style={{ padding: '20px' }}>Waitlist:</h2>

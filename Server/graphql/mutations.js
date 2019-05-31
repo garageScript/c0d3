@@ -239,12 +239,16 @@ module.exports = {
     const channelData = matterMostService.createCohortChannel().then(result => {
       Cohort.destroy({
         where: {
-          chatroomId: [null, '']
+          chatroomId: null
         }
       })
-      // Cohort.create({
-      // chatroomId: result.data.id
+      // Cohort.create({}).then(c => {
+      // const channel = matterMostService.createCohortChannel(c.id)
+      // c.update({ chatroomId: channel.data.id })
       // })
+      Cohort.create({
+        chatroomId: result.data.id
+      })
     })
     return 'Success'
   },
