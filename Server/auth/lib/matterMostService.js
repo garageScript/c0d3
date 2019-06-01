@@ -74,9 +74,9 @@ const matterMostService = {
       const teamId = await matterMostService.getTeams()
       const cohort = {
         team_id: teamId.data[0].id,
-        name: `${value}`,
-        display_name: `cohort ${value}`,
-        purpose: 'To create a classroomof students for c0d3. Students are able to ask questions/help here.',
+        name: `cohort${value}`,
+        display_name: `Cohort  ${value}`,
+        purpose: `A private chatroom for Students of Cohort${value} to get to know and help each other out`,
         header: 'TESTING THIS PART OF THE API CALL',
         type: 'O'
       }

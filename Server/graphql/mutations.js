@@ -236,18 +236,13 @@ module.exports = {
     })
   },
   createCohort: (obj, args, context) => {
-    Cohort.findAll({
-      limit: 1,
-      order: [ [ 'createdAt', 'DESC' ] ]
-    }).then(c => {
-      const tableId = c[0].id + 1
-      Cohort.create({
-        chatroomId: tableId
-      }).then(info => {
-        matterMostService.createCohortChannel(tableId)
-        info.update({
-          chatroomId: info.dataValues.id
-        })
+    let cohort
+    Cohort.create({}).then(info => {
+      cohort = info
+      return matterMostService.createCohortChannel(info.dataValues.id)
+    }).then(chat => {
+      cohort.update({
+        chatroomId: chat.data.id
       })
     })
     return 'Success'
