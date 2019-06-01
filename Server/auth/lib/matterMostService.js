@@ -77,7 +77,7 @@ const matterMostService = {
         name: `cohort${value}`,
         display_name: `Cohort  ${value}`,
         purpose: `A private chatroom for Students of Cohort${value} to get to know and help each other out`,
-        header: 'TESTING THIS PART OF THE API CALL',
+        header: 'Curriculum Help',
         type: 'O'
       }
 
