@@ -3,13 +3,13 @@ const log = require('../log/index')(__filename)
 
 const emailService = {}
 
-emailService.sendInviteEmail = async ({ email }) => {
+emailService.sendInviteEmail = async ({ email, cohortId }) => {
   try {
     await mailgun.messages().send({
       from: '<hello@c0d3.com>',
       to: email,
       subject: 'Congratulations! You are approved to join C0d3.com',
-      text: `Congratulations Noob!, We are super excited for you join our cohort 007(placeholder for cohort #). Please sign up at ${process.env.CLIENT_URL}/signup `
+      text: `Congratulations!!  We are super excited for you join the Cohort${cohortId}. Please sign up at ${process.env.CLIENT_URL}/signup `
     }, (error, body) => {
       if (error) {
         log.error(`error sending email ${error}`)
