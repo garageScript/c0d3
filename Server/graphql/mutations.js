@@ -236,18 +236,18 @@ module.exports = {
     })
   },
   createCohort: (obj, args, context) => {
-    const channelData = matterMostService.createCohortChannel().then(result => {
-      Cohort.destroy({
-        where: {
-          chatroomId: null
-        }
-      })
-      // Cohort.create({}).then(c => {
-      // const channel = matterMostService.createCohortChannel(c.id)
-      // c.update({ chatroomId: channel.data.id })
-      // })
+    Cohort.findAll({
+      limit: 1,
+      order: [ [ 'createdAt', 'DESC' ] ]
+    }).then(c => {
+      const tableId = c[0].id + 1
       Cohort.create({
-        chatroomId: result.data.id
+        chatroomId: tableId
+      }).then(info => {
+        matterMostService.createCohortChannel(tableId)
+        info.update({
+          chatroomId: info.dataValues.id
+        })
       })
     })
     return 'Success'

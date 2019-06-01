@@ -69,16 +69,16 @@ const matterMostService = {
   getTeams: () => {
     return axios.get(`${chatServiceUrl}/teams`, { headers: chatServiceHeader })
   },
-  createCohortChannel: async () => {
+  createCohortChannel: async (value) => {
     try {
       const teamId = await matterMostService.getTeams()
       const cohort = {
         team_id: teamId.data[0].id,
-        name: `${Date.now()}`,
-        display_name: `${Date.now()}cohorts`,
+        name: `${value}`,
+        display_name: `cohort ${value}`,
         purpose: 'To create a classroomof students for c0d3. Students are able to ask questions/help here.',
         header: 'TESTING THIS PART OF THE API CALL',
-        type: 'P'
+        type: 'O'
       }
 
       return axios.post(`${chatServiceUrl}/channels`,
