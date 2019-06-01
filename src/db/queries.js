@@ -399,8 +399,8 @@ export const INVITE_TO_COHORT = gql`
   }
 `
 export const CREATE_A_COHORT = gql`
-  mutation($input: String){
-    createCohort(value: $input)
+  mutation{
+    createCohort
   } 
 `
 export const GET_COHORTS = gql`

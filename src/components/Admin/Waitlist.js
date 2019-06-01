@@ -15,7 +15,7 @@ const Waitlist = () => {
               <button onClick={() => {
                 execute({
                   variables: {
-                    input: 'testing@gmail.com'
+                    value: 'testing@gmail.com'
                   }
                 })
               }}>CREATE</button>
