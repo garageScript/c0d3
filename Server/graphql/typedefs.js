@@ -121,6 +121,9 @@ type Mutation {
   "Resend email confirmation"
   resendEmailConfirmation(value: String): String
 
+  "Creates a Cohort"
+   createCohort: String 
+
 }
 
 input PasswordChange {
