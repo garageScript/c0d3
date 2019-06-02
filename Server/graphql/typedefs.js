@@ -288,6 +288,8 @@ type UserData {
 
 type Cohort {
   chatroomId: String 
+  id: String
+  createdAt: String
 }
 
 input inviteToCohort {

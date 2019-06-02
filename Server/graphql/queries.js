@@ -222,7 +222,7 @@ module.exports = {
 
   getCohorts: (obj, args, context) => {
     return Cohort.findAll({
-      order: [[ 'created_at', 'DESC' ]]
+      order: [[ 'createdAt', 'DESC' ]]
     })
   },
 
