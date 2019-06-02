@@ -116,7 +116,7 @@ type Mutation {
   sendPasswordResetEmail(value: String): String
 
   "Send invite email to join C0d3 using Mailgun"
-  inviteToCohort(value: inviteToCohort): String 
+  inviteToCohort(input: inviteToCohort): String 
 
   "Reset password for non-authorized clients"
   forgotResetPassword(input: PasswordChange): String
@@ -297,6 +297,5 @@ type Cohort {
 
 input inviteToCohort {
   waitListId: String
-  chatroomId: String
 }
 `

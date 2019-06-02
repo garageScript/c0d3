@@ -12,7 +12,8 @@ const {
   Star,
   Submission,
   User,
-  UserLesson
+  UserLesson,
+  WaitList
 } = require('../dbload')
 
 module.exports = {
@@ -269,8 +270,15 @@ module.exports = {
     })
   },
   inviteToCohort: (obj, args, context) => {
-    mailGun.sendInviteEmail({ email: 'rkalra247@gmail.com' })
-    return 'Success'
+    WaitList.find({
+      where: {
+        id: args.input.waitListId
+      }
+    }).then(row => {
+      mailGun.sendInviteEmail({ email: row.email })
+      return `Email is sent successfully for ${row.email}`
+    })
+    return 'Invite to Cohort is a success'
   },
   forgotResetPassword: (obj, args, context) => {
     const { forgotToken, password } = args.input
