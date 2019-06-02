@@ -235,16 +235,10 @@ module.exports = {
       description: args.value
     })
   },
-  createCohort: (obj, args, context) => {
-    let cohort
-    Cohort.create({}).then(info => {
-      cohort = info
-      return matterMostService.createCohortChannel(info.dataValues.id)
-    }).then(chat => {
-      cohort.update({
-        chatroomId: chat.data.id
-      })
-    })
+  createCohort: async (obj, args, context) => {
+    const cohort = await Cohort.create({})
+    const chat = await matterMostService.createCohortChannel(cohort.dataValues.id)
+    cohort.update({ chatroomId: chat.data.id })
     return 'Success'
   },
   deleteAnnouncement: (obj, args, context) => {

@@ -2,7 +2,6 @@ import React from 'react'
 import { Mutation, Query } from 'react-apollo'
 import { INVITE_TO_COHORT, CREATE_A_COHORT, GET_COHORTS } from '../../db/queries'
 import { loadComponent } from '../shared/shared.js'
-import Markdown from 'react-markdown'
 
 const Waitlist = () => {
   return (
@@ -13,11 +12,7 @@ const Waitlist = () => {
           {(execute) => {
             return (
               <button onClick={() => {
-                execute({
-                  variables: {
-                    value: 'testing@gmail.com'
-                  }
-                })
+                execute({})
               }}>CREATE</button>
             )
           }}
@@ -30,7 +25,6 @@ const Waitlist = () => {
               return (
                 <div style={{ textAlign: 'center' }}>
                   <div>Cohort {i + 1}: </div>
-                  <button>EDIT</button>
                   <hr />
                 </div>
               )
