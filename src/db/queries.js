@@ -408,6 +408,13 @@ export const GET_COHORTS = gql`
     getCohorts{ chatroomId } 
   }
 `
+export const GET_WAITLIST_STUDENTS = gql`
+   query getWaitListStudents{
+    getWaitListStudents{
+      email, id
+    }
+   }
+`
 
 export const FORGOT_RESET_PASSWORD = gql`
   mutation($input: PasswordChange){

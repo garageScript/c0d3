@@ -51,6 +51,9 @@ type Query {
 
   "Get all the Cohorts"
   getCohorts: [ Cohort] 
+ 
+  "Get all the students from the waitlist"
+  getWaitListStudents: [ User ]
 
 }
 
