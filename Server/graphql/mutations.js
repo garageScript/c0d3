@@ -270,7 +270,7 @@ module.exports = {
     })
   },
   inviteToCohort: (obj, args, context) => {
-    WaitList.find({
+    WaitList.findOne({
       where: {
         id: args.input.waitListId
       }
