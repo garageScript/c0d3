@@ -125,7 +125,7 @@ type Mutation {
   resendEmailConfirmation(value: String): String
 
   "Creates a Cohort"
-   createCohort: String 
+   createCohort: Cohort
 
 }
 

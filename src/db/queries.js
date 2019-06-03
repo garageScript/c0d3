@@ -400,7 +400,7 @@ export const INVITE_TO_COHORT = gql`
 `
 export const CREATE_A_COHORT = gql`
   mutation{
-    createCohort
+    createCohort{ id }
   } 
 `
 export const GET_COHORTS = gql`

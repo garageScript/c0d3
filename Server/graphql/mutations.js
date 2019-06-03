@@ -240,7 +240,7 @@ module.exports = {
     const cohort = await Cohort.create({})
     const chat = await matterMostService.createCohortChannel(cohort.dataValues.id)
     cohort.update({ chatroomId: chat.data.id })
-    return 'Success'
+    return cohort
   },
   deleteAnnouncement: (obj, args, context) => {
     return Announcement.destroy({
