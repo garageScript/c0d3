@@ -400,12 +400,12 @@ export const INVITE_TO_COHORT = gql`
 `
 export const CREATE_A_COHORT = gql`
   mutation{
-    createCohort{ id }
+    createCohort{ id, chatroomId }
   } 
 `
 export const GET_COHORTS = gql`
   query getCohorts{
-    getCohorts{ chatroomId } 
+    getCohorts{ chatroomId, id } 
   }
 `
 export const GET_WAITLIST_STUDENTS = gql`

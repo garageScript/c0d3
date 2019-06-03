@@ -1,45 +1,53 @@
 import React from 'react'
 import { Mutation, Query } from 'react-apollo'
 import { INVITE_TO_COHORT, CREATE_A_COHORT, GET_COHORTS, GET_WAITLIST_STUDENTS } from '../../db/queries'
-import { loadComponent } from '../shared/shared.js'
+import { loadComponent, cacheUpdate } from '../shared/shared.js'
 
 const Waitlist = () => {
   return (
-    <div style={{ display: 'flex' }}>
-      <div className='cohortInput'>
-        <h1>New Cohorts</h1>
-        <Mutation mutation={CREATE_A_COHORT}>
-          {(execute) => {
-            return (
-              <button onClick={() => {
-                execute({})
-              }}>CREATE</button>
-            )
-          }}
-        </Mutation>
-        <hr />
-        <h1>Previous Cohorts:</h1>
-        <Query query={GET_COHORTS}>
-          { loadComponent(({ getCohorts }) => {
-            return getCohorts.map((v, i) => {
-              return (
-                <div style={{ textAlign: 'center' }}>
-                  <div>Cohort {i + 1}: </div>
-                  <hr />
-                </div>
-              )
+    <div className='container'style={{ display: 'flex' }}>
+      <div className='row' style={{ textAlign: 'center' }}>
+        <div className='col'>
+          <h1>New Cohorts</h1>
+          <Mutation
+            update={cacheUpdate(GET_COHORTS, ({ createCohort }, { getCohorts }) => {
+              return { getCohorts: getCohorts.concat(createCohort) }
             })
-          })
-          }
-        </Query>
+            }
+            mutation={CREATE_A_COHORT}>
+            {(execute) => {
+              return (
+                <button onClick={() => {
+                  execute({})
+                }}>CREATE</button>
+              )
+            }}
+          </Mutation>
+        </div>
+        <div className='col' style={{ textAlign: 'center' }}>
+          <h3>Previous Cohorts:</h3>
+          <Query query={GET_COHORTS}>
+            { loadComponent(({ getCohorts }) => {
+              return getCohorts.map((v, i) => {
+                return (
+                  <div style={{ textAlign: 'center' }} key={i}>
+                    <div>Cohort {i + 1}: </div>
+                    <hr />
+                  </div>
+                )
+              })
+            })
+            }
+          </Query>
+        </div>
       </div>
-      <div className='waitlist' style={{ padding: '30px' }}>
-        <h2 style={{ padding: '20px' }}>Waitlist:</h2>
+      <div className='col-6' style={{ textAlign: 'center' }}>
+        <h3>Waitlist:</h3>
         <Query query={GET_WAITLIST_STUDENTS}>
           {loadComponent(({ getWaitListStudents }) => {
-            return getWaitListStudents.map((v) => {
+            return getWaitListStudents.map((v, i) => {
               return (
-                <div>
+                <div key={i}>
                   <div style={{ display: 'flex' }}>
                   Student
                     <hr />
@@ -60,7 +68,7 @@ const Waitlist = () => {
             {(execute) => {
               return (
                 <div>
-                Rahul <button onClick={() => {
+                  <button onClick={() => {
                     execute({
                       variables: {
                         input: 'rkalra247@gmail.com'
