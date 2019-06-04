@@ -8,7 +8,6 @@ const Waitlist = () => {
     <div className='container'style={{ display: 'flex' }}>
       <div className='row' style={{ textAlign: 'center' }}>
         <div className='col'>
-          <h1>New Cohorts</h1>
           <Mutation
             update={cacheUpdate(GET_COHORTS, ({ createCohort }, { getCohorts }) => {
               return { getCohorts: getCohorts.concat(createCohort) }
@@ -17,15 +16,15 @@ const Waitlist = () => {
             mutation={CREATE_A_COHORT}>
             {(execute) => {
               return (
-                <button className='btn btn-info btn-rounded' type='button' onClick={() => {
+                <button className='btn btn-info btn-rounded' type='button' style={{ position: 'fixed', right: '10%', top: '50%', width: '30%' }} onClick={() => {
                   execute({})
-                }}>CREATE</button>
+                }}>CREATE A NEW COHORT</button>
               )
             }}
           </Mutation>
         </div>
         <div className='col' style={{ textAlign: 'center' }}>
-          <h3>Cohorts:</h3>
+          <h1>Cohorts</h1>
           <Query query={GET_COHORTS}>
             { loadComponent(({ getCohorts }) => {
               return getCohorts.map((v, i) => {
@@ -41,21 +40,13 @@ const Waitlist = () => {
         </div>
       </div>
       <div className='col-md-6 mb-4' style={{ textAlign: 'center' }}>
-        <h3>Waitlist:</h3>
+        <h1>Waitlist</h1>
         <Query query={GET_WAITLIST_STUDENTS}>
           {loadComponent(({ getWaitListStudents }) => {
             return getWaitListStudents.map((v, i) => {
               return (
                 <div key={i}>
-                  <div style={{ display: 'flex' }}>
-                  Student
-                    <hr />
-                    <div>{v.id}</div>
-                    <hr />
-                    <div>{v.email}</div>
-                    <hr />
-                    <button type='button' className='btn btn-outline-success btn-rounded waves-effect'>ADD TO COHORT</button>
-                  </div>
+                  <button type='button' className='btn btn-outline-success btn-rounded waves-effect'>ADD {v.email} TO A COHORT</button>
                 </div>
               )
             })
