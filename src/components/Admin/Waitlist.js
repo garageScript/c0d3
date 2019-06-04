@@ -17,7 +17,7 @@ const Waitlist = () => {
             mutation={CREATE_A_COHORT}>
             {(execute) => {
               return (
-                <button onClick={() => {
+                <button className='btn btn-info btn-rounded' type='button' onClick={() => {
                   execute({})
                 }}>CREATE</button>
               )
@@ -25,14 +25,13 @@ const Waitlist = () => {
           </Mutation>
         </div>
         <div className='col' style={{ textAlign: 'center' }}>
-          <h3>Previous Cohorts:</h3>
+          <h3>Cohorts:</h3>
           <Query query={GET_COHORTS}>
             { loadComponent(({ getCohorts }) => {
               return getCohorts.map((v, i) => {
                 return (
                   <div style={{ textAlign: 'center' }} key={i}>
-                    <div>Cohort {i + 1}: </div>
-                    <hr />
+                    <div className='card-body card-title font-weight-bold'>Cohort {i + 1}</div>
                   </div>
                 )
               })
@@ -41,7 +40,7 @@ const Waitlist = () => {
           </Query>
         </div>
       </div>
-      <div className='col-6' style={{ textAlign: 'center' }}>
+      <div className='col-md-6 mb-4' style={{ textAlign: 'center' }}>
         <h3>Waitlist:</h3>
         <Query query={GET_WAITLIST_STUDENTS}>
           {loadComponent(({ getWaitListStudents }) => {
@@ -55,31 +54,13 @@ const Waitlist = () => {
                     <hr />
                     <div>{v.email}</div>
                     <hr />
-                    <button>ADD TO COHORT</button>
+                    <button type='button' className='btn btn-outline-success btn-rounded waves-effect'>ADD TO COHORT</button>
                   </div>
-                  <hr />
                 </div>
               )
             })
           })}
         </Query>
-        <div style={{ display: 'block' }}>
-          <Mutation mutation={INVITE_TO_COHORT}>
-            {(execute) => {
-              return (
-                <div>
-                  <button onClick={() => {
-                    execute({
-                      variables: {
-                        input: 'rkalra247@gmail.com'
-                      }
-                    })
-                  }}>JOIN</button>
-                </div>
-              )
-            }}
-          </Mutation>
-        </div>
       </div>
     </div>
   )
