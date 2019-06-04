@@ -1,6 +1,6 @@
 import React from 'react'
 import { Mutation, Query } from 'react-apollo'
-import { INVITE_TO_COHORT, CREATE_A_COHORT, GET_COHORTS, GET_WAITLIST_STUDENTS } from '../../db/queries'
+import { CREATE_A_COHORT, GET_COHORTS, GET_WAITLIST_STUDENTS } from '../../db/queries'
 import { loadComponent, cacheUpdate } from '../shared/shared.js'
 
 const Waitlist = () => {
