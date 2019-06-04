@@ -16,7 +16,7 @@ const Waitlist = () => {
             mutation={CREATE_A_COHORT}>
             {(execute) => {
               return (
-                <button className='btn btn-info btn-rounded' type='button' style={{ position: 'fixed', right: '10%', top: '50%', width: '30%' }} onClick={() => {
+                <button className='btn btn-info btn-rounded' type='button' style={{ position: 'fixed', left: '333px', top: '8%', width: '10%' }} onClick={() => {
                   execute({})
                 }}>CREATE A NEW COHORT</button>
               )
@@ -29,8 +29,8 @@ const Waitlist = () => {
             { loadComponent(({ getCohorts }) => {
               return getCohorts.map((v, i) => {
                 return (
-                  <div style={{ textAlign: 'center' }} key={i}>
-                    <div className='card-body card-title font-weight-bold'>Cohort {i + 1}</div>
+                  <div style={{ textAlign: 'center', margin: '3px' }} key={i}>
+                    <div>Cohort {i + 1}</div>
                   </div>
                 )
               })
@@ -39,14 +39,15 @@ const Waitlist = () => {
           </Query>
         </div>
       </div>
-      <div className='col-md-6 mb-4' style={{ textAlign: 'center' }}>
-        <h1>Waitlist</h1>
+      <div className='col'>
+        <h1 style={{ textAlign: 'center' }} >Waitlist</h1>
         <Query query={GET_WAITLIST_STUDENTS}>
           {loadComponent(({ getWaitListStudents }) => {
             return getWaitListStudents.map((v, i) => {
               return (
-                <div key={i}>
-                  <button type='button' className='btn btn-outline-success btn-rounded waves-effect'>ADD {v.email} TO A COHORT</button>
+                <div style={{ display: 'flex', margin: '3px' }} key={i}>
+                  <div style={{ position: 'absolute', right: '208px', margin: '2px' }}>{v.email}</div>
+                  <a style={{ marginLeft: '200px' }}>Invite to Cohort</a>
                 </div>
               )
             })
