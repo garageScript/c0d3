@@ -1,6 +1,6 @@
 import React from 'react'
 import { Mutation, Query } from 'react-apollo'
-import { CREATE_A_COHORT, GET_COHORTS, GET_WAITLIST_STUDENTS } from '../../db/queries'
+import { CREATE_A_COHORT, GET_COHORTS, GET_WAITLIST_STUDENTS, INVITE_TO_COHORT } from '../../db/queries'
 import { loadComponent, cacheUpdate } from '../shared/shared.js'
 
 const Waitlist = () => {
@@ -47,7 +47,22 @@ const Waitlist = () => {
               return (
                 <div style={{ display: 'flex', margin: '3px' }} key={i}>
                   <div style={{ position: 'absolute', right: '208px', margin: '2px' }}>{v.email}</div>
-                  <a style={{ marginLeft: '200px' }}>Invite to Cohort</a>
+                  <Mutation mutation={INVITE_TO_COHORT}>
+                    {(execute) => {
+                      return (
+                        <a style={{ marginLeft: '200px' }} onClick={() => {
+                          execute({
+                            variables: {
+                              input: {
+                                waitListId: v.id
+                              }
+                            }
+                          })
+                        }}>Invite to Cohort</a>
+                      )
+                    }
+                    }
+                  </Mutation>
                 </div>
               )
             })

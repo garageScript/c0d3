@@ -394,7 +394,7 @@ export const SEND_FORGOT_EMAIL = gql`
   }
 `
 export const INVITE_TO_COHORT = gql`
-  mutation($input: String){
+  mutation($input: inviteToCohort){
     inviteToCohort(value: $input)
   }
 `

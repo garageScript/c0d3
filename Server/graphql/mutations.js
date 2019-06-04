@@ -272,7 +272,7 @@ module.exports = {
   inviteToCohort: (obj, args, context) => {
     WaitList.findOne({
       where: {
-        id: args.input.waitListId
+        id: args.value.waitListId
       }
     }).then(row => {
       mailGun.sendInviteEmail({ email: row.email })
