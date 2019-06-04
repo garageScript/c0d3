@@ -30,7 +30,7 @@ const Waitlist = () => {
               return getCohorts.map((v, i) => {
                 return (
                   <div style={{ textAlign: 'center', margin: '3px' }} key={i}>
-                    <div>Cohort {i + 1}</div>
+                    <div>Cohort {v.id}</div>
                   </div>
                 )
               })
