@@ -5,13 +5,15 @@ const matterMostService = require('../auth/lib/matterMostService')
 
 const {
   Announcement,
+  Cohort,
   AdoptedStudent,
   Challenge,
   Lesson,
   Star,
   Submission,
   User,
-  UserLesson
+  UserLesson,
+  WaitList
 } = require('../dbload')
 
 module.exports = {
@@ -234,6 +236,12 @@ module.exports = {
       description: args.value
     })
   },
+  createCohort: async (obj, args, context) => {
+    const cohort = await Cohort.create({})
+    const chat = await matterMostService.createCohortChannel(cohort.dataValues.id)
+    cohort.update({ chatroomId: chat.data.id })
+    return cohort
+  },
   deleteAnnouncement: (obj, args, context) => {
     return Announcement.destroy({
       where: {
@@ -260,6 +268,17 @@ module.exports = {
       user.update({ forgotToken: randomToken })
       return 'Success'
     })
+  },
+  inviteToCohort: (obj, args, context) => {
+    WaitList.findOne({
+      where: {
+        id: args.value.waitListId
+      }
+    }).then(row => {
+      mailGun.sendInviteEmail({ email: row.email })
+      return `Email is sent successfully for ${row.email}`
+    })
+    return 'Invite to Cohort is a success'
   },
   forgotResetPassword: (obj, args, context) => {
     const { forgotToken, password } = args.input

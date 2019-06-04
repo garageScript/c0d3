@@ -66,6 +66,28 @@ const matterMostService = {
       console.log('Error creating direct message channel')
     }
   },
+  getTeams: () => {
+    return axios.get(`${chatServiceUrl}/teams`, { headers: chatServiceHeader })
+  },
+  createCohortChannel: async (value) => {
+    try {
+      const teamId = await matterMostService.getTeams()
+      const cohort = {
+        team_id: teamId.data[0].id,
+        name: `cohort${value}`,
+        display_name: `Cohort  ${value}`,
+        purpose: `A private chatroom for Students of Cohort${value} to get to know and help each other out`,
+        header: 'Curriculum Help',
+        type: 'O' //Change to P when waitlist feature is complete.
+      }
+
+      return axios.post(`${chatServiceUrl}/channels`,
+        cohort,
+        { headers: chatServiceHeader })
+    } catch (error) {
+      console.log('Error in creating the new channel', error)
+    }
+  },
   sendDirectMessage: async (submitterEmail, reviewerEmail, message) => {
     const channelId = await matterMostService.findOrCreateDirectMessageChannel(submitterEmail, reviewerEmail)
     await matterMostService.sendMessage(channelId.data.id, message)

@@ -35,7 +35,9 @@ const {
   Challenge,
   Submission,
   AdoptedStudent,
-  Announcement
+  Announcement,
+  Cohort,
+  WaitList
 } = require('../dbload')
 
 module.exports = {
@@ -216,6 +218,18 @@ module.exports = {
   announcements: (obj, args, context) => {
     return Announcement.findAll({
       order: [ ['id', 'DESC'] ]
+    })
+  },
+
+  getCohorts: (obj, args, context) => {
+    return Cohort.findAll({
+      order: [[ 'createdAt', 'DESC' ]]
+    })
+  },
+
+  getWaitListStudents: (obj, args, context) => {
+    return WaitList.findAll({
+      order: [[ 'createdAt', 'ASC' ]]
     })
   },
 
