@@ -78,7 +78,7 @@ const matterMostService = {
         display_name: `Cohort  ${value}`,
         purpose: `A private chatroom for Students of Cohort${value} to get to know and help each other out`,
         header: 'Curriculum Help',
-        type: 'O'
+        type: 'O' //Change to P when waitlist feature is complete.
       }
 
       return axios.post(`${chatServiceUrl}/channels`,
