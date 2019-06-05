@@ -40,7 +40,6 @@ const startApp = () => {
           return validFeedback.style.display = 'block'
         }
       })
-      .catch(error => console.log(error))
   }
 }
 

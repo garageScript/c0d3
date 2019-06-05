@@ -282,7 +282,7 @@ helpers.joinWaitList = (req, res) => {
       if (userTableStatusRes) return res.send({ inUserTable: true })
       if (waitListTableStatusRes) return res.send({ inWaitListTable: true })
       const emailToken = nanoid()
-      WaitList.create({
+      return WaitList.create({
         email: req.body.email,
         token: emailToken
       })
@@ -290,9 +290,15 @@ helpers.joinWaitList = (req, res) => {
           mailGun.sendWaitListRequestResponse({ email: req.body.email }, emailToken)
           res.send({ waitListSuccess: true })
         })
-        .catch(error => log.error(`${error}`))
+        .catch(error => {
+          log.error(`${error}`)
+          errorHandler(req, res, error)
+        })
     })
-    .catch(error => console.log(error))
+    .catch(error => {
+      log.error(`${error}`)
+      errorHandler(req, res, error)
+    })
 }
 
 module.exports = helpers
