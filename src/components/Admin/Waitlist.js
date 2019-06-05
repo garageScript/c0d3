@@ -44,6 +44,7 @@ const Waitlist = () => {
         <Query query={GET_WAITLIST_STUDENTS}>
           {loadComponent(({ getWaitListStudents }) => {
             return getWaitListStudents.map((v, i) => {
+              console.log('WAITLIST STUDENTS:', v)
               return (
                 <div style={{ display: 'flex', margin: '3px' }} key={i}>
                   <div style={{ position: 'absolute', right: '208px', margin: '2px' }}>{v.email}</div>

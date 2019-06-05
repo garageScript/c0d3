@@ -275,6 +275,13 @@ module.exports = {
         id: args.value.waitListId
       }
     }).then(row => {
+      Cohort.findAll({
+        limit: 1,
+        order: [[ 'createdAt', 'DESC' ]]
+      }).then(c => {
+        row.update({ cohortId: c[0].dataValues.id }
+        )
+      })
       mailGun.sendInviteEmail({ email: row.email })
       return `Email is sent successfully for ${row.email}`
     })
