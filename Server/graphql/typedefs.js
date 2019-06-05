@@ -53,7 +53,7 @@ type Query {
   getCohorts: [ Cohort] 
  
   "Get all the students from the waitlist"
-  getWaitListStudents: [ User ]
+  getWaitListStudents: [ getWaitListStudents ]
 
 }
 
@@ -293,6 +293,13 @@ type Cohort {
   chatroomId: String 
   id: String
   createdAt: String
+}
+
+type getWaitListStudents {
+  id: String
+  email: String
+  createdAt: String
+  cohortId: String
 }
 
 input inviteToCohort {
