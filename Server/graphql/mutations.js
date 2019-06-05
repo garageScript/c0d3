@@ -282,7 +282,6 @@ module.exports = {
       mailGun.sendInviteEmail({ email: w.email })
       return `Email is sent successfully for ${w.email}`
     })
-    // return 'Invite to Cohort is a success'
   },
   forgotResetPassword: (obj, args, context) => {
     const { forgotToken, password } = args.input
