@@ -45,7 +45,6 @@ const Waitlist = () => {
           {loadComponent(({ getWaitListStudents }) => {
             return getWaitListStudents.map((v, i) => {
               if (!v.cohortId) {
-                console.log('STUDENT:', v)
                 return (
                   <div style={{ display: 'flex', margin: '3px' }} key={i}>
                     <div style={{ position: 'absolute', right: '208px', margin: '2px' }}>{v.email}</div>
