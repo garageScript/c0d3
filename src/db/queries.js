@@ -393,6 +393,29 @@ export const SEND_FORGOT_EMAIL = gql`
     sendPasswordResetEmail(value: $input )
   }
 `
+export const INVITE_TO_COHORT = gql`
+  mutation($input: inviteToCohort){
+    inviteToCohort(value: $input)
+  }
+`
+export const CREATE_A_COHORT = gql`
+  mutation{
+    createCohort{ id, chatroomId }
+  } 
+`
+export const GET_COHORTS = gql`
+  query getCohorts{
+    getCohorts{ chatroomId, id } 
+  }
+`
+export const GET_WAITLIST_STUDENTS = gql`
+   query getWaitListStudents{
+    getWaitListStudents{
+      email, id
+    }
+   }
+`
+
 export const FORGOT_RESET_PASSWORD = gql`
   mutation($input: PasswordChange){
     forgotResetPassword(input: $input)

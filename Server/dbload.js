@@ -110,6 +110,10 @@ const Message = sequelize.define('message', {
   isEdited: Sequelize.BOOLEAN
 })
 
+const Cohort = sequelize.define('cohort', {
+  chatroomId: Sequelize.STRING
+})
+
 const UserRoom = sequelize.define('userRoom', {
   unread: Sequelize.INTEGER,
   isLastRoom: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false }
@@ -133,6 +137,7 @@ sequelize.sync({ alter: true })
 module.exports = {
   Announcement,
   Lesson,
+  Cohort,
   Challenge,
   Submission,
   User,

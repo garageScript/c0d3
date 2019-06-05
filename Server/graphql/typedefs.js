@@ -49,6 +49,12 @@ type Query {
   "Get username"
   getUsername(userId: String): User
 
+  "Get all the Cohorts"
+  getCohorts: [ Cohort] 
+ 
+  "Get all the students from the waitlist"
+  getWaitListStudents: [ User ]
+
 }
 
 type Mutation {
@@ -109,11 +115,18 @@ type Mutation {
   "Send email with Mailgun"
   sendPasswordResetEmail(value: String): String
 
+  "Send invite email to join C0d3 using Mailgun"
+  inviteToCohort(value: inviteToCohort): String 
+
   "Reset password for non-authorized clients"
   forgotResetPassword(input: PasswordChange): String
 
   "Resend email confirmation"
   resendEmailConfirmation(value: String): String
+
+  "Creates a Cohort"
+   createCohort: Cohort
+
 }
 
 input PasswordChange {
@@ -274,5 +287,15 @@ type UserData {
   createdAt: String,
   stars: [Star]
   lessons: [Lesson]
+}
+
+type Cohort {
+  chatroomId: String 
+  id: String
+  createdAt: String
+}
+
+input inviteToCohort {
+  waitListId: String
 }
 `
