@@ -8,7 +8,7 @@ const InvitedStudents = () => {
     <Query query={GET_WAITLIST_STUDENTS}>
       {loadComponent(({ getWaitListStudents }) => {
         return getWaitListStudents.map((v, i) => {
-          if (v.cohortId) {
+          if (v && v.cohortId) {
             return (
               <div style={{ display: 'flex', margin: '3px' }} key={i}>
                 <div style={{ position: 'absolute', right: '208px', margin: '2px' }}>{v.email}</div>
@@ -30,11 +30,15 @@ const UnInvitedStudents = () => {
     <Query query={GET_WAITLIST_STUDENTS}>
       {loadComponent(({ getWaitListStudents }) => {
         return getWaitListStudents.map((v, i) => {
-          if (!v.cohortId) {
+          if (v && !v.cohortId) {
             return (
               <div style={{ display: 'flex', margin: '3px' }} key={i}>
                 <div style={{ position: 'absolute', right: '208px', margin: '2px' }}>{v.email}</div>
-                <Mutation mutation={INVITE_TO_COHORT}>
+                <Mutation update={cacheUpdate(GET_WAITLIST_STUDENTS, ({ inviteToCohort }, { getWaitListStudents }) => {
+                  console.log('hitting the CACHE')
+                  return { getWaitListStudents: getWaitListStudents.concat(inviteToCohort) }
+                })}
+                  mutation={INVITE_TO_COHORT}>
                   {(execute) => {
                     return (
                       <a style={{ marginLeft: '200px' }} onClick={() => {
