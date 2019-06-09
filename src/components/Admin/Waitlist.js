@@ -35,8 +35,10 @@ const UnInvitedStudents = () => {
               <div style={{ display: 'flex', margin: '3px' }} key={i}>
                 <div style={{ position: 'absolute', right: '208px', margin: '2px' }}>{v.email}</div>
                 <Mutation update={cacheUpdate(GET_WAITLIST_STUDENTS, ({ inviteToCohort }, { getWaitListStudents }) => {
-                  console.log('hitting the CACHE')
-                  return { getWaitListStudents: getWaitListStudents.concat(inviteToCohort) }
+                  getWaitListStudents.forEach((e) => {
+                    if (e.id === v.id) e.cohortId = '1000'
+                  })
+                  return { getWaitListStudents: getWaitListStudents }
                 })}
                   mutation={INVITE_TO_COHORT}>
                   {(execute) => {
@@ -78,7 +80,7 @@ const Waitlist = () => {
             mutation={CREATE_A_COHORT}>
             {(execute) => {
               return (
-                <button className='btn btn-info btn-rounded' type='button' style={{ position: 'fixed', left: '333px', top: '8%', width: '10%' }} onClick={() => {
+                <button className='btn btn-info btn-rounded' type='button' style={{ position: 'fixed', left: '-10px', top: '20%', width: '11%' }} onClick={() => {
                   execute({})
                 }}>CREATE A NEW COHORT</button>
               )
