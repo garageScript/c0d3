@@ -75,14 +75,11 @@ const Waitlist = () => {
           <Mutation
             update={cacheUpdate(GET_COHORTS, ({ createCohort }, { getCohorts }) => {
               return { getCohorts: getCohorts.concat(createCohort) }
-            })
-            }
+            })}
             mutation={CREATE_A_COHORT}>
             {(execute) => {
               return (
-                <button className='btn btn-info btn-rounded' type='button' style={{ position: 'fixed', left: '-10px', top: '20%', width: '11%' }} onClick={() => {
-                  execute({})
-                }}>CREATE A NEW COHORT</button>
+                <button className='btn btn-info btn-rounded' type='button' style={{ position: 'fixed', left: '-10px', top: '20%', width: '11%' }} onClick={() => { execute({}) }}>CREATE A NEW COHORT</button>
               )
             }}
           </Mutation>
@@ -98,8 +95,7 @@ const Waitlist = () => {
                   </div>
                 )
               })
-            })
-            }
+            }) }
           </Query>
         </div>
       </div>

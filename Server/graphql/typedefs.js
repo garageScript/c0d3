@@ -53,7 +53,7 @@ type Query {
   getCohorts: [ Cohort] 
  
   "Get all the students from the waitlist"
-  getWaitListStudents: [ getWaitListStudents ]
+  getWaitListStudents: [ WaitListStudents ]
 
 }
 
@@ -295,7 +295,7 @@ type Cohort {
   createdAt: String
 }
 
-type getWaitListStudents {
+type WaitListStudents {
   id: String
   email: String
   createdAt: String

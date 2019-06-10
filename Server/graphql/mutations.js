@@ -280,7 +280,8 @@ module.exports = {
     })]).then(([w, c]) => {
       w.update({ cohortId: c[0].dataValues.id })
       mailGun.sendInviteEmail({ email: w.email })
-      return `Email is sent successfully for ${w.email}`
+    }).then(a => {
+      return 'Email is sent successfully'
     })
   },
   forgotResetPassword: (obj, args, context) => {
