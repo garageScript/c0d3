@@ -18,9 +18,7 @@ const InvitedStudents = () => {
           }
         }
         )
-      }
-      )
-      }
+      })}
     </Query>
   )
 }
@@ -53,16 +51,14 @@ const UnInvitedStudents = () => {
                         })
                       }}>Invite to Cohort</a>
                     )
-                  }
-                  }
+                  }}
                 </Mutation>
               </div>
             )
           }
         }
         )
-      }
-      )}
+      })}
     </Query>
   )
 }
