@@ -11,8 +11,7 @@ const Waitlist = () => {
           <Mutation
             update={cacheUpdate(GET_COHORTS, ({ createCohort }, { getCohorts }) => {
               return { getCohorts: getCohorts.concat(createCohort) }
-            })
-            }
+            })}
             mutation={CREATE_A_COHORT}>
             {(execute) => {
               return (
@@ -34,8 +33,7 @@ const Waitlist = () => {
                   </div>
                 )
               })
-            })
-            }
+            })}
           </Query>
         </div>
       </div>
@@ -60,8 +58,7 @@ const Waitlist = () => {
                           })
                         }}>Invite to Cohort</a>
                       )
-                    }
-                    }
+                    }}
                   </Mutation>
                 </div>
               )
