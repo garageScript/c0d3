@@ -55,11 +55,9 @@ const UnInvitedStudents = () => {
               </div>
             )
           }
-        }
-        )
+        })
       })}
-    </Query>
-  )
+    </Query>)
 }
 
 const Waitlist = () => {
