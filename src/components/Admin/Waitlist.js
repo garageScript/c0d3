@@ -91,14 +91,48 @@ const Waitlist = () => {
                   </div>
                 )
               })
+<<<<<<< HEAD
             }) }
+=======
+            })}
+>>>>>>> a1
           </Query>
         </div>
       </div>
       <div className='col'>
+<<<<<<< HEAD
         <h1 style={{ textAlign: 'center' }}>Waitlist</h1>
         <InvitedStudents />
         <UnInvitedStudents />
+=======
+        <h1 style={{ textAlign: 'center' }} >Waitlist</h1>
+        <Query query={GET_WAITLIST_STUDENTS}>
+          {loadComponent(({ getWaitListStudents }) => {
+            return getWaitListStudents.map((v, i) => {
+              return (
+                <div style={{ display: 'flex', margin: '3px' }} key={i}>
+                  <div style={{ position: 'absolute', right: '208px', margin: '2px' }}>{v.email}</div>
+                  <Mutation mutation={INVITE_TO_COHORT}>
+                    {(execute) => {
+                      return (
+                        <a style={{ marginLeft: '200px' }} onClick={() => {
+                          execute({
+                            variables: {
+                              input: {
+                                waitListId: v.id
+                              }
+                            }
+                          })
+                        }}>Invite to Cohort</a>
+                      )
+                    }}
+                  </Mutation>
+                </div>
+              )
+            })
+          })}
+        </Query>
+>>>>>>> a1
       </div>
     </div>
   )
