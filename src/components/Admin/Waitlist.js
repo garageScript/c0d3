@@ -91,20 +91,15 @@ const Waitlist = () => {
                   </div>
                 )
               })
-<<<<<<< HEAD
             }) }
-=======
             })}
->>>>>>> a1
           </Query>
         </div>
       </div>
       <div className='col'>
-<<<<<<< HEAD
         <h1 style={{ textAlign: 'center' }}>Waitlist</h1>
         <InvitedStudents />
         <UnInvitedStudents />
-=======
         <h1 style={{ textAlign: 'center' }} >Waitlist</h1>
         <Query query={GET_WAITLIST_STUDENTS}>
           {loadComponent(({ getWaitListStudents }) => {
@@ -132,7 +127,6 @@ const Waitlist = () => {
             })
           })}
         </Query>
->>>>>>> a1
       </div>
     </div>
   )
