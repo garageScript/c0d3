@@ -16,8 +16,7 @@ const InvitedStudents = () => {
               </div>
             )
           }
-        }
-        )
+        })
       })}
     </Query>
   )
