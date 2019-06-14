@@ -132,6 +132,8 @@ const WaitList = sequelize.define('waitList', {
   token: Sequelize.STRING
 })
 
+WaitList.belongsTo(Cohort)
+
 sequelize.sync({ alter: true })
 
 module.exports = {

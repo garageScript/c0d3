@@ -270,15 +270,19 @@ module.exports = {
     })
   },
   inviteToCohort: (obj, args, context) => {
-    WaitList.findOne({
+    Promise.all([WaitList.findOne({
       where: {
         id: args.value.waitListId
       }
-    }).then(row => {
-      mailGun.sendInviteEmail({ email: row.email })
-      return `Email is sent successfully for ${row.email}`
+    }), Cohort.findAll({
+      limit: 1,
+      order: [[ 'createdAt', 'DESC' ]]
+    })]).then(([w, c]) => {
+      w.update({ cohortId: c[0].dataValues.id })
+      mailGun.sendInviteEmail({ email: w.email })
+    }).then(a => {
+      return 'Email is sent successfully'
     })
-    return 'Invite to Cohort is a success'
   },
   forgotResetPassword: (obj, args, context) => {
     const { forgotToken, password } = args.input
