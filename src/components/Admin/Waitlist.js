@@ -89,7 +89,6 @@ const Waitlist = () => {
                 )
               })
             }) }
-            })}
           </Query>
         </div>
       </div>
