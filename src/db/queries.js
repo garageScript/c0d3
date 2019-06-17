@@ -411,7 +411,7 @@ export const GET_COHORTS = gql`
 export const GET_WAITLIST_STUDENTS = gql`
    query getWaitListStudents{
     getWaitListStudents{
-      email, id
+      email, id, cohortId
     }
    }
 `
