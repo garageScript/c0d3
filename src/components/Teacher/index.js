@@ -41,15 +41,15 @@ const TeacherPage = ({ match }) => {
                   >
                     Curriculum
                   </Link>
-                  <Link
-                    to={`${data.lessonInfo.docUrl}`}
+                  <a
+                    href={data.lessonInfo.docUrl}
                     role='button'
                     target='_blank'
                     rel='noopener noreferrer'
                     className='btn btn-rounded btn-sm btn-info'
                   >
                     Lecture Doc
-                  </Link>
+                  </a>
                 </div>
               </div>
             </div>
