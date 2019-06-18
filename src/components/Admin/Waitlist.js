@@ -96,7 +96,6 @@ const Waitlist = () => {
         <h1 style={{ textAlign: 'center' }}>Waitlist</h1>
         <InvitedStudents />
         <UnInvitedStudents />
-        <h1 style={{ textAlign: 'center' }} >Waitlist</h1>
         <Query query={GET_WAITLIST_STUDENTS}>
           {loadComponent(({ getWaitListStudents }) => {
             return getWaitListStudents.map((v, i) => {
