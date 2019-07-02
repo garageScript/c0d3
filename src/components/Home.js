@@ -3,17 +3,14 @@ import Markdown from 'react-markdown';
 
 import { getAnnouncementsContainer } from '../db/queries.js';
 
-const Home = ( { data } ) => {
-  const { announcements, loading, error } = data;
+const Home = ({ data }) => {
   const reset = window.userInfo.mustReset;
 
   if (reset) {
     window.location.assign(`${window.location}settings?reset=${reset}`);
   }
-  if ( loading ) return <i className='fa fa-spinner fa-spin' />;
-  if ( error ) return <p>error</p>
 
-  const news = announcements.map(el => (
+  const news = data.announcements.map(el => (
     <Markdown key={el.id} source={el.description} />
   ));
 
