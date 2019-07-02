@@ -367,98 +367,87 @@ export const DELETE_CHALLENGE = gql`
 export const GET_ANNOUNCEMENTS = gql`
   query {
     announcements {
-      id
+      id,
       description
     }
   }
 `
 export const USER_DATA = gql`
-  query userInfo($in: UserInput) {
-    userInfo(input: $in) {
-      name
-      createdAt
-      stars {
-        studentId
-        comment
-        lessonId
-      }
-      lessons {
+  query userInfo($in: UserInput){
+    userInfo(input: $in){
+      name,
+      createdAt,
+      stars { studentId ,comment, lessonId },
+      lessons{
         title
       }
     }
   }
 `
 export const SET_ADMIN = gql`
-  mutation($in: UserAdmin) {
-    toggleAdmin(input: $in) {
-      id
+  mutation($in: UserAdmin){
+    toggleAdmin(input: $in){
+      id,
       isAdmin
     }
   }
 `
 export const SEND_FORGOT_EMAIL = gql`
-  mutation($input: String) {
-    sendPasswordResetEmail(value: $input)
+  mutation($input: String){
+    sendPasswordResetEmail(value: $input )
   }
 `
 export const INVITE_TO_COHORT = gql`
-  mutation($input: inviteToCohort) {
+  mutation($input: inviteToCohort){
     inviteToCohort(value: $input)
   }
 `
 export const CREATE_A_COHORT = gql`
-  mutation {
-    createCohort {
-      id
-      chatroomId
-    }
+  mutation{
+    createCohort{ id, chatroomId }
   }
 `
 export const GET_COHORTS = gql`
-  query getCohorts {
-    getCohorts {
-      chatroomId
-      id
-    }
+  query getCohorts{
+    getCohorts{ chatroomId, id }
   }
 `
 export const GET_WAITLIST_STUDENTS = gql`
-  query getWaitListStudents {
-    getWaitListStudents {
-      email
-      id
-      cohortId
+   query getWaitListStudents{
+    getWaitListStudents{
+      email, id, cohortId
     }
-  }
+   }
 `
 
 export const FORGOT_RESET_PASSWORD = gql`
-  mutation($input: PasswordChange) {
+  mutation($input: PasswordChange){
     forgotResetPassword(input: $input)
   }
 `
 export const GET_USERNAME = gql`
-  query getUsername($input: String) {
-    getUsername(userId: $input) {
+  query getUsername($input: String){
+    getUsername(userId: $input){
       username
     }
   }
 `
 export const RESEND_EMAIL_CONFIRMATION = gql`
-  mutation($input: String) {
+  mutation($input: String){
     resendEmailConfirmation(value: $input)
   }
 `
 
+
 export const getAnnouncementsContainer = WrappedComponent => props => (
-  <Query query={GET_ANNOUNCEMENTS}>
-    {loadComponent((data, client, refetch) => (
+  <Query query={ GET_ANNOUNCEMENTS }>
+    { loadComponent( ( data, client, refetch ) => (
       <WrappedComponent
-        {...props}
-        data={data}
-        client={client}
-        refetch={refetch}
+        { ...props }
+        data={ data }
+        client={ client }
+        refetch={ refetch }
       />
-    ))}
+    ) ) }
   </Query>
 )

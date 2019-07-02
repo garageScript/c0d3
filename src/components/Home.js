@@ -5,7 +5,6 @@ import { getAnnouncementsContainer } from '../db/queries.js'
 
 const Home = ( { data } ) => {
   const reset = window.userInfo.mustReset
-
   if ( reset ) {
     window.location.assign( `${window.location}settings?reset=${reset}` )
   }
