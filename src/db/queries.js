@@ -1,8 +1,8 @@
-import React from 'react';
-import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
+import React from 'react'
+import gql from 'graphql-tag'
+import { Query } from 'react-apollo'
 
-import { loadComponent } from '../components/shared/shared';
+import { loadComponent } from '../components/shared/shared'
 
 export const LESSON_STATUS = gql`
   query lessonStatus($in: LessonId) {
@@ -19,7 +19,7 @@ export const LESSON_STATUS = gql`
       starComment
     }
   }
-`;
+`
 
 export const USERS = gql`
   query users($in: UserInput) {
@@ -31,13 +31,13 @@ export const USERS = gql`
       isAdmin
     }
   }
-`;
+`
 
 export const GIVE_STAR = gql`
   mutation giveStar($in: LessonUserId) {
     giveStar(input: $in)
   }
-`;
+`
 
 export const LESSON_INFO = gql`
   query lessonInfo($in: LessonId) {
@@ -67,7 +67,7 @@ export const LESSON_INFO = gql`
       }
     }
   }
-`;
+`
 
 export const TEACHERS = gql`
   query teachers($in: LessonId) {
@@ -76,24 +76,24 @@ export const TEACHERS = gql`
       username
     }
   }
-`;
+`
 
 export const STAR_RECIPIENT = gql`
   {
     starRecipent @client
   }
-`;
+`
 export const STUDENT_CHALLENGE_DATA = gql`
   {
     mrUrl @client
   }
-`;
+`
 
 export const CHALLENGE_INDEX = gql`
   {
     challengeIndex @client
   }
-`;
+`
 
 export const ADMIN_STATE = gql`
   {
@@ -101,13 +101,13 @@ export const ADMIN_STATE = gql`
     addNew @client
     componentType @client
   }
-`;
+`
 
 export const ADOPTED_STUDENT_FILTER = gql`
   {
     adoptedStudentFilter @client
   }
-`;
+`
 
 export const STUDENTS = gql`
   query student($in: LessonId) {
@@ -121,7 +121,7 @@ export const STUDENTS = gql`
       }
     }
   }
-`;
+`
 
 export const CHALLENGE_STATUS = gql`
   query challengeStatus($in: ChallengeId) {
@@ -144,7 +144,7 @@ export const CHALLENGE_STATUS = gql`
       reviewerId
     }
   }
-`;
+`
 
 export const LESSONS = gql`
   {
@@ -169,7 +169,7 @@ export const LESSONS = gql`
       }
     }
   }
-`;
+`
 
 export const RECEIVED_STARS = gql`
   query receivedStars($in: UserInput) {
@@ -180,7 +180,7 @@ export const RECEIVED_STARS = gql`
       }
     }
   }
-`;
+`
 
 export const CURRICULUM_STATUS = gql`
   {
@@ -198,7 +198,7 @@ export const CURRICULUM_STATUS = gql`
       }
     }
   }
-`;
+`
 
 export const SUBMISSIONS = gql`
   query submissions($in: LessonId) {
@@ -221,7 +221,7 @@ export const SUBMISSIONS = gql`
       updatedAt
     }
   }
-`;
+`
 
 export const USER_SUBMISSIONS = gql`
   query userSubmissions($in: LessonUserId) {
@@ -241,7 +241,7 @@ export const USER_SUBMISSIONS = gql`
       }
     }
   }
-`;
+`
 
 export const APPROVE_SUBMISSION = gql`
   mutation approveSubmission($in: SubmissionEdit) {
@@ -249,19 +249,19 @@ export const APPROVE_SUBMISSION = gql`
       id
     }
   }
-`;
+`
 
 export const MAKE_TEACHER = gql`
   mutation makeTeacher($in: LessonId) {
     makeTeacher(input: $in)
   }
-`;
+`
 
 export const UN_MAKE_TEACHER = gql`
   mutation unMakeTeacher($in: LessonId) {
     unMakeTeacher(input: $in)
   }
-`;
+`
 
 export const UNAPPROVE_SUBMISSION = gql`
   mutation unapproveSubmission($in: SubmissionEdit) {
@@ -269,7 +269,7 @@ export const UNAPPROVE_SUBMISSION = gql`
       id
     }
   }
-`;
+`
 
 export const REJECT_SUBMISSION = gql`
   mutation rejectSubmission($in: SubmissionEdit) {
@@ -277,7 +277,7 @@ export const REJECT_SUBMISSION = gql`
       id
     }
   }
-`;
+`
 
 export const CREATE_SUBMISSION = gql`
   mutation createSubmission($in: SubmissionInput) {
@@ -285,19 +285,19 @@ export const CREATE_SUBMISSION = gql`
       id
     }
   }
-`;
+`
 
 export const ADOPT_STUDENT = gql`
   mutation adoptStudent($input: LessonUserId) {
     adoptStudent(input: $input)
   }
-`;
+`
 
 export const UNADOPT_STUDENT = gql`
   mutation unAdoptStudent($input: LessonUserId) {
     unAdoptStudent(input: $input)
   }
-`;
+`
 
 export const SAVE_LESSON = gql`
   mutation saveLesson($input: LessonInput) {
@@ -312,7 +312,7 @@ export const SAVE_LESSON = gql`
       chatUrl
     }
   }
-`;
+`
 
 export const CREATE_LESSON = gql`
   mutation createLesson($input: LessonInput) {
@@ -327,7 +327,7 @@ export const CREATE_LESSON = gql`
       chatUrl
     }
   }
-`;
+`
 
 export const SAVE_CHALLENGE = gql`
   mutation saveChallenge($input: ChallengeInput) {
@@ -339,7 +339,7 @@ export const SAVE_CHALLENGE = gql`
       order
     }
   }
-`;
+`
 
 export const CREATE_CHALLENGE = gql`
   mutation createChallenge($input: ChallengeInput) {
@@ -351,19 +351,19 @@ export const CREATE_CHALLENGE = gql`
       order
     }
   }
-`;
+`
 
 export const DELETE_LESSON = gql`
   mutation deleteLesson($input: LessonId) {
     deleteLesson(input: $input)
   }
-`;
+`
 
 export const DELETE_CHALLENGE = gql`
   mutation deleteChallenge($input: ChallengeId) {
     deleteChallenge(input: $input)
   }
-`;
+`
 export const GET_ANNOUNCEMENTS = gql`
   query {
     announcements {
@@ -371,7 +371,7 @@ export const GET_ANNOUNCEMENTS = gql`
       description
     }
   }
-`;
+`
 export const USER_DATA = gql`
   query userInfo($in: UserInput) {
     userInfo(input: $in) {
@@ -387,7 +387,7 @@ export const USER_DATA = gql`
       }
     }
   }
-`;
+`
 export const SET_ADMIN = gql`
   mutation($in: UserAdmin) {
     toggleAdmin(input: $in) {
@@ -395,17 +395,17 @@ export const SET_ADMIN = gql`
       isAdmin
     }
   }
-`;
+`
 export const SEND_FORGOT_EMAIL = gql`
   mutation($input: String) {
     sendPasswordResetEmail(value: $input)
   }
-`;
+`
 export const INVITE_TO_COHORT = gql`
   mutation($input: inviteToCohort) {
     inviteToCohort(value: $input)
   }
-`;
+`
 export const CREATE_A_COHORT = gql`
   mutation {
     createCohort {
@@ -413,7 +413,7 @@ export const CREATE_A_COHORT = gql`
       chatroomId
     }
   }
-`;
+`
 export const GET_COHORTS = gql`
   query getCohorts {
     getCohorts {
@@ -421,7 +421,7 @@ export const GET_COHORTS = gql`
       id
     }
   }
-`;
+`
 export const GET_WAITLIST_STUDENTS = gql`
   query getWaitListStudents {
     getWaitListStudents {
@@ -430,25 +430,25 @@ export const GET_WAITLIST_STUDENTS = gql`
       cohortId
     }
   }
-`;
+`
 
 export const FORGOT_RESET_PASSWORD = gql`
   mutation($input: PasswordChange) {
     forgotResetPassword(input: $input)
   }
-`;
+`
 export const GET_USERNAME = gql`
   query getUsername($input: String) {
     getUsername(userId: $input) {
       username
     }
   }
-`;
+`
 export const RESEND_EMAIL_CONFIRMATION = gql`
   mutation($input: String) {
     resendEmailConfirmation(value: $input)
   }
-`;
+`
 
 export const getAnnouncementsContainer = WrappedComponent => props => (
   <Query query={GET_ANNOUNCEMENTS}>
@@ -461,4 +461,4 @@ export const getAnnouncementsContainer = WrappedComponent => props => (
       />
     ))}
   </Query>
-);
+)
