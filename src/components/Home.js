@@ -2,16 +2,17 @@ import React from 'react'
 import Markdown from 'react-markdown'
 
 import { getAnnouncementsContainer } from '../db/queries.js'
+import { loadComponent } from './shared/shared'
 
-const Home = ( { data } ) => {
+const Home = loadComponent(({ announcements }) => {
   const reset = window.userInfo.mustReset
-  if ( reset ) {
-    window.location.assign( `${window.location}settings?reset=${reset}` )
+  if (reset) {
+    window.location.assign(`${window.location}settings?reset=${reset}`)
   }
 
-  const news = data.announcements.map( el => (
-    <Markdown key={ el.id } source={ el.description } />
-  ) )
+  const news = announcements.map(el => (
+    <Markdown key={el.id} source={el.description} />
+  ))
 
   return (
     <div>
@@ -55,6 +56,6 @@ const Home = ( { data } ) => {
       </div>
     </div>
   )
-}
+})
 
-export default getAnnouncementsContainer( Home )
+export default getAnnouncementsContainer(Home)
