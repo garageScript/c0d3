@@ -1,8 +1,5 @@
-import React from 'react'
 import gql from 'graphql-tag'
-import { Query } from 'react-apollo'
-
-import { loadComponent } from '../components/shared/shared'
+import { graphql } from 'react-apollo'
 
 export const LESSON_STATUS = gql`
   query lessonStatus($in: LessonId) {
@@ -438,16 +435,4 @@ export const RESEND_EMAIL_CONFIRMATION = gql`
   }
 `
 
-
-export const getAnnouncementsContainer = WrappedComponent => props => (
-  <Query query={ GET_ANNOUNCEMENTS }>
-    { loadComponent( ( data, client, refetch ) => (
-      <WrappedComponent
-        { ...props }
-        data={ data }
-        client={ client }
-        refetch={ refetch }
-      />
-    ) ) }
-  </Query>
-)
+export const getAnnouncementsContainer = graphql(GET_ANNOUNCEMENTS)
