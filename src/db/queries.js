@@ -1,4 +1,5 @@
 import gql from 'graphql-tag'
+import { graphql } from 'react-apollo'
 
 export const LESSON_STATUS = gql`
   query lessonStatus($in: LessonId) {
@@ -371,7 +372,7 @@ export const GET_ANNOUNCEMENTS = gql`
 export const USER_DATA = gql`
   query userInfo($in: UserInput){
     userInfo(input: $in){
-      name, 
+      name,
       createdAt,
       stars { studentId ,comment, lessonId },
       lessons{
@@ -401,11 +402,11 @@ export const INVITE_TO_COHORT = gql`
 export const CREATE_A_COHORT = gql`
   mutation{
     createCohort{ id, chatroomId }
-  } 
+  }
 `
 export const GET_COHORTS = gql`
   query getCohorts{
-    getCohorts{ chatroomId, id } 
+    getCohorts{ chatroomId, id }
   }
 `
 export const GET_WAITLIST_STUDENTS = gql`
@@ -433,3 +434,5 @@ export const RESEND_EMAIL_CONFIRMATION = gql`
     resendEmailConfirmation(value: $input)
   }
 `
+
+export const getAnnouncementsContainer = graphql(GET_ANNOUNCEMENTS)

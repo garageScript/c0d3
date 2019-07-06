@@ -1,15 +1,19 @@
 import React from 'react'
-import { Query } from 'react-apollo'
 import Markdown from 'react-markdown'
 
-import { GET_ANNOUNCEMENTS } from '../db/queries.js'
-import { loadComponent } from './shared/shared.js'
+import { getAnnouncementsContainer } from '../db/queries.js'
+import { loadComponent } from './shared/shared'
 
-const Home = () => {
+const Home = loadComponent(({ announcements }) => {
   const reset = window.userInfo.mustReset
   if (reset) {
     window.location.assign(`${window.location}settings?reset=${reset}`)
   }
+
+  const news = announcements.map(el => (
+    <Markdown key={el.id} source={el.description} />
+  ))
+
   return (
     <div>
       <div className='gs-container-2'>
@@ -47,17 +51,11 @@ const Home = () => {
               </small>
             </div>
           </h5>
-          <Query className='announcements' query={GET_ANNOUNCEMENTS}>
-            { loadComponent(({ announcements }) => {
-              return announcements.map((v, i) => {
-                return <Markdown key={i} source={v.description} />
-              })
-            })}
-          </Query>
+          { news }
         </div>
       </div>
     </div>
   )
-}
+})
 
-export default Home
+export default getAnnouncementsContainer(Home)
