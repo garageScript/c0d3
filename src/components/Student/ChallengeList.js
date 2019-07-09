@@ -76,43 +76,39 @@ const SubmissionMessage = ({ submission }) => {
   }
 }
 
-const Challenge = (challenge, submissions, questionNumber) => {
-  const submission = submissions[challenge.id]
-  const isAccepted = submission && submission.status === 'passed'
+const Challenge = ( challenge, submissions, questionNumber ) => {
+  const submission = submissions[ challenge.id ]
+  const { comment, diff, reviewer, status } = submission
+  const isAccepted = status === 'passed'
+
   return (
-    <div className='col-12' key={questionNumber}>
-      <div
-        className={`challenge-card
-        ${
-    submission && submission.status ? 'submitted' : 'unsubmitted'
-    }-background
-        ${submissionToClassName(submission)}-border
-        `}
+    <div className='col-12' key={ questionNumber }>
+      <div className={
+        `challenge-card ${status ? 'submitted' : 'unsubmitted'}
+        -background${submissionToClassName( submission )}-border` }
       >
         <div className='mr-3'>
-          <div
-            className={`challenge-number
-            ${submissionToClassName(submission)}-circle
-            `}
+          <div className={ `challenge-number
+            ${submissionToClassName( submission )}-circle` }
           >
-            {isAccepted ? '✓' : questionNumber}
+            { isAccepted ? '✓' : questionNumber }
           </div>
         </div>
         <div>
-          <div className='font-weight-bold my-2'>{challenge.title}</div>
+          <div className='font-weight-bold my-2'>{ challenge.title }</div>
           <div className='challenge-description-markdown'>
-            <Markdown source={challenge.description} />
+            <Markdown source={ challenge.description } />
           </div>
-          {submission && submission.diff ? (
-            <StudentDiff diff={submission.diff} />
-          ) : null}
-          <SubmissionMessage submission={submission} />
-          {submission && submission.comment ? (
+          { diff && <StudentDiff diff={ diff } /> }
+          <SubmissionMessage submission={ submission } />
+          { comment && (
             <div>
-              <div className='font-weight-bold'>Comments</div>
-              <Markdown source={submission.comment} />
+              <div className='font-weight-bold'>
+                Commented by { reviewer.username }
+              </div>
+              <Markdown source={ comment } />
             </div>
-          ) : null}
+          ) }
         </div>
       </div>
     </div>
