@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Query } from 'react-apollo'
 import { SUBMISSIONS } from '../../db/queries.js'
 import { loadComponent } from '../shared/shared.js'
-import { PendingSubmits } from './PendingSubmits'
+import PendingSubmits from './PendingSubmits'
 import './lessoncard.css'
 
 const colors = [
