@@ -2,7 +2,7 @@ import React from 'react'
 import { Query, Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 import Markdown from 'react-markdown'
-import { GET_ANNOUNCEMENTS } from '../../db/queries.js'
+import { GET_ANNOUNCEMENTS, getAnnouncementsContainer } from '../../db/queries.js'
 import { loadComponent, cacheUpdate } from '../shared/shared.js'
 import MarkdownComponent from '../shared/Markdown.js'
 
@@ -19,8 +19,8 @@ const CREATE_ANNOUNCEMENT = gql`
               createAnnouncement(value: $input) {
                 id,
                 description
-              } 
-           }  
+              }
+           }
             `
 
 class Announcements extends React.Component {
@@ -30,7 +30,9 @@ class Announcements extends React.Component {
       announcement: ''
     }
   }
-  render () {
+  render() {
+    const { announcements } = this.props
+    if (! announcements) return 'loading'
     return (
       <div >
         <h1 style={{ textAlign: 'center' }}>Admin Page</h1>
@@ -68,9 +70,8 @@ class Announcements extends React.Component {
           </Mutation>
         </div>
         <div className='container'>
-          <Query query={GET_ANNOUNCEMENTS} >
-            { loadComponent(({ announcements }) => {
-              return announcements.map((v, i) => {
+
+            { announcements.map((v, i) => {
                 return (
                   <div>
                     <Markdown key={i} source={v.description} />
@@ -93,13 +94,11 @@ class Announcements extends React.Component {
                   </div>
                 )
               })
-            })}
-          </Query>
-
+            }
         </div>
       </div>
     )
   }
 }
 
-export default Announcements
+export default getAnnouncementsContainer(Announcements)
