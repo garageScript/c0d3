@@ -78,6 +78,7 @@ const SubmissionMessage = ({ submission }) => {
 
 const Challenge = (challenge, submissions, questionNumber) => {
   const submission = submissions[challenge.id]
+  if (!submission) return null
   const { comment, diff, reviewer, status } = submission
   const isAccepted = status === 'passed'
 
