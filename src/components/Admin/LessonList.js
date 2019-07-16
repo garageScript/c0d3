@@ -29,7 +29,7 @@ const LessonList = ({ lessons }) => {
   return (
     <Query query={ADMIN_STATE}>
       { res => {
-        const test = (index) => () => {
+        const handleLesson = (index) => () => {
           res.client.writeData({
             data: {
               lessonIndex: index,
@@ -44,7 +44,7 @@ const LessonList = ({ lessons }) => {
                 <LessonLinks
                   key={index}
                   title={lesson.title}
-                  onClick={test(index)}
+                  onClick={handleLesson(index)}
                 />
               ))
 
