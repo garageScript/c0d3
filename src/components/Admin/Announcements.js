@@ -27,7 +27,6 @@ const CREATE_ANNOUNCEMENT = gql`
 `
 
 const Announcements = ({ announcements }) => {
-  // console.log('🔥: Announcements', announcements)
   const [announcement, setAnnouncement] = useState('')
   return (
     <div >
@@ -63,7 +62,7 @@ const Announcements = ({ announcements }) => {
       <div className='container'>
         { announcements.map((v, i) => {
           return (
-            <div>
+            <div key={v.id}>
               <Markdown key={i} source={v.description} />
               <Mutation update={cacheUpdate(GET_ANNOUNCEMENTS, ({ deleteAnnouncement }) => {
                 return {
