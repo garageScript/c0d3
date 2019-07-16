@@ -7,38 +7,46 @@ import {
   SAVE_CHALLENGE,
   CREATE_CHALLENGE,
   DELETE_LESSON,
-  DELETE_CHALLENGE
+  DELETE_CHALLENGE,
+  getLessonsContainer
 } from '../../db/queries.js'
 import { Query, Mutation } from 'react-apollo'
 import EditableInput from './EditableInput'
 import { loadComponent } from '../shared/shared'
 
-const NewLessonPage = () => {
+const LessonLinks = ({ title, onClick }) => {
+  return (
+    <button
+      onClick={onClick}
+      className='list-group-item list-group-item-action waves-effect'
+    >
+      { title }
+    </button>
+  )
+}
+
+const LessonList = ({ lessons }) => {
   return (
     <Query query={ADMIN_STATE}>
-      {res => {
+      { res => {
+        const test = (index) => () => {
+          res.client.writeData({
+            data: {
+              lessonIndex: index,
+              addNew: false
+            }
+          })
+        }
         return (
           <Query query={LESSONS}>
-            {loadComponent(data => {
-              const lessonLinks = data.lessons.map((lesson, index) => {
-                return (
-                  <div key={index}>
-                    <button
-                      onClick={() => {
-                        res.client.writeData({
-                          data: {
-                            lessonIndex: index,
-                            addNew: false
-                          }
-                        })
-                      }}
-                      className='list-group-item list-group-item-action waves-effect'
-                    >
-                      {lesson.title}
-                    </button>
-                  </div>
-                )
-              })
+            { loadComponent(data => {
+              const lessonLinks = data.lessons.map((lesson, index) => (
+                <LessonLinks
+                  key={index}
+                  title={lesson.title}
+                  onClick={test(index)}
+                />
+              ))
 
               // specific lesson data user has selected
               const lesson = data.lessons[res.data.lessonIndex]
@@ -242,5 +250,4 @@ const NewLessonPage = () => {
   )
 }
 
-const NewLesson = NewLessonPage
-export default NewLesson
+export default getLessonsContainer(loadComponent(LessonList))

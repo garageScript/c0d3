@@ -452,6 +452,7 @@ export const CREATE_ANNOUNCEMENT = gql`
 `
 
 export const getAnnouncementsContainer = graphql(GET_ANNOUNCEMENTS)
+export const getLessonsContainer = graphql(LESSONS)
 export const submissionsContainer = graphql(SUBMISSIONS, {
   props: ({ data, ownProps }) => ({ data: { ...data, ...ownProps } }),
   options: ({ id }) => ({ variables: { in: { id } } })
