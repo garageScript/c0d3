@@ -434,9 +434,25 @@ export const RESEND_EMAIL_CONFIRMATION = gql`
     resendEmailConfirmation(value: $input)
   }
 `
+export const DELETE_ANNOUNCEMENT = gql`
+  mutation delete($input: String){
+    deleteAnnouncement(value: $input) {
+      id,
+      description
+    }
+  }
+`
+export const CREATE_ANNOUNCEMENT = gql`
+  mutation create($input: String){
+    createAnnouncement(value: $input) {
+      id,
+      description
+    }
+  }
+`
 
 export const getAnnouncementsContainer = graphql(GET_ANNOUNCEMENTS)
-export const submissionsContainer = graphql( SUBMISSIONS, {
-  props: ( { data, ownProps } ) => ( { data: { ...data, ...ownProps } } ),
-  options: ( { id } ) => ( { variables: { in: { id } } } )
-} )
+export const submissionsContainer = graphql(SUBMISSIONS, {
+  props: ({ data, ownProps }) => ({ data: { ...data, ...ownProps } }),
+  options: ({ id }) => ({ variables: { in: { id } } })
+})

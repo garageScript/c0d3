@@ -1,105 +1,76 @@
-import React from 'react'
-import { Query, Mutation } from 'react-apollo'
-import gql from 'graphql-tag'
+import React, { useState } from 'react'
+import { Mutation } from 'react-apollo'
 import Markdown from 'react-markdown'
-import { GET_ANNOUNCEMENTS } from '../../db/queries.js'
+import {
+  GET_ANNOUNCEMENTS,
+  DELETE_ANNOUNCEMENT,
+  CREATE_ANNOUNCEMENT,
+  getAnnouncementsContainer
+} from '../../db/queries.js'
 import { loadComponent, cacheUpdate } from '../shared/shared.js'
 import MarkdownComponent from '../shared/Markdown.js'
 
-const DELETE_ANNOUNCEMENT = gql`
-                      mutation delete($input: String){
-                        deleteAnnouncement(value: $input) {
-                          id,
-                          description
-                        }
-                      }
-                    `
-const CREATE_ANNOUNCEMENT = gql`
-           mutation create($input: String){
-              createAnnouncement(value: $input) {
-                id,
-                description
-              } 
-           }  
-            `
+const Announcements = ({ announcements }) => {
+  const [announcement, setAnnouncement] = useState('')
+  return (
+    <div >
+      <h1 style={{ textAlign: 'center' }}>Admin Page</h1>
+      <div className='container' >
+        <h4 >New Announcements: </h4>
+        <div style={{ width: '100%', height: '200px' }}>
+          <MarkdownComponent
+            value={announcement}
+            onChange={input => setAnnouncement(input)}
+          />
 
-class Announcements extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      announcement: ''
-    }
-  }
-  render () {
-    return (
-      <div >
-        <h1 style={{ textAlign: 'center' }}>Admin Page</h1>
-        <div className='container' >
-          <h4 >New Announcements: </h4>
-          <div style={{ width: '100%', height: '200px' }}>
-            <MarkdownComponent value={this.state.announcement} onChange={(input) => {
-              this.setState({
-                announcement: input
-              })
-            }} />
-
-          </div>
-          <Mutation update={cacheUpdate(GET_ANNOUNCEMENTS, ({ createAnnouncement }, { announcements }) => {
+        </div>
+        <Mutation update={
+          cacheUpdate(GET_ANNOUNCEMENTS, ({
+            createAnnouncement }, { announcements }) => {
             return {
               announcements: [createAnnouncement].concat(announcements)
             }
           })} mutation={CREATE_ANNOUNCEMENT}>
-            {(execute) => {
-              return (
-                <div>
-                  <button className='btn btn-success' style={{ margin: '10px 0px 10px 0px' }} onClick={() => {
+          {(execute) => {
+            return (
+              <div>
+                <button className='btn btn-success' style={{ margin: '10px 0px 10px 0px' }} onClick={() => {
+                  execute({ variables: { input: announcement } })
+                  setAnnouncement('')
+                }}>SUBMIT</button>
+              </div>
+            )
+          } }
+        </Mutation>
+      </div>
+      <div className='container'>
+        { announcements.map((v, i) => {
+          return (
+            <div key={v.id}>
+              <Markdown key={i} source={v.description} />
+              <Mutation update={cacheUpdate(GET_ANNOUNCEMENTS, ({ deleteAnnouncement }) => {
+                return {
+                  announcements: deleteAnnouncement
+                }
+              })} mutation={DELETE_ANNOUNCEMENT}>
+                { (execute) => {
+                  return <button className='deleteAnnouncement' onClick={() => {
                     execute({
                       variables: {
-                        input: this.state.announcement
+                        input: v.id
                       }
                     })
-                    this.setState({
-                      announcement: ''
-                    })
-                  }}>SUBMIT</button>
-                </div>
-              )
-            }}
-          </Mutation>
-        </div>
-        <div className='container'>
-          <Query query={GET_ANNOUNCEMENTS} >
-            { loadComponent(({ announcements }) => {
-              return announcements.map((v, i) => {
-                return (
-                  <div>
-                    <Markdown key={i} source={v.description} />
-                    <Mutation update={cacheUpdate(GET_ANNOUNCEMENTS, ({ deleteAnnouncement }) => {
-                      return {
-                        announcements: deleteAnnouncement
-                      }
-                    })} mutation={DELETE_ANNOUNCEMENT}>
-                      {(execute) => {
-                        return <button className='deleteAnnouncement' onClick={() => {
-                          execute({
-                            variables: {
-                              input: v.id
-                            }
-                          })
-                        }}>DELETE</button>
-                      }}
-                    </Mutation>
-                    <hr />
-                  </div>
-                )
-              })
-            })}
-          </Query>
-
-        </div>
+                  }}>DELETE</button>
+                } }
+              </Mutation>
+              <hr />
+            </div>
+          )
+        })
+        }
       </div>
-    )
-  }
+    </div>
+  )
 }
 
-export default Announcements
+export default getAnnouncementsContainer(loadComponent((Announcements)))
