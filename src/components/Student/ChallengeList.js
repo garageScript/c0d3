@@ -39,8 +39,8 @@ const SubmissionMessage = ({ submission }) => {
               <User userId={reviewer.id} />
             </span>
           ) : (
-            ' a teacher'
-          )}
+              ' a teacher'
+            )}
         </div>
       )
     case 'needMoreWork':
@@ -52,8 +52,8 @@ const SubmissionMessage = ({ submission }) => {
               <User userId={reviewer.id} />
             </span>
           ) : (
-            ' a teacher'
-          )}
+              ' a teacher'
+            )}
         </div>
       )
     case 'open':
@@ -67,8 +67,8 @@ const SubmissionMessage = ({ submission }) => {
               <Link to={`/profile/${reviewer.username}`}>{reviewer.username}</Link>
             </span>
           ) : (
-            ' a teacher'
-          )}
+              ' a teacher'
+            )}
         </div>
       )
     default:
@@ -78,8 +78,7 @@ const SubmissionMessage = ({ submission }) => {
 
 const Challenge = (challenge, submissions, questionNumber) => {
   const submission = submissions[challenge.id]
-  if (!submission) return null
-  const { comment, diff, reviewer, status } = submission
+  const { comment, diff, reviewer, status } = (submission || {})
   const isAccepted = status === 'passed'
 
   return (
@@ -92,24 +91,24 @@ const Challenge = (challenge, submissions, questionNumber) => {
           <div className={`challenge-number
             ${submissionToClassName(submission)}-circle`}
           >
-            { isAccepted ? '✓' : questionNumber }
+            {isAccepted ? '✓' : questionNumber}
           </div>
         </div>
         <div>
-          <div className='font-weight-bold my-2'>{ challenge.title }</div>
+          <div className='font-weight-bold my-2'>{challenge.title}</div>
           <div className='challenge-description-markdown'>
             <Markdown source={challenge.description} />
           </div>
-          { diff && <StudentDiff diff={diff} /> }
+          {diff && <StudentDiff diff={diff} />}
           <SubmissionMessage submission={submission} />
-          { comment && (
+          {comment && (
             <div>
               <div className='font-weight-bold'>
-                Commented by { reviewer.username }
+                Commented by {reviewer.username}
               </div>
               <Markdown source={comment} />
             </div>
-          ) }
+          )}
         </div>
       </div>
     </div>
@@ -205,31 +204,31 @@ const ChallengeNav = ({
   client,
   submissionMap
 }) => (
-  <div className='col-12'>
-    <nav>
-      <ul className='pagination pg-blue justify-content-center' style={{ marginTop: '10px' }}>
-        {challenges.map((challenge, i) => (
-          <li
-            key={`challenge-${i}`}
-            className={`page-item${i === challengeIndex ? ' active' : ''}`}
-          >
-            <div
-              className={`pagination-link ${submissionToClassName(
-                submissionMap[challenge.id]
-              )}-pagination`}
-              onClick={() =>
-                client.writeData({
-                  data: { challengeIndex: i }
-                })
-              }
+    <div className='col-12'>
+      <nav>
+        <ul className='pagination pg-blue justify-content-center' style={{ marginTop: '10px' }}>
+          {challenges.map((challenge, i) => (
+            <li
+              key={`challenge-${i}`}
+              className={`page-item${i === challengeIndex ? ' active' : ''}`}
             >
-              {i + 1}
-            </div>
-          </li>
-        ))}
-      </ul>
-    </nav>
-  </div>
-)
+              <div
+                className={`pagination-link ${submissionToClassName(
+                  submissionMap[challenge.id]
+                )}-pagination`}
+                onClick={() =>
+                  client.writeData({
+                    data: { challengeIndex: i }
+                  })
+                }
+              >
+                {i + 1}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+  )
 
 export default ChallengeList
