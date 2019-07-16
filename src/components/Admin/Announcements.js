@@ -1,30 +1,14 @@
 import React, { useState } from 'react'
 import { Mutation } from 'react-apollo'
-import gql from 'graphql-tag'
 import Markdown from 'react-markdown'
 import {
   GET_ANNOUNCEMENTS,
+  DELETE_ANNOUNCEMENT,
+  CREATE_ANNOUNCEMENT,
   getAnnouncementsContainer
 } from '../../db/queries.js'
 import { loadComponent, cacheUpdate } from '../shared/shared.js'
 import MarkdownComponent from '../shared/Markdown.js'
-
-const DELETE_ANNOUNCEMENT = gql`
-  mutation delete($input: String){
-    deleteAnnouncement(value: $input) {
-      id,
-      description
-    }
-  }
-`
-const CREATE_ANNOUNCEMENT = gql`
-  mutation create($input: String){
-    createAnnouncement(value: $input) {
-      id,
-      description
-    }
-  }
-`
 
 const Announcements = ({ announcements }) => {
   const [announcement, setAnnouncement] = useState('')
