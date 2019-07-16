@@ -104,7 +104,7 @@ const Challenge = (challenge, submissions, questionNumber) => {
           {comment && (
             <div>
               <div className='font-weight-bold'>
-                Commented by {reviewer.username}
+                Commented by {(reviewer || {}).username}
               </div>
               <Markdown source={comment} />
             </div>
