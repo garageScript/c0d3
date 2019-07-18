@@ -41,11 +41,7 @@ const DefaultComponent = ({ res, lesson, challengeForms }) => {
 
   return (
     <div>
-      <div>
-        <center>
-          <h2>Lesson</h2>
-        </center>
-      </div>
+      <h2 className='text-center'>Lesson</h2>
       <div>
         <Mutation mutation={SAVE_LESSON}>
           {(saveLesson, { calledSaveLesson }) => (
@@ -64,16 +60,14 @@ const DefaultComponent = ({ res, lesson, challengeForms }) => {
           )}
         </Mutation>
       </div>
-      <div>
-        <center>
-          <h2>Challenges</h2>
-          <button
-            className='btn btn-sm blue lighten-1 gs-button'
-            onClick={addNewChallenge}
-          >
-            Add New Challenge
-          </button>
-        </center>
+      <div className='text-center'>
+        <h2 className='text-center'>Challenges</h2>
+        <button
+          className='btn btn-sm blue lighten-1 gs-button'
+          onClick={addNewChallenge}
+        >
+          Add New Challenge
+        </button>
       </div>
       <div>{ challengeForms }</div>
     </div>
@@ -99,11 +93,7 @@ const AddNewComponent = ({ lesson, res }) => {
       <Mutation mutation={mutationCall}>
         { (add, { calledAdd }) => (
           <div>
-            <div>
-              <center>
-                <h2>{ title }</h2>
-              </center>
-            </div>
+            <h2 className='text-center'>{ title }</h2>
             <EditableInput
               key={lesson.id}
               id={lesson.id}
@@ -188,15 +178,13 @@ const LessonList = () => {
                   <div className='gs-container-1'>Admin users only.</div>
                   <div className='gs-container-2'>
                     <div className='row'>
-                      <div className='col-4'>
-                        <center>
-                          <button
-                            className='btn btn-sm blue lighten-1 gs-button'
-                            onClick={addNewLesson}
-                          >
-                            Add New Lesson
-                          </button>
-                        </center>
+                      <div className='col-4 text-center'>
+                        <button
+                          className='btn btn-sm blue lighten-1 gs-button'
+                          onClick={addNewLesson}
+                        >
+                          Add New Lesson
+                        </button>
                         <div className='list-group'>{ lessonLinks }</div>
                       </div>
                       <div className='col-8'>
