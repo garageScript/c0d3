@@ -448,4 +448,4 @@ export const submissionsContainer = graphql(SUBMISSIONS, {
   props: ({ data, ownProps }) => ({ data: { ...data, ...ownProps } }),
   options: ({ id }) => ({ variables: { in: { id } } })
 })
-export const getLessonListContainer = compose(graphql(LESSONS))
+export const getLessonListContainer = graphql(LESSONS)
