@@ -21,9 +21,6 @@ const stateLink = withClientState({
   defaults: {
     starRecipent: '',
     adoptedStudentFilter: false,
-    lessonIndex: 0,
-    addNew: false,
-    componentType: '',
     chatModal: '',
     chatError: '',
     lessonOrder: 500,
