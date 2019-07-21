@@ -1,15 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Mutation } from 'react-apollo'
 import {
-  LESSONS,
-  ADMIN_STATE,
   SAVE_LESSON,
   CREATE_LESSON,
   SAVE_CHALLENGE,
   CREATE_CHALLENGE,
   DELETE_LESSON,
-  DELETE_CHALLENGE
+  DELETE_CHALLENGE,
+  getLessonListContainer
 } from '../../db/queries.js'
-import { Query, Mutation } from 'react-apollo'
 import EditableInput from './EditableInput'
 import { loadComponent } from '../shared/shared'
 
@@ -29,59 +28,48 @@ const ADD_NEW_CHALLENGE = [
 ]
 
 // component below displays when user first goes into admin page
-const DefaultComponent = ({ res, lesson, challengeForms }) => {
-  const addNewChallenge = () => {
-    res.client.writeData({
-      data: {
-        addNew: true,
-        componentType: 'challenge'
-      }
-    })
-  }
-
-  return (
+const DefaultComponent = ({ onClick, lesson, challengeForms }) => (
+  <div>
+    <h2 className='text-center'>Lesson</h2>
     <div>
-      <h2 className='text-center'>Lesson</h2>
-      <div>
-        <Mutation mutation={SAVE_LESSON}>
-          {(saveLesson, { calledSaveLesson }) => (
-            <Mutation mutation={DELETE_LESSON}>
-              {(deleteLesson, { calledDeleteLesson }) => (
-                <EditableInput
-                  key={lesson.id}
-                  id={lesson.id}
-                  fields={ADD_NEW_LESSON}
-                  values={lesson}
-                  onSave={saveLesson}
-                  onDelete={deleteLesson}
-                />
-              )}
-            </Mutation>
-          )}
-        </Mutation>
-      </div>
-      <div className='text-center'>
-        <h2 className='text-center'>Challenges</h2>
-        <button
-          className='btn btn-sm blue lighten-1 gs-button'
-          onClick={addNewChallenge}
-        >
-          Add New Challenge
-        </button>
-      </div>
-      <div>{ challengeForms }</div>
+      <Mutation mutation={SAVE_LESSON}>
+        {(saveLesson, { calledSaveLesson }) => (
+          <Mutation mutation={DELETE_LESSON}>
+            {(deleteLesson, { calledDeleteLesson }) => (
+              <EditableInput
+                key={lesson.id}
+                id={lesson.id}
+                fields={ADD_NEW_LESSON}
+                values={lesson}
+                onSave={saveLesson}
+                onDelete={deleteLesson}
+              />
+            )}
+          </Mutation>
+        )}
+      </Mutation>
     </div>
-  )
-}
+    <div className='text-center'>
+      <h2 className='text-center'>Challenges</h2>
+      <button
+        className='btn btn-sm blue lighten-1 gs-button'
+        onClick={onClick}
+      >
+          Add New Challenge
+      </button>
+    </div>
+    <div>{ challengeForms }</div>
+  </div>
+)
 
 // component below displays when user adds a new lesson or challenge
-const AddNewComponent = ({ lesson, res }) => {
+const AddNewComponent = ({ lesson, componentType, setAddNew }) => {
   let title = `Add new challenge to ${lesson.title}!`
   let mutationCall = CREATE_CHALLENGE
   let lid = lesson.id
   let fields = ADD_NEW_CHALLENGE
 
-  if (res.data.componentType === 'lesson') {
+  if (componentType === 'lesson') {
     title = 'ADD NEW LESSON'
     mutationCall = CREATE_LESSON
     lid = null
@@ -101,7 +89,7 @@ const AddNewComponent = ({ lesson, res }) => {
               fields={fields}
               values={{}}
               onSave={add}
-              client={res.client}
+              setAddNew={setAddNew}
             />
           </div>
         )}
@@ -110,96 +98,93 @@ const AddNewComponent = ({ lesson, res }) => {
   )
 }
 
-const LessonList = () => {
+const LessonList = ({ lessons }) => {
+  const [addNew, setAddNew] = useState(false)
+  const [lessonIndex, setLessonIndex] = useState(0)
+  const [componentType, setComponentType] = useState('')
+  const lesson = lessons[lessonIndex]
+
+  const addNewChallenge = () => {
+    setAddNew(true)
+    setComponentType('challenge')
+  }
+  const addNewLesson = () => {
+    setAddNew(true)
+    setComponentType('lesson')
+  }
+  const selectLesson = (index) => () => {
+    setLessonIndex(index)
+    setAddNew(false)
+  }
+
+  const lessonLinks = lessons.map((lesson, index) => (
+    <button
+      key={index}
+      className='list-group-item list-group-item-action waves-effect'
+      onClick={selectLesson(index)}
+    >
+      { lesson.title }
+    </button>
+  ))
+
+  // list of forms for each challenge for a specific lesson
+  const challengeForms = lesson.challenges.map((challenge, ci) => (
+    <Mutation key={ci} mutation={SAVE_CHALLENGE}>
+      {(saveChallenge, { calledSaveChallenge }) => (
+        <Mutation mutation={DELETE_CHALLENGE}>
+          {(deleteChallenge, { calledDeleteChallenge }) => (
+            <EditableInput
+              key={challenge.id}
+              id={challenge.id}
+              lid={lesson.id}
+              fields={ADD_NEW_CHALLENGE}
+              values={challenge}
+              onSave={saveChallenge}
+              onDelete={deleteChallenge}
+            />
+          )}
+        </Mutation>
+      )}
+    </Mutation>
+  ))
+
+  const componentToDisplay = addNew
+    ? (
+      <AddNewComponent
+        setAddNew={setAddNew}
+        lesson={lesson}
+        componentType={componentType}
+      />
+    )
+    : (
+      <DefaultComponent
+        onClick={addNewChallenge}
+        lesson={lesson}
+        challengeForms={challengeForms}
+      />
+    )
+
   return (
-    <Query query={ADMIN_STATE}>
-      { res => {
-        const handleLesson = (index) => () => {
-          res.client.writeData({
-            data: {
-              lessonIndex: index,
-              addNew: false
-            }
-          })
-        }
-
-        return (
-          <Query query={LESSONS}>
-            { loadComponent(data => {
-              // specific lesson data user has selected
-              const lesson = data.lessons[res.data.lessonIndex]
-              const lessonLinks = data.lessons.map((lesson, index) => (
-                <button
-                  key={index}
-                  className='list-group-item list-group-item-action waves-effect'
-                  onClick={handleLesson(index)}
-                >
-                  { lesson.title }
-                </button>
-              ))
-              const addNewLesson = () => res.client.writeData({
-                data: {
-                  addNew: true,
-                  componentType: 'lesson'
-                }
-              })
-
-              // list of forms for each challenge for a specific lesson
-              const challengeForms = lesson.challenges.map((challenge, ci) => (
-                <Mutation key={ci} mutation={SAVE_CHALLENGE}>
-                  {(saveChallenge, { calledSaveChallenge }) => (
-                    <Mutation mutation={DELETE_CHALLENGE}>
-                      {(deleteChallenge, { calledDeleteChallenge }) => (
-                        <EditableInput
-                          key={challenge.id}
-                          id={challenge.id}
-                          lid={lesson.id}
-                          fields={ADD_NEW_CHALLENGE}
-                          values={challenge}
-                          onSave={saveChallenge}
-                          onDelete={deleteChallenge}
-                        />
-                      )}
-                    </Mutation>
-                  )}
-                </Mutation>
-              ))
-
-              const componentToDisplay = res.data.addNew
-                ? <AddNewComponent res={res} lesson={lesson} />
-                : <DefaultComponent
-                  res={res}
-                  lesson={lesson}
-                  challengeForms={challengeForms}
-                />
-
-              return (
-                <div>
-                  <div className='gs-container-1'>Admin users only.</div>
-                  <div className='gs-container-2'>
-                    <div className='row'>
-                      <div className='col-4 text-center'>
-                        <button
-                          className='btn btn-sm blue lighten-1 gs-button'
-                          onClick={addNewLesson}
-                        >
-                          Add New Lesson
-                        </button>
-                        <div className='list-group'>{ lessonLinks }</div>
-                      </div>
-                      <div className='col-8'>
-                        <div>{ componentToDisplay }</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )
-            }) }
-          </Query>
-        )
-      } }
-    </Query>
+    <div>
+      <div className='gs-container-1'>Admin users only.</div>
+      <div className='gs-container-2'>
+        <div className='row'>
+          <div className='col-4 text-center'>
+            <button
+              className='btn btn-sm blue lighten-1 gs-button'
+              onClick={addNewLesson}
+            >
+              Add New Lesson
+            </button>
+            <div className='list-group'>{ lessonLinks }</div>
+          </div>
+          <div className='col-8'>
+            <div>{ componentToDisplay }</div>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 
-export default LessonList
+export default getLessonListContainer(loadComponent(LessonList))
