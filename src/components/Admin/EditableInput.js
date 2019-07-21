@@ -7,7 +7,7 @@ const EditableInput = ({
   values,
   onSave,
   onDelete,
-  client
+  setAddNew
 }) => {
   let refs = {}
 
@@ -113,11 +113,7 @@ const EditableInput = ({
             // if that's the case, when we click cancel addNew will turn false
             // and take the user back to the previous page.
             if (!onDelete) {
-              client.writeData({
-                data: {
-                  addNew: false
-                }
-              })
+              setAddNew(false)
             } else {
               // if onDelete does exist, means we are merely updating a challnege or
               // lesson. so if we click cancel, it will revert all the changes that
