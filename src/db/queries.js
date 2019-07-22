@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import { graphql } from 'react-apollo'
+import { graphql, compose } from 'react-apollo'
 
 export const LESSON_STATUS = gql`
   query lessonStatus($in: LessonId) {
@@ -76,7 +76,7 @@ export const TEACHERS = gql`
 `
 
 export const STAR_RECIPIENT = gql`
-  {
+  query StartRecipient {
     starRecipent @client
   }
 `
@@ -89,14 +89,6 @@ export const STUDENT_CHALLENGE_DATA = gql`
 export const CHALLENGE_INDEX = gql`
   {
     challengeIndex @client
-  }
-`
-
-export const ADMIN_STATE = gql`
-  {
-    lessonIndex @client
-    addNew @client
-    componentType @client
   }
 `
 
@@ -456,3 +448,4 @@ export const submissionsContainer = graphql(SUBMISSIONS, {
   props: ({ data, ownProps }) => ({ data: { ...data, ...ownProps } }),
   options: ({ id }) => ({ variables: { in: { id } } })
 })
+export const getLessonListContainer = graphql(LESSONS)
