@@ -5,8 +5,8 @@ const ONE_SECOND = 1000
 
 describe( 'c0d3.com', () => {
   const name = 'John Doe'
-  const username = 'tsiersidj'
-  const email = 'johndoetest@c0d3.com'
+  const username = 'cypresstest'
+  const email = 'cypresstest@c0d3.com'
   const password = 'letmein2'
   it( 'remove previous test user from server', () => {
     const serverURL = Cypress.env('serverUrl')
