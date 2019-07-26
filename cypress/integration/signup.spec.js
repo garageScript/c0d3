@@ -3,6 +3,7 @@ const generate = require('nanoid/generate')
 const NUMBER_OF_FEEDBACK = 5
 const HTTP_OK = 200
 const ONE_SECOND = 1000
+const TWO_SECOND = 2000
 const uid = generate('0123456789abcdefghijklmnopqrstuvwxyz', 10)
 
 describe( 'c0d3.com', () => {
@@ -37,12 +38,13 @@ describe( 'c0d3.com', () => {
     cy.get('#password-confirm')
       .type(password)
       .should('have.value', password).blur()
-    cy.wait(ONE_SECOND)
+    cy.wait(TWO_SECOND)
     cy
       .get('.feedback').should('have.length', NUMBER_OF_FEEDBACK)
       .each((num, index, arr) => {
       	expect(num).to.contain('valid')
-      })
+      } )
+    cy.wait(TWO_SECOND)
     cy.route('POST', '*signup').as('signup')
     cy.get('button[type=submit]').as('submit')
     cy.get('@submit').click()
