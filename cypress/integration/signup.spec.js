@@ -1,12 +1,14 @@
 /* global cy Cypress expect describe it */
+const generate = require('nanoid/generate')
 const NUMBER_OF_FEEDBACK = 5
 const HTTP_OK = 200
 const ONE_SECOND = 1000
+const uid = generate('0123456789abcdefghijklmnopqrstuvwxyz', 10)
 
 describe( 'c0d3.com', () => {
   const name = 'John Doe'
-  const username = 'cypresstest'
-  const email = 'cypresstest@c0d3.com'
+  const username = `cypress${uid}`
+  const email = `${username}@c0d3.com`
   const password = 'letmein2'
   it( 'remove previous test user from server', () => {
     const serverURL = Cypress.env('serverUrl')

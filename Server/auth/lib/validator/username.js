@@ -46,10 +46,6 @@ const availabilityTests = {
   gitLab: async username => {
     // test availability of username in GitLab
     const users = await gitLabData()
-    // We can not delete this test acount from cypresse
-    // only un Admin account can do it
-    // We skip this user check for cypress test!
-    if ( username === 'cypresstest' ) return true;
     try {
       return !users
         .map(user => user.username.toLowerCase())
