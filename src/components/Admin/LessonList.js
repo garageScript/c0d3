@@ -128,7 +128,7 @@ const LessonList = ({ lessons }) => {
   ))
 
   // list of forms for each challenge for a specific lesson
-  const challengeForms = lesson.challenges.map((challenge, ci) => (
+  const challengeForms = lesson.challenges.sort((a,b) => a.order - b.order).map((challenge, ci) => (
     <Mutation key={ci} mutation={SAVE_CHALLENGE}>
       {(saveChallenge, { calledSaveChallenge }) => (
         <Mutation mutation={DELETE_CHALLENGE}>
