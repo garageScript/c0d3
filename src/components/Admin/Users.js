@@ -1,9 +1,13 @@
 import React from 'react'
-import { Mutation } from 'react-apollo'
+import { compose } from 'react-apollo'
 import { loadComponent } from '../shared/shared.js'
-import { getUsersAdminContainer, SET_ADMIN } from '../../db/queries.js'
+import { getUsersAdminContainer, setAdminContainer} from '../../db/queries.js'
 
-const UsersAdmin = ( { users } ) => {
+const UsersAdmin = ( { users, mutate } ) => {
+  const toggleAdmin = u => () => mutate( {
+    variables: { in: { userId: u.id, isAdmin: !u.isAdmin } }
+  })
+
   const rows = users.map(u => {
     const buttonClass = (u.isAdmin) ? 'btn-primary' : 'btn-outline-primary waves-effect'
     return (
@@ -13,22 +17,13 @@ const UsersAdmin = ( { users } ) => {
         <th>{u.username}</th>
         <th>{u.email}</th>
         <th>
-          <Mutation
-            mutation={SET_ADMIN}
-            variables={{ in: { userId: u.id, isAdmin: !u.isAdmin } }}
+          <button
+            type='button'
+            className={`btn btn-sm ${buttonClass}`}
+            onClick={toggleAdmin(u)}
           >
-            {(execute) => {
-              return (
-                <button
-                  type='button'
-                  className={`btn btn-sm ${buttonClass}`}
-                  onClick={execute}
-                >
-                  Admin
-                </button>
-              )
-            }}
-          </Mutation>
+            Admin
+          </button>
         </th>
       </tr>
     )
@@ -54,4 +49,8 @@ const UsersAdmin = ( { users } ) => {
     </div>
   )
 }
-export default getUsersAdminContainer(loadComponent(UsersAdmin))
+
+export default compose(
+  getUsersAdminContainer,
+  setAdminContainer
+)(loadComponent(UsersAdmin))
