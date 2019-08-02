@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import { graphql, compose } from 'react-apollo'
+import { graphql } from 'react-apollo'
 
 export const LESSON_STATUS = gql`
   query lessonStatus($in: LessonId) {
@@ -449,3 +449,5 @@ export const submissionsContainer = graphql(SUBMISSIONS, {
   options: ({ id }) => ({ variables: { in: { id } } })
 })
 export const getLessonListContainer = graphql(LESSONS)
+export const getUsersAdminContainer = graphql(USERS)
+export const setAdminContainer = graphql(SET_ADMIN)
