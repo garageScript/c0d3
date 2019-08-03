@@ -3,13 +3,13 @@ describe('Profile', () => {
   before(() => {
     cy.login()
     cy.profile()
+  } )
+  it('Visit the profile page', () => {
+    cy.url().should('include', '/profile/bot')
   })
-  it('Checking Settings Link', () => {
-    cy.get('.md-pills').find('.nav-item').last().click()
-    cy.get('.md-pills').find('.active').should('have.text', 'Settings')
-  })
-  it('Checking MR Contributions', () => {
-    cy.get('.md-pills').find('.nav-item').last().prev().click()
-    cy.get('.md-pills').find('.active').should('have.text', 'MR Contributions')
-  })
+  it( 'Checking Curriculum Progress Card', () => {
+    cy.get('.testimonial-card').contains('Foundations of JavaScript')
+    cy.get('.card-body').contains('Variables & Functions')
+    cy.get('.card-title').contains('General Algorithms')
+  } )
 })

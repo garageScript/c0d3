@@ -453,3 +453,5 @@ export const submissionsContainer = graphql(SUBMISSIONS, {
 export const getLessonListContainer = graphql(LESSONS, {
   options: () => ({ variables: { in: { admin: true } } })
 })
+export const getUsersAdminContainer = graphql(USERS)
+export const setAdminContainer = graphql(SET_ADMIN)
