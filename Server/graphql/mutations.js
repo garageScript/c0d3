@@ -103,13 +103,13 @@ module.exports = {
     return Submission.findOne({
       where: { lessonId, challengeId, userId }
     }).then(d => {
-      submissionToApprove = d
       return d.update({
         status: 'passed',
         reviewerId: context.user.id,
         comment
       })
-    }).then(() => {
+    }).then((d) => {
+      submissionToApprove = d
       return Promise.all([
         User.findById(userId),
         User.findById(context.user.id),
@@ -144,7 +144,7 @@ module.exports = {
         })
       }
     }).then(nextLesson => {
-      if (!nextLesson) return
+      if (!nextLesson) return submissionToApprove
       const channelName = nextLesson.chatUrl.split('/').pop()
       const message = `We have a new student joining us! @${author.username} just completed **_${currentLesson.title}_**.`
       matterMostService.publicChannelMessage(channelName, message)
