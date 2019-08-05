@@ -1,130 +1,62 @@
 import React from 'react'
-import { Mutation, Query } from 'react-apollo'
-import { CREATE_A_COHORT, GET_COHORTS, GET_WAITLIST_STUDENTS, INVITE_TO_COHORT } from '../../db/queries'
-import { loadComponent, cacheUpdate } from '../shared/shared.js'
+import { getWaitListContainer } from '../../db/queries'
+import { loadComponent } from '../shared/shared.js'
 
-const InvitedStudents = () => {
-  return (
-    <Query query={GET_WAITLIST_STUDENTS}>
-      {loadComponent(({ getWaitListStudents }) => {
-        return getWaitListStudents.map((v, i) => {
-          if (v && v.cohortId) {
-            return (
-              <div style={{ display: 'flex', margin: '3px' }} key={i}>
-                <div style={{ position: 'absolute', right: '208px', margin: '2px' }}>{v.email}</div>
-                <div style={{ marginLeft: '200px' }}>ALREADY INTVITED</div>
-              </div>
-            )
-          }
-        })
-      })}
-    </Query>
+const Waitlist = ( { data } ) => {
+  const {
+    getWaitListStudents, getCohorts, createCohort, inviteCohort
+  } = data
+  const unInvitedStudents = getWaitListStudents.filter( el => !el.cohortId )
+  const isEmpty = unInvitedStudents.length === 0
+  const lastCohort = Number( getCohorts[ 0 ].id )
+  const inviteToCohort = ( id ) => () => inviteCohort( {
+    variables: { input: { waitListId: id } }
+  } )
+  const rows = unInvitedStudents.map( ( el, index ) => (
+    <tr key={ el.id }>
+      <th className='text-center align-middle' scope="row">{ ++index }</th>
+      <td className='text-center align-middle'>{ el.email }</td>
+      <td className='text-right align-middle'>
+        <button
+          className='btn btn-sm btn-outline-primary waves-effect'
+          onClick={ inviteToCohort( el.id ) }>
+          Invite to Cohort
+        </button>
+      </td>
+    </tr>
+  ) )
+  const table = (
+    <table className="table table-striped table-sm">
+      <thead>
+        <tr>
+          <th className='text-center' scope="col">#</th>
+          <th className='text-center' scope="col">E-mail</th>
+        </tr>
+      </thead>
+      <tbody>
+        { rows }
+      </tbody>
+    </table>
   )
-}
+  const infoMessage = (
+    <div className="alert alert-primary" role="alert">
+      No students uninvited on the wait list!
+  </div>
+  )
 
-const UnInvitedStudents = () => {
   return (
-    <Query query={GET_WAITLIST_STUDENTS}>
-      {loadComponent(({ getWaitListStudents }) => {
-        return getWaitListStudents.map((v, i) => {
-          if (v && !v.cohortId) {
-            return (
-              <div style={{ display: 'flex', margin: '3px' }} key={i}>
-                <div style={{ position: 'absolute', right: '208px', margin: '2px' }}>{v.email}</div>
-                <Mutation update={cacheUpdate(GET_WAITLIST_STUDENTS, ({ inviteToCohort }, { getWaitListStudents }) => {
-                  getWaitListStudents.forEach((e) => {
-                    if (e.id === v.id) e.cohortId = '1000'
-                  })
-                  return { getWaitListStudents: getWaitListStudents }
-                })}
-                  mutation={INVITE_TO_COHORT}>
-                  {(execute) => {
-                    return (
-                      <a style={{ marginLeft: '200px' }} onClick={() => {
-                        execute({
-                          variables: {
-                            input: {
-                              waitListId: v.id
-                            }
-                          }
-                        })
-                      }}>Invite to Cohort</a>
-                    )
-                  }}
-                </Mutation>
-              </div>
-            )
-          }
-        })
-      })}
-    </Query>)
-}
-
-const Waitlist = () => {
-  return (
-    <div className='container'style={{ display: 'flex' }}>
-      <div className='row' style={{ textAlign: 'center' }}>
-        <div className='col'>
-          <Mutation
-            update={cacheUpdate(GET_COHORTS, ({ createCohort }, { getCohorts }) => {
-              return { getCohorts: getCohorts.concat(createCohort) }
-            })}
-            mutation={CREATE_A_COHORT}>
-            {(execute) => {
-              return (
-                <button className='btn btn-info btn-rounded' type='button' style={{ position: 'fixed', left: '-10px', top: '20%', width: '11%' }} onClick={() => { execute({}) }}>CREATE A NEW COHORT</button>
-              )
-            }}
-          </Mutation>
-        </div>
-        <div className='col' style={{ textAlign: 'center' }}>
-          <h1>Cohorts</h1>
-          <Query query={GET_COHORTS}>
-            { loadComponent(({ getCohorts }) => {
-              return getCohorts.map((v, i) => {
-                return (
-                  <div style={{ textAlign: 'center', margin: '3px' }} key={i}>
-                    <div>Cohort {v.id}</div>
-                  </div>
-                )
-              })
-            }) }
-          </Query>
-        </div>
-      </div>
-      <div className='col'>
-        <h1 style={{ textAlign: 'center' }}>Waitlist</h1>
-        <InvitedStudents />
-        <UnInvitedStudents />
-        <Query query={GET_WAITLIST_STUDENTS}>
-          {loadComponent(({ getWaitListStudents }) => {
-            return getWaitListStudents.map((v, i) => {
-              return (
-                <div style={{ display: 'flex', margin: '3px' }} key={i}>
-                  <div style={{ position: 'absolute', right: '208px', margin: '2px' }}>{v.email}</div>
-                  <Mutation mutation={INVITE_TO_COHORT}>
-                    {(execute) => {
-                      return (
-                        <a style={{ marginLeft: '200px' }} onClick={() => {
-                          execute({
-                            variables: {
-                              input: {
-                                waitListId: v.id
-                              }
-                            }
-                          })
-                        }}>Invite to Cohort</a>
-                      )
-                    }}
-                  </Mutation>
-                </div>
-              )
-            })
-          })}
-        </Query>
-      </div>
+    <div className='container'>
+      <button
+        className='btn btn-info'
+        type='button'
+        onClick={ createCohort }
+      >
+        Create Cohort { lastCohort + 1 }
+      </button>
+      <h1 className='text-center'>Cohort { lastCohort }</h1>
+      { isEmpty ? infoMessage : table }
     </div>
   )
 }
 
-export default Waitlist
+export default getWaitListContainer( loadComponent( Waitlist ) )

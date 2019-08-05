@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import { graphql } from 'react-apollo'
+import { graphql, compose } from 'react-apollo'
 
 export const LESSON_STATUS = gql`
   query lessonStatus($in: LessonId) {
@@ -445,9 +445,23 @@ export const CREATE_ANNOUNCEMENT = gql`
 
 export const getAnnouncementsContainer = graphql(GET_ANNOUNCEMENTS)
 export const submissionsContainer = graphql(SUBMISSIONS, {
-  props: ({ data, ownProps }) => ({ data: { ...data, ...ownProps } }),
-  options: ({ id }) => ({ variables: { in: { id } } })
+  props: ({ data, ownProps }) => ({ data:{ ...data, ...ownProps }}),
+  options: ({ id }) => ({ variables: { in: { id }}})
 })
 export const getLessonListContainer = graphql(LESSONS)
 export const getUsersAdminContainer = graphql(USERS)
 export const setAdminContainer = graphql(SET_ADMIN)
+export const getWaitListContainer = compose(
+  graphql(GET_WAITLIST_STUDENTS),
+  graphql(GET_COHORTS, {
+    props: ({ data, ownProps }) => ({ data: { ...data, ...ownProps.data }})
+  } ),
+  graphql( CREATE_A_COHORT, {
+    name: 'createCohort',
+    options: {refetchQueries: [ 'getCohorts' ]},
+  }),
+  graphql( INVITE_TO_COHORT, {
+    name: 'inviteCohort',
+    options: { refetchQueries: ['getWaitListStudents']}
+  })
+)
