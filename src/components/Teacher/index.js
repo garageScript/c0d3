@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
-import { Query } from 'react-apollo'
 import { compose } from 'react-apollo'
 import '../../css/Teacher.css'
 import {
