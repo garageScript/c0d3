@@ -5,7 +5,7 @@ type Query {
   users(input: UserInput): [User]
 
   "Get all lessons available"
-  lessons(input: Location): [Lesson]
+  lessons(input: UserType): [Lesson]
 
   "Get status for the curriculum"
   curriculumStatus: [Lesson]
@@ -306,7 +306,7 @@ input inviteToCohort {
   waitListId: String
 }
 
-input Location {
+input UserType {
   admin: Boolean!
 }
 `

@@ -136,7 +136,7 @@ export const CHALLENGE_STATUS = gql`
 `
 
 export const LESSONS = gql`
-  query receivedStars($in: Location)
+  query receivedStars($in: UserType)
   {
     lessons (input: $in){
       id
