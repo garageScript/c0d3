@@ -98,34 +98,9 @@ User.belongsToMany(Lesson, { through: { model: UserLesson } })
  * CHAT relationships
  */
 
-const Room = sequelize.define('room', {
-  name: Sequelize.STRING,
-  description: Sequelize.TEXT,
-  isEditable: Sequelize.BOOLEAN,
-  isPrivate: Sequelize.BOOLEAN
-})
-
-const Message = sequelize.define('message', {
-  content: Sequelize.TEXT,
-  isEdited: Sequelize.BOOLEAN
-})
-
 const Cohort = sequelize.define('cohort', {
   chatroomId: Sequelize.STRING
 })
-
-const UserRoom = sequelize.define('userRoom', {
-  unread: Sequelize.INTEGER,
-  isLastRoom: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false }
-})
-
-User.belongsTo(Room, { as: 'lastroom' }) // Deprecated
-User.belongsToMany(Room, { through: { model: UserRoom } })
-Room.belongsToMany(User, { through: { model: UserRoom } })
-
-Message.belongsTo(Room)
-Message.belongsTo(User)
-Room.hasMany(Message)
 
 const WaitList = sequelize.define('waitList', {
   email: Sequelize.STRING,
@@ -146,9 +121,6 @@ module.exports = {
   Star,
   AdoptedStudent,
   UserLesson,
-  UserRoom,
-  Room,
-  Message,
   WaitList,
   sequelize
 }
