@@ -117,7 +117,7 @@ const LessonList = ({ lessons }) => {
     setAddNew(false)
   }
 
-  const lessonLinks = lessons.map((lesson, index) => (
+  const lessonLinks = lessons.sort((a,b) => a.order - b.order).map((lesson, index) => (
     <button
       key={index}
       className='list-group-item list-group-item-action waves-effect'
@@ -128,7 +128,7 @@ const LessonList = ({ lessons }) => {
   ))
 
   // list of forms for each challenge for a specific lesson
-  const challengeForms = lesson.challenges.map((challenge, ci) => (
+  const challengeForms = lesson.challenges.sort((a,b) => a.order - b.order).map((challenge, ci) => (
     <Mutation key={ci} mutation={SAVE_CHALLENGE}>
       {(saveChallenge, { calledSaveChallenge }) => (
         <Mutation mutation={DELETE_CHALLENGE}>

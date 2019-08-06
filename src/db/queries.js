@@ -143,8 +143,9 @@ export const CHALLENGE_STATUS = gql`
 `
 
 export const LESSONS = gql`
+  query receivedStars($in: Location)
   {
-    lessons {
+    lessons (input: $in){
       id
       description
       docUrl
@@ -462,13 +463,15 @@ export const TEACHER_PAGE = gql`
 `
 
 export const getAnnouncementsContainer = graphql(GET_ANNOUNCEMENTS)
-export const getLessonListContainer = graphql(LESSONS)
 export const getUsersAdminContainer = graphql(USERS)
 export const setAdminContainer = graphql(SET_ADMIN)
 export const getAdoptedStudentFilterContainer = graphql(ADOPTED_STUDENT_FILTER)
 export const submissionsContainer = graphql(SUBMISSIONS, {
   props: ({ data, ownProps }) => ({ data: { ...data, ...ownProps } }),
   options: ({ id }) => ({ variables: { in: { id } } })
+})
+export const getLessonListContainer = graphql(LESSONS, {
+  options: () => ({ variables: { in: { admin: true } } })
 })
 export const getLessonStatusContainer = graphql(LESSON_STATUS, {
   props: ({ data, ownProps }) => ({ data: { ...data, ...ownProps } }),
