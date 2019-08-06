@@ -455,3 +455,7 @@ export const getLessonListContainer = graphql(LESSONS, {
 })
 export const getUsersAdminContainer = graphql(USERS)
 export const setAdminContainer = graphql(SET_ADMIN)
+export const getLessonStatusContainer = graphql(LESSON_STATUS, {
+  props: ({ data, ownProps }) => ({ data: { ...data, ...ownProps } }),
+  options: ({ lid }) => ({ variables: { in: { id: lid } } })
+})

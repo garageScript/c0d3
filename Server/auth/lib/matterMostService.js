@@ -63,7 +63,7 @@ const matterMostService = {
         `${reviewer.data.id}`
       ], { headers: chatServiceHeader })
     } catch (error) {
-      console.log('Error creating direct message channel')
+      console.log('Error creating direct message channel', error)
     }
   },
   getTeams: () => {
@@ -78,7 +78,7 @@ const matterMostService = {
         display_name: `Cohort  ${value}`,
         purpose: `A private chatroom for Students of Cohort${value} to get to know and help each other out`,
         header: 'Curriculum Help',
-        type: 'O' //Change to P when waitlist feature is complete.
+        type: 'O' // Change to P when waitlist feature is complete.
       }
 
       return axios.post(`${chatServiceUrl}/channels`,
@@ -89,8 +89,12 @@ const matterMostService = {
     }
   },
   sendDirectMessage: async (submitterEmail, reviewerEmail, message) => {
-    const channelId = await matterMostService.findOrCreateDirectMessageChannel(submitterEmail, reviewerEmail)
-    await matterMostService.sendMessage(channelId.data.id, message)
+    try {
+      const channelId = await matterMostService.findOrCreateDirectMessageChannel(submitterEmail, reviewerEmail)
+      await matterMostService.sendMessage(channelId.data.id, message)
+    } catch (error) {
+      console.log('Error in sending the message', error)
+    }
   },
   publicChannelMessage: async (channelName, message) => {
     const channelId = await matterMostService.getChannelInfo(channelName)

@@ -73,7 +73,7 @@ class MarkdownComponent extends React.Component {
             onClick={togglePreview(true)}>
                       Preview
           </span>
-          <a href='https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet' target='_blank'>
+          <a href='https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet' target='_blank' rel='noopener noreferrer'>
             <i className='fa fa-info-circle' style={{ color: '#b3b3b3' }} />
           </a>
         </div>

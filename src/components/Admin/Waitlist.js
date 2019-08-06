@@ -16,6 +16,7 @@ const InvitedStudents = () => {
               </div>
             )
           }
+          return null
         })
       })}
     </Query>
@@ -40,7 +41,7 @@ const UnInvitedStudents = () => {
                   mutation={INVITE_TO_COHORT}>
                   {(execute) => {
                     return (
-                      <a style={{ marginLeft: '200px' }} onClick={() => {
+                      <span style={{ marginLeft: '200px' }} onClick={() => {
                         execute({
                           variables: {
                             input: {
@@ -48,13 +49,14 @@ const UnInvitedStudents = () => {
                             }
                           }
                         })
-                      }}>Invite to Cohort</a>
+                      }}>Invite to Cohort</span>
                     )
                   }}
                 </Mutation>
               </div>
             )
           }
+          return null
         })
       })}
     </Query>)
@@ -105,7 +107,7 @@ const Waitlist = () => {
                   <Mutation mutation={INVITE_TO_COHORT}>
                     {(execute) => {
                       return (
-                        <a style={{ marginLeft: '200px' }} onClick={() => {
+                        <span style={{ marginLeft: '200px' }} onClick={() => {
                           execute({
                             variables: {
                               input: {
@@ -113,7 +115,7 @@ const Waitlist = () => {
                               }
                             }
                           })
-                        }}>Invite to Cohort</a>
+                        }}>Invite to Cohort</span>
                       )
                     }}
                   </Mutation>
