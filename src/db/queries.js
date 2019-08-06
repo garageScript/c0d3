@@ -465,3 +465,7 @@ export const getWaitListContainer = compose(
     options: { refetchQueries: ['getWaitListStudents']}
   })
 )
+export const getLessonStatusContainer = graphql(LESSON_STATUS, {
+  props: ({ data, ownProps }) => ({ data: { ...data, ...ownProps } }),
+  options: ({ lid }) => ({ variables: { in: { id: lid } } })
+})

@@ -5,7 +5,6 @@ import { Query } from 'react-apollo'
 const Toggle = () => (
   <Query query={ADOPTED_STUDENT_FILTER}>
     {({ data, client }) => {
-      const filter = data.adoptedStudentFilter
       return (
         <Fragment>
           <ul style={{ width: '100%' }} className='nav md-pills nav-justified pills-pink'>

@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { Mutation } from 'react-apollo'
 import moment from 'moment'
 import Markdown from 'react-markdown'

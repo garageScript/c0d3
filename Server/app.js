@@ -17,8 +17,6 @@ const gqlSchema = require('./graphql/index')
 const express = require('express')
 const app = express()
 const server = require('http').Server(app)
-const realtime = require('./chat/socket')
-realtime.init(server)
 
 const authHelpers = require('./auth/app')
 const pushNotification = require('./lib/pushNotification')
