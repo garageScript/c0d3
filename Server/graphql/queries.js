@@ -34,7 +34,6 @@ const {
   User,
   Challenge,
   Submission,
-  AdoptedStudent,
   Announcement,
   Cohort,
   WaitList
@@ -77,17 +76,17 @@ module.exports = {
   },
 
   lessons: (obj, args, context) => {
-    return Lesson.findAll({
-      include: [
-        'challenges',
-        {
-          model: User,
-          through: {
-            attributes: ['isPassed', 'isTeaching', 'isEnrolled']
-          }
+    const options = ['challenges']
+
+    if (!args.input.admin) {
+      options.push({
+        model: User,
+        through: {
+          attributes: ['isPassed', 'isTeaching', 'isEnrolled']
         }
-      ]
-    })
+      })
+    }
+    return Lesson.findAll({ include: options })
   },
 
   curriculumStatus: (obj, args, context) => {
