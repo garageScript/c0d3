@@ -136,8 +136,9 @@ export const CHALLENGE_STATUS = gql`
 `
 
 export const LESSONS = gql`
+  query receivedStars($in: UserType)
   {
-    lessons {
+    lessons (input: $in){
       id
       description
       docUrl
@@ -448,7 +449,10 @@ export const submissionsContainer = graphql(SUBMISSIONS, {
   props: ({ data, ownProps }) => ({ data:{ ...data, ...ownProps }}),
   options: ({ id }) => ({ variables: { in: { id }}})
 })
-export const getLessonListContainer = graphql(LESSONS)
+
+export const getLessonListContainer = graphql(LESSONS, {
+  options: () => ({ variables: { in: { admin: true } } })
+})
 export const getUsersAdminContainer = graphql(USERS)
 export const setAdminContainer = graphql(SET_ADMIN)
 export const getWaitListContainer = compose(

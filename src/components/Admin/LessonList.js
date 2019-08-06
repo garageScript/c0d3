@@ -102,7 +102,7 @@ const LessonList = ({ lessons }) => {
   const [addNew, setAddNew] = useState(false)
   const [lessonIndex, setLessonIndex] = useState(0)
   const [componentType, setComponentType] = useState('')
-  const lesson = lessons[lessonIndex]
+  const lesson = lessons.sort((a,b) => a.order - b.order)[lessonIndex]
 
   const addNewChallenge = () => {
     setAddNew(true)

@@ -5,7 +5,7 @@ type Query {
   users(input: UserInput): [User]
 
   "Get all lessons available"
-  lessons: [Lesson]
+  lessons(input: UserType): [Lesson]
 
   "Get status for the curriculum"
   curriculumStatus: [Lesson]
@@ -41,17 +41,17 @@ type Query {
   receivedStars(input: UserInput):[Star]
 
   "Get Announcements"
-  announcements: [Announcement] 
+  announcements: [Announcement]
 
   "Get UserInfo"
   userInfo(input: UserInput): UserData
-  
+
   "Get username"
   getUsername(userId: String): User
 
   "Get all the Cohorts"
-  getCohorts: [ Cohort] 
- 
+  getCohorts: [ Cohort]
+
   "Get all the students from the waitlist"
   getWaitListStudents: [ WaitListStudents ]
 
@@ -60,17 +60,17 @@ type Query {
 type Mutation {
   "Create a star and assign it to the mentor"
   giveStar(input: LessonUserId): String
-  
+
   "Create adopted student for signed-in-user"
   adoptStudent(input: LessonUserId): String
-  
+
   "Delete adopted student for signed-in-user"
   unAdoptStudent(input: LessonUserId): String
 
   "Create submission for signed-in-user"
   createSubmission(input: SubmissionInput): Submission
 
-  "Update submitted lesson"  
+  "Update submitted lesson"
   unapproveSubmission(input: SubmissionEdit): Submission
 
   "Update user lesson"
@@ -110,13 +110,13 @@ type Mutation {
   deleteAnnouncement(value: String): [Announcement]
 
   "Toggle User Admin"
-  toggleAdmin(input: UserAdmin): User 
+  toggleAdmin(input: UserAdmin): User
 
   "Send email with Mailgun"
   sendPasswordResetEmail(value: String): String
 
   "Send invite email to join C0d3 using Mailgun"
-  inviteToCohort(value: inviteToCohort): String 
+  inviteToCohort(value: inviteToCohort): String
 
   "Reset password for non-authorized clients"
   forgotResetPassword(input: PasswordChange): String
@@ -290,7 +290,7 @@ type UserData {
 }
 
 type Cohort {
-  chatroomId: String 
+  chatroomId: String
   id: String
   createdAt: String
 }
@@ -304,5 +304,9 @@ type WaitListStudents {
 
 input inviteToCohort {
   waitListId: String
+}
+
+input UserType {
+  admin: Boolean!
 }
 `
