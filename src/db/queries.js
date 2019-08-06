@@ -397,16 +397,13 @@ export const CREATE_A_COHORT = gql`
     createCohort{ id, chatroomId }
   }
 `
-export const GET_COHORTS = gql`
-  query getCohorts{
-    getCohorts{ chatroomId, id }
-  }
-`
+
 export const GET_WAITLIST_STUDENTS = gql`
    query getWaitListStudents{
     getWaitListStudents{
       email, id, cohortId
-    }
+    },
+    getLastCohort{ id }
    }
 `
 
@@ -457,12 +454,9 @@ export const getUsersAdminContainer = graphql(USERS)
 export const setAdminContainer = graphql(SET_ADMIN)
 export const getWaitListContainer = compose(
   graphql(GET_WAITLIST_STUDENTS),
-  graphql(GET_COHORTS, {
-    props: ({ data, ownProps }) => ({ data: { ...data, ...ownProps.data }})
-  } ),
   graphql( CREATE_A_COHORT, {
     name: 'createCohort',
-    options: {refetchQueries: [ 'getCohorts' ]},
+    options: {refetchQueries: [ 'getLastCohort' ]},
   }),
   graphql( INVITE_TO_COHORT, {
     name: 'inviteCohort',

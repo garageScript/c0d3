@@ -4,11 +4,11 @@ import { loadComponent } from '../shared/shared.js'
 
 const Waitlist = ( { data } ) => {
   const {
-    getWaitListStudents, getCohorts, createCohort, inviteCohort
+    getWaitListStudents, getLastCohort, createCohort, inviteCohort
   } = data
   const unInvitedStudents = getWaitListStudents.filter( el => !el.cohortId )
   const isEmpty = unInvitedStudents.length === 0
-  const lastCohort = Number( getCohorts[ 0 ].id )
+  const lastCohort = Number(getLastCohort.id)
   const inviteToCohort = ( id ) => () => inviteCohort( {
     variables: { input: { waitListId: id } }
   } )
