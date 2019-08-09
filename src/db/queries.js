@@ -36,33 +36,36 @@ export const GIVE_STAR = gql`
   }
 `
 
-export const LESSON_INFO = gql`
-  query lessonInfo($in: LessonId) {
-    lessonInfo(input: $in) {
+const lessonInfo = `
+  lessonInfo(input: $in) {
+    id
+    description
+    docUrl
+    githubUrl
+    videoUrl
+    order
+    title
+    chatUrl
+    challenges {
       id
       description
-      docUrl
-      githubUrl
-      videoUrl
       order
       title
-      chatUrl
-      challenges {
-        id
-        description
-        order
-        title
-      }
-      users {
-        id
-        username
-        userLesson {
-          isPassed
-          isTeaching
-          isEnrolled
-        }
+    }
+    users {
+      id
+      username
+      userLesson {
+        isPassed
+        isTeaching
+        isEnrolled
       }
     }
+  }
+`
+export const LESSON_INFO = gql`
+  query lessonInfo($in: LessonId) {
+    ${lessonInfo}
   }
 `
 
@@ -98,17 +101,21 @@ export const ADOPTED_STUDENT_FILTER = gql`
   }
 `
 
+const students = `
+  students(input: $in) {
+    id
+    username
+    userLesson {
+      isPassed
+      isTeaching
+      isEnrolled
+    }
+  }
+`
+
 export const STUDENTS = gql`
   query student($in: LessonId) {
-    students(input: $in) {
-      id
-      username
-      userLesson {
-        isPassed
-        isTeaching
-        isEnrolled
-      }
-    }
+    ${students}
   }
 `
 
@@ -189,27 +196,30 @@ export const CURRICULUM_STATUS = gql`
     }
   }
 `
+const submissions = `
+  submissions(input: $in) {
+    id
+    status
+    mrUrl
+    diff
+    comment
+    viewCount
+    user {
+      username
+      id
+     }
+     challenge {
+      title
+      id
+     }
+     createdAt
+     updatedAt
+   }
+`
 
 export const SUBMISSIONS = gql`
   query submissions($in: LessonId) {
-    submissions(input: $in) {
-      id
-      status
-      mrUrl
-      diff
-      comment
-      viewCount
-      user {
-        username
-        id
-      }
-      challenge {
-        title
-        id
-      }
-      createdAt
-      updatedAt
-    }
+    ${submissions}
   }
 `
 
@@ -441,17 +451,25 @@ export const CREATE_ANNOUNCEMENT = gql`
   }
 `
 
+export const TEACHER_PAGE = gql`
+  query teacherPage($in: LessonId) {
+    ${lessonInfo}
+    ${submissions}
+    ${students}
+  }
+`
+
 export const getAnnouncementsContainer = graphql(GET_ANNOUNCEMENTS)
+export const getUsersAdminContainer = graphql(USERS)
+export const setAdminContainer = graphql(SET_ADMIN)
+export const getAdoptedStudentFilterContainer = graphql(ADOPTED_STUDENT_FILTER)
 export const submissionsContainer = graphql(SUBMISSIONS, {
   props: ({ data, ownProps }) => ({ data:{ ...data, ...ownProps }}),
   options: ({ id }) => ({ variables: { in: { id }}})
 })
-
 export const getLessonListContainer = graphql(LESSONS, {
   options: () => ({ variables: { in: { admin: true } } })
 })
-export const getUsersAdminContainer = graphql(USERS)
-export const setAdminContainer = graphql(SET_ADMIN)
 export const getWaitListContainer = compose(
   graphql(GET_WAITLIST_STUDENTS),
   graphql( CREATE_A_COHORT, {
@@ -466,4 +484,8 @@ export const getWaitListContainer = compose(
 export const getLessonStatusContainer = graphql(LESSON_STATUS, {
   props: ({ data, ownProps }) => ({ data: { ...data, ...ownProps } }),
   options: ({ lid }) => ({ variables: { in: { id: lid } } })
+})
+export const getTeacherPageContainer = graphql(TEACHER_PAGE, {
+  props: ({ data, ownProps }) => ({ data: { ...data, ...ownProps } }),
+  options: ({ match }) => ({ variables: { in: { id: match.params.lid } } })
 })
