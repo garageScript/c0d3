@@ -464,8 +464,8 @@ export const getUsersAdminContainer = graphql(USERS)
 export const setAdminContainer = graphql(SET_ADMIN)
 export const getAdoptedStudentFilterContainer = graphql(ADOPTED_STUDENT_FILTER)
 export const submissionsContainer = graphql(SUBMISSIONS, {
-  props: ({ data, ownProps }) => ({ data:{ ...data, ...ownProps }}),
-  options: ({ id }) => ({ variables: { in: { id }}})
+  props: ({ data, ownProps }) => ({ data: { ...data, ...ownProps } }),
+  options: ({ id }) => ({ variables: { in: { id } } })
 })
 export const getLessonListContainer = graphql(LESSONS, {
   options: () => ({ variables: { in: { admin: true } } })

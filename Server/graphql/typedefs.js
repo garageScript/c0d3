@@ -50,7 +50,7 @@ type Query {
   getUsername(userId: String): User
 
   "Get all the Cohorts"
-  getCohorts: [Cohort]
+  getCohorts: [ Cohort]
 
   "Get all the students from the waitlist"
   getWaitListStudents: [ WaitListStudents ]

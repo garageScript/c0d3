@@ -221,7 +221,7 @@ module.exports = {
   },
 
   getCohorts: (obj, args, context) => {
-    return Cohort.findAll( {
+    return Cohort.findAll({
       order: [[ 'createdAt', 'DESC' ]]
     })
   },

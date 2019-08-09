@@ -6,7 +6,7 @@ export const loadComponent = fn => {
     //   remove loading, error, client, refetch because everything will be
     //   contained inside data
     if (loading || data.loading) return <i className='fa fa-spinner fa-spin' />
-    if ( error || data.error ) return 'error'
+    if (error || data.error) return 'error'
     return fn({...data, ...props}, client, refetch, mutate)
   }
 }
