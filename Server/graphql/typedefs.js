@@ -49,8 +49,8 @@ type Query {
   "Get username"
   getUsername(userId: String): User
 
-  "Get lat Cohort"
-  getLastCohort: Cohort
+  "Get all the Cohorts"
+  getCohort: Cohort
 
   "Get all the students from the waitlist"
   getWaitListStudents: [ WaitListStudents ]
