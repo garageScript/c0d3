@@ -220,8 +220,8 @@ module.exports = {
     })
   },
 
-  getLastCohort: (obj, args, context) => {
-    return Cohort.findOne( {
+  getCohorts: (obj, args, context) => {
+    return Cohort.findAll( {
       order: [[ 'createdAt', 'DESC' ]]
     })
   },

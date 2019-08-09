@@ -2,13 +2,13 @@ import React from 'react'
 import { getWaitListContainer } from '../../db/queries'
 import { loadComponent } from '../shared/shared.js'
 
-const Waitlist = ( { data } ) => {
+const Waitlist = ( data ) => {
   const {
-    getWaitListStudents, getLastCohort, createCohort, inviteCohort
+    getWaitListStudents, getCohorts, createCohort, inviteCohort
   } = data
   const unInvitedStudents = getWaitListStudents.filter( el => !el.cohortId )
   const isEmpty = unInvitedStudents.length === 0
-  const lastCohort = Number(getLastCohort.id)
+  const lastCohort = Number(getCohorts[0].id)
   const inviteToCohort = ( id ) => () => inviteCohort( {
     variables: { input: { waitListId: id } }
   } )

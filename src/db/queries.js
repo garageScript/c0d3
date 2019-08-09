@@ -413,7 +413,7 @@ export const GET_WAITLIST_STUDENTS = gql`
     getWaitListStudents{
       email, id, cohortId
     },
-    getLastCohort{ id }
+    getCohorts{ chatroomId, id }
    }
 `
 
@@ -474,7 +474,7 @@ export const getWaitListContainer = compose(
   graphql(GET_WAITLIST_STUDENTS),
   graphql( CREATE_A_COHORT, {
     name: 'createCohort',
-    options: {refetchQueries: [ 'getLastCohort' ]},
+    options: {refetchQueries: ['getWaitListStudents']},
   }),
   graphql( INVITE_TO_COHORT, {
     name: 'inviteCohort',
