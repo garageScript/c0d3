@@ -100,7 +100,7 @@ function getUserId (username, graphqlEndpoint) {
 function queryForLessons (graphqlEndpoint) {
   const lessonsQuery = `
   {
-    lessons {
+    lessons(input:{admin: false}) {
       id
       title
       challenges {
