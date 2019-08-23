@@ -45,8 +45,8 @@ const availabilityTests = {
 
   gitLab: async username => {
     // test availability of username in GitLab
+    const users = await gitLabData()
     try {
-      const users = await gitLabData()
       return !users
         .map(user => user.username.toLowerCase())
         .includes(username.toLowerCase())

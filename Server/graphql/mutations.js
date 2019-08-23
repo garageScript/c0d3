@@ -103,13 +103,13 @@ module.exports = {
     return Submission.findOne({
       where: { lessonId, challengeId, userId }
     }).then(d => {
-      submissionToApprove = d
       return d.update({
         status: 'passed',
         reviewerId: context.user.id,
         comment
       })
-    }).then(() => {
+    }).then((d) => {
+      submissionToApprove = d
       return Promise.all([
         User.findById(userId),
         User.findById(context.user.id),
@@ -144,7 +144,7 @@ module.exports = {
         })
       }
     }).then(nextLesson => {
-      if (!nextLesson) return
+      if (!nextLesson) return submissionToApprove
       const channelName = nextLesson.chatUrl.split('/').pop()
       const message = `We have a new student joining us! @${author.username} just completed **_${currentLesson.title}_**.`
       matterMostService.publicChannelMessage(channelName, message)
@@ -270,19 +270,21 @@ module.exports = {
     })
   },
   inviteToCohort: (obj, args, context) => {
-    Promise.all([WaitList.findOne({
-      where: {
-        id: args.value.waitListId
-      }
-    }), Cohort.findAll({
-      limit: 1,
-      order: [[ 'createdAt', 'DESC' ]]
-    })]).then(([w, c]) => {
-      w.update({ cohortId: c[0].dataValues.id })
-      mailGun.sendInviteEmail({ email: w.email })
-    }).then(a => {
-      return 'Email is sent successfully'
-    })
+    Promise.all([
+      WaitList.findOne({
+        where: { id: args.value.waitListId }
+      }),
+      Cohort.findAll({
+        limit: 1,
+        order: [['createdAt', 'DESC']]
+      })
+    ])
+      .then(([w, c]) => {
+        const cohortId = c[0].dataValues.id
+        w.update({ cohortId })
+        mailGun.sendInviteEmail({ email: w.email, cohortId })
+      })
+      .then(a => 'Email is sent successfully')
   },
   forgotResetPassword: (obj, args, context) => {
     const { forgotToken, password } = args.input
