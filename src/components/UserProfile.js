@@ -69,6 +69,7 @@ const UserProfile = ({ match }) => {
                 <Query query={LESSONS}>
                   {loadComponent(({ lessons }) => {
                     const lesson = lessons.find(e => e.id === s.lessonId)
+                    if (!lesson || !lesson.title) return <div />
                     return <h5 className='card-title'>{ lesson.title }</h5>
                   })}
                 </Query>
