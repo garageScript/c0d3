@@ -77,8 +77,7 @@ module.exports = {
 
   lessons: (obj, args, context) => {
     const options = ['challenges']
-
-    if (!args.input.admin) {
+    if (!args.input || !args.input.admin) {
       options.push({
         model: User,
         through: {
