@@ -143,7 +143,7 @@ apolloServer.applyMiddleware({
 const drawRoutes = require('./draw/draw')
 const solution = require('./solution')
 
-app.get('/', (req, res) => {
+app.get('/book', (req, res) => {
   res.redirect('https://www.notion.so/garagescript/Table-of-Contents-a83980f81560429faca3821a9af8a5e2')
 })
 
