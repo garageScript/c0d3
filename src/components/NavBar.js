@@ -25,7 +25,7 @@ const NavBarComponent = ({ location }) => {
         </Link>
       </li>
       <li className='nav-item nb-space'>
-        <a href='https://chat.c0d3.com' className='nav-link'>
+        <a href='https://chat.c0d3.com' className='nav-link' target='_blank' rel='noopener noreferrer'>
                 Chat
         </a>
       </li>

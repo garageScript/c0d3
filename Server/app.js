@@ -17,8 +17,6 @@ const gqlSchema = require('./graphql/index')
 const express = require('express')
 const app = express()
 const server = require('http').Server(app)
-const realtime = require('./chat/socket')
-realtime.init(server)
 
 const authHelpers = require('./auth/app')
 const pushNotification = require('./lib/pushNotification')
@@ -200,6 +198,20 @@ app.get('/signup', noAuthRouter)
 app.get('/signin', noAuthRouter)
 app.get('/resetpassword/:token', noAuthRouter)
 app.get('/confirmEmail/:token', authHelpers.confirmEmail)
+app.get('/verifySubmissionToken', async (req, res) => {
+  try {
+    const token = req.query.token
+    const user = await User.findOne({ where: { cliToken: token } })
+    return res.json({ userId: user.id })
+  } catch (e) {
+    return res.json({ userId: false })
+  }
+})
+
+// Process Waitlist request
+app.post('/waitlist', (req, res) => {
+  authHelpers.joinWaitList(req, res)
+})
 
 app.get('/*', (req, res) => {
   if (req.user && req.user.id) { return res.sendFile(path.join(__dirname, '../public/root.html')) }

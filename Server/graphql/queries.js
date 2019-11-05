@@ -16,6 +16,14 @@ const getLessonListDetails = (userId) => {
         }
       }
     ]
+  }).then(lessons => {
+    return lessons.map(l => {
+      const lesson = { ...l.dataValues }
+      lesson.currentUser = lesson.users[0] || {
+        userLesson: { isTeaching: '', isPassed: '' }
+      }
+      return lesson
+    })
   })
 }
 
@@ -26,8 +34,9 @@ const {
   User,
   Challenge,
   Submission,
-  AdoptedStudent,
-  Announcement
+  Announcement,
+  Cohort,
+  WaitList
 } = require('../dbload')
 
 module.exports = {
@@ -67,28 +76,20 @@ module.exports = {
   },
 
   lessons: (obj, args, context) => {
-    return Lesson.findAll({
-      include: [
-        'challenges',
-        {
-          model: User,
-          through: {
-            attributes: ['isPassed', 'isTeaching', 'isEnrolled']
-          }
+    const options = ['challenges']
+    if (!args.input || !args.input.admin) {
+      options.push({
+        model: User,
+        through: {
+          attributes: ['isPassed', 'isTeaching', 'isEnrolled']
         }
-      ]
-    })
+      })
+    }
+    return Lesson.findAll({ include: options })
   },
 
   curriculumStatus: (obj, args, context) => {
-    return getLessonListDetails(context.user.id).then(lessons => {
-      return [...lessons].map(lesson => {
-        lesson.currentUser = lesson.users[0] || {
-          userLesson: { isTeaching: '', isPassed: '' }
-        }
-        return lesson
-      })
-    })
+    return getLessonListDetails(context.user.id)
   },
 
   lessonStatus: (obj, args, context) => {
@@ -158,12 +159,28 @@ module.exports = {
   },
 
   userSubmissions: (obj, args, context) => {
-    return Submission.findAll({
-      where: {
-        userId: args.input.userId || context.user.id,
-        lessonId: args.input.lessonId
-      },
-      include: [{ model: Challenge }, { model: User, as: 'reviewer' }]
+    const userId = args.input.userId || context.user.id
+    const lessonId = args.input.lessonId
+    return Promise.all([
+      Submission.findAll({
+        where: { userId, lessonId },
+        include: [{ model: Challenge }, { model: User, as: 'reviewer' }]
+      }),
+      Challenge.count({ where: { lessonId } }),
+      UserLesson.findOrCreate({ where: { userId, lessonId } })
+    ]).then(([submissions, challengeCount, userLesson]) => {
+      /* Remove the following after 2 months.
+       *   This should be addressed in the mutation call for submissin approvals.
+       *   For 3 - 6 months, no UserLesson were created for certain users.
+       *   Therefore, the following code must exist to remedy the issue.
+       *   Implemented on May 12, 2019, should be removed after July 12, 2019
+       */
+      const passedSubmissions = submissions.filter(s => s.status === 'passed')
+      if (passedSubmissions.length === challengeCount && !userLesson.isPassed) {
+        userLesson[0].update({ isPassed: Date.now() })
+        return submissions
+      }
+      return submissions
     })
   },
 
@@ -202,6 +219,18 @@ module.exports = {
     })
   },
 
+  getCohorts: (obj, args, context) => {
+    return Cohort.findAll({
+      order: [[ 'createdAt', 'DESC' ]]
+    })
+  },
+
+  getWaitListStudents: (obj, args, context) => {
+    return WaitList.findAll({
+      order: [[ 'createdAt', 'ASC' ]]
+    })
+  },
+
   userInfo: (obj, args, context) => {
     const userData = {}
     return User.findOne({
@@ -222,7 +251,7 @@ module.exports = {
       )
       return getLessonListDetails(userData.id)
     }).then(lessons => {
-      return [...lessons].filter(lesson => {
+      return lessons.filter(lesson => {
         return lesson.currentUser.userLesson.isPassed
       })
     }).then(lessons => {

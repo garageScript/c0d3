@@ -3,7 +3,7 @@ const form = require('./lib/form')
 const gitLab = require('./lib/helpers')
 const matterMostService = require('./lib/matterMostService')
 const axios = require('axios')
-const { User } = require('../dbload')
+const { User, WaitList } = require('../dbload')
 const log = require('../log/index')(__filename)
 const mailGun = require('../mailGun/index')
 const nanoid = require('nanoid')
@@ -270,6 +270,35 @@ helpers.confirmEmail = async (req, res) => {
     log.error(`Email confirmation not successful ${err}`)
     res.send('Your email was not confirmed')
   }
+}
+
+// handle request to join waitlist
+helpers.joinWaitList = (req, res) => {
+  const userTableStatus = User.findOne({ where: { email: req.body.email } })
+  const waitListTableStatus = WaitList.findOne({ where: { email: req.body.email } })
+
+  Promise.all([userTableStatus, waitListTableStatus])
+    .then(([userTableStatusRes, waitListTableStatusRes]) => {
+      if (userTableStatusRes) return res.send({ inUserTable: true })
+      if (waitListTableStatusRes) return res.send({ inWaitListTable: true })
+      const emailToken = nanoid()
+      return WaitList.create({
+        email: req.body.email,
+        token: emailToken
+      })
+        .then(response => {
+          mailGun.sendWaitListRequestResponse({ email: req.body.email }, emailToken)
+          res.send({ waitListSuccess: true })
+        })
+        .catch(error => {
+          log.error(`${error}`)
+          errorHandler(req, res, error)
+        })
+    })
+    .catch(error => {
+      log.error(`${error}`)
+      errorHandler(req, res, error)
+    })
 }
 
 module.exports = helpers
