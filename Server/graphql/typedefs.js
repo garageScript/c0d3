@@ -55,6 +55,9 @@ type Query {
   "Get all the students from the waitlist"
   getWaitListStudents: [ WaitListStudents ]
 
+  "Get permission to access myProxy"
+  getMyDomains: [Domains]
+
 }
 
 type Mutation {
@@ -300,6 +303,16 @@ type WaitListStudents {
   email: String
   createdAt: String
   cohortId: String
+}
+
+type Domain {
+  domain: String
+  subDomain: String
+  port: String
+  ip: String
+  id: String
+  gitLink: String 
+  fullDomain: String 
 }
 
 input inviteToCohort {
