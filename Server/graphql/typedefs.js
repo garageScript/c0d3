@@ -56,7 +56,7 @@ type Query {
   getWaitListStudents: [ WaitListStudents ]
 
   "Get permission to access myProxy"
-  getMyDomains: [Domain]
+  getAllDomains: [Domain]
 
 }
 
