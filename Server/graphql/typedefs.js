@@ -127,6 +127,9 @@ type Mutation {
   "Creates a Cohort"
    createCohort: Cohort
 
+   "Delete student from the Waitlist"
+    deleteWaitlistStudent: WaitListStudents 
+
 }
 
 input PasswordChange {

@@ -302,5 +302,12 @@ module.exports = {
       mailGun.sendEmailVerifcation({ email: user.email, username: user.username }, user.emailVerificationToken)
       return 'Success'
     })
+  },
+  deleteWaitlistStudent: (obj, args, contect) => {
+    WaitList.findOne({
+      where: { id: args.value.waitListId }
+    }).then(deleteWaitlistStudent => WaitList.destroy())
+    WaitList.update()
+    return 'Selected Waitlist Student has been deleted'
   }
 }
