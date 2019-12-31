@@ -72,7 +72,7 @@ const AppElement = () => (
             <PrivateRoute path='/student/:lid' component={Student} />
             <PrivateRoute path='/teacher/:lid' component={Teacher} />
             <PrivateRoute exact path='/profile' component={Profile} />
-            <PrivateRoute exact path='/profile/:userId' component={Profile} />
+            <Route exact path='/profile/:userId' component={Profile} />
             <AdminRoute path='/admin/announcements' component={AdminAnnouncements} />
             <AdminRoute exact path='/admin' component={LessonListAdmin} />
             <AdminRoute exact path='/admin/users' component={UsersAdmin} />
