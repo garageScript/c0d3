@@ -458,6 +458,11 @@ export const TEACHER_PAGE = gql`
     ${students}
   }
 `
+export const DELETE_WAITLIST_STUDENT = gql`
+  mutation deleteWaitlistStudent($input: inviteToCohort){
+    deleteWaitlistStudent(value: $input)
+  } 
+`
 
 export const getAnnouncementsContainer = graphql(GET_ANNOUNCEMENTS)
 export const getUsersAdminContainer = graphql(USERS)
@@ -472,13 +477,17 @@ export const getLessonListContainer = graphql(LESSONS, {
 })
 export const getWaitListContainer = compose(
   graphql(GET_WAITLIST_STUDENTS),
-  graphql( CREATE_A_COHORT, {
+  graphql(CREATE_A_COHORT, {
     name: 'createCohort',
-    options: {refetchQueries: ['getWaitListStudents']},
+    options: { refetchQueries: ['getWaitListStudents'] }
   }),
-  graphql( INVITE_TO_COHORT, {
+  graphql(INVITE_TO_COHORT, {
     name: 'inviteCohort',
-    options: { refetchQueries: ['getWaitListStudents']}
+    options: { refetchQueries: ['getWaitListStudents'] }
+  }),
+  graphql(DELETE_WAITLIST_STUDENT, {
+    name: 'deleteWaitlistStudent',
+    options: { refetchQueries: ['getWaitListStudents'] }
   })
 )
 export const getLessonStatusContainer = graphql(LESSON_STATUS, {

@@ -306,8 +306,8 @@ module.exports = {
   deleteWaitlistStudent: (obj, args, contect) => {
     WaitList.findOne({
       where: { id: args.value.waitListId }
-    }).then(deleteWaitlistStudent => WaitList.destroy())
-    WaitList.update()
-    return 'Selected Waitlist Student has been deleted'
+    }).then(student => student.destroy()).then(d => {
+      return 'Selected Waitlist Student has been deleted'
+    })
   }
 }

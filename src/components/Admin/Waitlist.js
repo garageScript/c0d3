@@ -4,7 +4,7 @@ import { loadComponent } from '../shared/shared.js'
 
 const Waitlist = (data) => {
   const {
-    getWaitListStudents, getCohorts, createCohort, inviteCohort
+    getWaitListStudents, getCohorts, createCohort, inviteCohort, deleteWaitlistStudent
   } = data
   const unInvitedStudents = getWaitListStudents.filter(el => !el.cohortId)
   const isEmpty = unInvitedStudents.length === 0
@@ -24,7 +24,9 @@ const Waitlist = (data) => {
         </button>
         <button
           className='btn btn-sm btn-outline-primary waves-effect'
-          onClick={inviteToCohort(el.id)}>
+          onClick={() => {
+            deleteWaitlistStudent({ variables: { input: { waitListId: el.id } } })
+          }}>
           Delete from Cohort
         </button>
       </td>

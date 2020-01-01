@@ -128,7 +128,7 @@ type Mutation {
    createCohort: Cohort
 
    "Delete student from the Waitlist"
-    deleteWaitlistStudent: WaitListStudents 
+    deleteWaitlistStudent(value: inviteToCohort): String
 
 }
 
