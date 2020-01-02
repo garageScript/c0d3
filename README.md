@@ -67,6 +67,12 @@ NOTE: If you choose to setup your development server locally, you must install t
 
 ## Tests
 
+### Unit Tests
+
+To run unit tests in watch mode: `yarn tu:dev`  
+- If you want to mock a node module, mock should be placed in `__mocks__` directory
+- For information about jest and mocking, [read the documentation](https://jestjs.io/docs/en/manual-mocks)
+
 ### Functional Tests
 
 #### Cypress Headless Mode
