@@ -10,4 +10,5 @@ describe('gitLab url', () => {
     const result = helpers.url()
     expect(result).toEqual('https://t.c.c/api/v4/users/?private_token=testptoken')
   })
+  // TODO: test extra path
 })

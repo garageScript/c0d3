@@ -1,4 +1,5 @@
 module.exports = {
   'testPathIgnorePatterns': ['cypress', 'gsSubmit', 'src'],
-  'verbose': true
+  'verbose': true,
+  'collectCoverage': true
 }
