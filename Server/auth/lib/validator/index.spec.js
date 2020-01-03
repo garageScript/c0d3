@@ -1,30 +1,59 @@
-const validate = require('./')
+const validate = require('.')
 
 jest.mock('./username')
-
 describe('username validation', () => {
   it('validator resolves to null for valid username', () => {
     const validUsername = 'brian-o-connor'
     expect.assertions(1)
     expect(
       validate.validators.userNameIsAvailable(validUsername)
-    ).resolves.toStrictEqual(null)
+    ).resolves.toBeNull()
   })
   it('validator resolves to be unavailable for a short username', () => {
     const shortUsername = ''
     expect.assertions(1)
-    expect(
+    return expect(
       validate.validators.userNameIsAvailable(shortUsername)
-    ).resolves.toStrictEqual('unavailable')
+    ).resolves.toBe('unavailable')
   })
   it('validator resolves to be unavaible for usernames with capital letters', () => {
     const capitalUsername = 'BrianOconnor'
     expect.assertions(1)
-    expect(
+    return expect(
       validate.validators.userNameIsAvailable(capitalUsername)
-    ).resolves.toStrictEqual('unavailable')
+    ).resolves.toBe('unavailable')
   })
 })
 
-// TODO: Unit test for email validation
-describe('email validation', () => {})
+jest.mock('./email')
+describe('email validation', () => {
+  it('validator resolves to be null for valid email', () => {
+    const validEmail = 'fun@c0d3.com'
+    expect.assertions(1)
+    expect(validate.validators.emailIsAvailable(validEmail)).resolves.toBeNull()
+  })
+
+  it('validator resolves to unavailable of it is too short', () => {
+    const shortEmail = ''
+    expect.assertions(1)
+    return expect(
+      validate.validators.emailIsAvailable(shortEmail)
+    ).resolves.toBe('unavailable')
+  })
+
+  it('validator resolves to umavailable if it is too long', () => {
+    const tooLongEmail =
+      'P2uIek5nERLhuWEq4yXoOQQ9gBWB4Ld3InOIa9g32234234224234J2CONPw8yuDBgH5Eiidbh@hotmail.com'
+    expect.assertions(1)
+    return expect(
+      validate.validators.emailIsAvailable(tooLongEmail)
+    ).resolves.toBe('unavailable')
+  })
+
+  it('validator should reject if it does not match an email format', () => {
+    const invalidEmail = 'something.com'
+    return expect(
+      validate.validators.emailIsAvailable(invalidEmail)
+    ).rejects.toMatch('unavailable')
+  })
+})

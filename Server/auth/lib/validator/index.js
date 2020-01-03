@@ -40,11 +40,11 @@ validate.validators.emailIsAvailable = value => {
       .then(result => {
         resolve(result.length ? 'An email already exist' : null)
       })
-      .catch(_ =>
+      .catch(_ => {
         reject({
           email: [`error: currently unable to validate availability this email`]
         })
-      )
+      })
   })
 }
 
