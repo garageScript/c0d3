@@ -5,21 +5,24 @@ jest.mock('./username')
 describe('username validation', () => {
   it('validator resolves to null for valid username', () => {
     const validUsername = 'brian-o-connor'
+    expect.assertions(1)
     expect(
       validate.validators.userNameIsAvailable(validUsername)
-    ).resolves.toEqual(null)
+    ).resolves.toStrictEqual(null)
   })
   it('validator resolves to be unavailable for a short username', () => {
     const shortUsername = ''
+    expect.assertions(1)
     expect(
       validate.validators.userNameIsAvailable(shortUsername)
-    ).resolves.toEqual('unavailable')
+    ).resolves.toStrictEqual('unavailable')
   })
   it('validator resolves to be unavaible for usernames with capital letters', () => {
     const capitalUsername = 'BrianOconnor'
+    expect.assertions(1)
     expect(
       validate.validators.userNameIsAvailable(capitalUsername)
-    ).resolves.toEqual('unavailable')
+    ).resolves.toStrictEqual('unavailable')
   })
 })
 
