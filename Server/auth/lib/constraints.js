@@ -31,6 +31,10 @@ const constraints = {
   email: {
     presence: { allowEmpty: false },
     email: { message: 'not a valid email address' },
+    format: {
+      pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+      message: 'may only be a valid email'
+    },
     length: {
       minimum: 2,
       maximum: 64,

@@ -54,6 +54,6 @@ describe('email validation', () => {
     const invalidEmail = 'something.com'
     return expect(
       validate.validators.emailIsAvailable(invalidEmail)
-    ).rejects.toMatch('unavailable')
+    ).resolves.toBe('unavailable')
   })
 })

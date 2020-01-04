@@ -31,7 +31,8 @@ validate.validators.emailIsAvailable = value => {
     // prevent expensive web call if basic constraints are violated
     if (
       value.length < constraints.email.length.minimum ||
-      value.length > constraints.email.length.maximum
+      value.length > constraints.email.length.maximum ||
+      !value.match(constraints.email.format.pattern)
     ) {
       return resolve('unavailable')
     }
