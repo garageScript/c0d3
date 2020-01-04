@@ -270,7 +270,7 @@ module.exports = {
     })
   },
 
-  getAllDomains: (obj, args, context) => {
+  domains: (obj, args, context) => {
     fetch('https://apps.c0d3.com/api/mappings', {
       headers: {
         authorization: `${authKey}`
