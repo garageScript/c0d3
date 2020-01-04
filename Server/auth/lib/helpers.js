@@ -9,14 +9,9 @@ const gitLab = {
     return url.toString()
   },
 
-  getUsers: async (url = gitLab.url()) => {
-    const response = await axios.get(`${url}&per_page=100000000`)
-    return response.data
-  },
-
   getUser: async (email, url = gitLab.url()) => {
     const response = await axios.get(
-      `${url}&search=${email}&per_page=100000000`
+      `${url}&search=${email}&per_page=100`
     )
     return (response.data || [])[0]
   },
