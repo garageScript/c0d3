@@ -1,5 +1,7 @@
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
+const fetch = require('node-fetch')
+const authKey = 'f8ec685a-485a-430b-8c37-43c485e9407e'
 
 const getLessonListDetails = (userId) => {
   return Lesson.findAll({
@@ -266,5 +268,12 @@ module.exports = {
         id: args.userId
       }
     })
+  },
+
+  domains: (obj, args, context) => {
+    fetch('https://apps.c0d3.com/api/mappings', {
+      headers: {
+        authorization: `${authKey}`
+      } }).then(r => r.json()).then(data => { return data })
   }
 }
