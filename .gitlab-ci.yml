@@ -9,6 +9,7 @@ test:
   stage: test
   script:
     - yarn ci:test
+    - yarn tu
   only:
   - merge_requests
 
