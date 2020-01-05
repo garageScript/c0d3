@@ -30,14 +30,12 @@ describe('email validation', () => {
       validate.validators.emailIsAvailable(validEmail)
     ).resolves.toBeNull()
   })
-
   it('validator resolves to unavailable of it is too short', () => {
     const shortEmail = ''
     return expect(
       validate.validators.emailIsAvailable(shortEmail)
     ).resolves.toBe('unavailable')
   })
-
   it('validator resolves to umavailable if it is too long', () => {
     const tooLongEmail =
       'P2uIek5nERLhuWEq4yXoOQQ9gBWB4Ld3InOIa9g32234234224234J2CONPw8yuDBgH5Eiidbh@hotmail.com'
@@ -45,7 +43,6 @@ describe('email validation', () => {
       validate.validators.emailIsAvailable(tooLongEmail)
     ).resolves.toBe('unavailable')
   })
-
   it('validator should reject if it does not match an email format', () => {
     const invalidEmail = 'something.com'
     return expect(
