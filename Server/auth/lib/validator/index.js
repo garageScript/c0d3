@@ -3,6 +3,7 @@ const constraints = require('../constraints')
 const isUserAvailable = require('./username')
 const isEmailAvailable = require('./email')
 
+// TODO: validator function should return object type {available: yes}
 validate.validators.getUsernameAvailability = value => {
   return new validate.Promise((resolve, reject) => {
     // prevent expensive web call if basic constraints are violated
@@ -26,6 +27,7 @@ validate.validators.getUsernameAvailability = value => {
   })
 }
 
+// TODO: validator function should return object type {available: yes}
 validate.validators.getEmailAvailability = value => {
   return new validate.Promise((resolve, reject) => {
     // prevent expensive web call if basic constraints are violated
