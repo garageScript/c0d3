@@ -26,7 +26,7 @@ const constraints = {
       tooShort: 'too short (minimum is %{count} characters)',
       tooLong: 'too long (maximum is %{count} characters)'
     },
-    userNameIsAvailable: true
+    getUsernameAvailability: true
   },
   email: {
     presence: { allowEmpty: false },
@@ -41,7 +41,7 @@ const constraints = {
       tooShort: 'too short (minimum is %{count} characters)',
       tooLong: 'too long (maximum is %{count} characters)'
     },
-    emailIsAvailable: true
+    getEmailAvailability: true
   },
   password: {
     presence: { allowEmpty: false },

@@ -3,7 +3,7 @@ const constraints = require('../constraints')
 const isUserAvailable = require('./username')
 const isEmailAvailable = require('./email')
 
-validate.validators.userNameIsAvailable = value => {
+validate.validators.getUsernameAvailability = value => {
   return new validate.Promise((resolve, reject) => {
     // prevent expensive web call if basic constraints are violated
     if (
@@ -26,7 +26,7 @@ validate.validators.userNameIsAvailable = value => {
   })
 }
 
-validate.validators.emailIsAvailable = value => {
+validate.validators.getEmailAvailability = value => {
   return new validate.Promise((resolve, reject) => {
     // prevent expensive web call if basic constraints are violated
     if (
