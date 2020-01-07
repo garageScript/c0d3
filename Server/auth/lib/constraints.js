@@ -26,18 +26,22 @@ const constraints = {
       tooShort: 'too short (minimum is %{count} characters)',
       tooLong: 'too long (maximum is %{count} characters)'
     },
-    userNameIsAvailable: true
+    getUsernameAvailability: true
   },
   email: {
     presence: { allowEmpty: false },
     email: { message: 'not a valid email address' },
+    format: {
+      pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+      message: 'may only be a valid email'
+    },
     length: {
       minimum: 2,
       maximum: 64,
       tooShort: 'too short (minimum is %{count} characters)',
       tooLong: 'too long (maximum is %{count} characters)'
     },
-    emailIsAvailable: true
+    getEmailAvailability: true
   },
   password: {
     presence: { allowEmpty: false },
