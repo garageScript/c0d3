@@ -38,3 +38,16 @@ describe('getUser', () => {
   // TODO: catch errors
   // TODO: user not found
 })
+
+describe('data', () => {
+  const axios = require('axios')
+  it('should return empty array when response data is empty', async () => {
+    axios.get = jest.fn(() => {
+      return {
+        data: []
+      }
+    })
+    const result = await gitLab.data('', 1, [])
+    expect(result).toEqual([])
+  })
+})
