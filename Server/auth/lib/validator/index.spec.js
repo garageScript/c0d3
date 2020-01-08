@@ -1,7 +1,26 @@
 const validate = require('.')
 
 jest.mock('./username')
+jest.mock('./email')
+
+const isUserAvailable = require('./username')
+isUserAvailable.mockImplementationOnce(() => Promise.reject())
+const isEmailAvailable = require('./email')
+isEmailAvailable.mockImplementationOnce(() => Promise.reject())
+
+// TODO: rewrite tests for simplify validation functions
 describe('username validation', () => {
+  it('validator rejects with proper error message', () => {
+    const errObj = {
+      userName: [
+        `error: currently unable to validate availability this user name`
+      ]
+    }
+    const name = 'brian'
+    return expect(
+      validate.validators.getUsernameAvailability(name)
+    ).rejects.toEqual(errObj)
+  })
   it('validator resolves to null for valid username', () => {
     const validUsername = 'brian-o-connor'
     return expect(
@@ -22,8 +41,16 @@ describe('username validation', () => {
   })
 })
 
-jest.mock('./email')
 describe('email validation', () => {
+  it('validator rejects with the proper error message', () => {
+    const errObj = {
+      email: [`error: currently unable to validate availability this email`]
+    }
+    const email = 'fun@c0d3.com'
+    return expect(
+      validate.validators.getEmailAvailability(email)
+    ).rejects.toEqual(errObj)
+  })
   it('validator resolves to be null for valid email', () => {
     const validEmail = 'fun@c0d3.com'
     return expect(
