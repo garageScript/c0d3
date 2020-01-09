@@ -2,22 +2,16 @@ require('dotenv').load()
 const axios = require('axios')
 const { URL, URLSearchParams } = require('url')
 
-const private_token = process.env.GITLAB_PTOKEN
 const gitLab = {
   url: (extraPath = '') => {
     const url = new URL('/api/v4/users/' + extraPath, process.env.GITLAB_BASE_URL)
-    url.search = new URLSearchParams({ private_token })
+    url.search = new URLSearchParams({ private_token: process.env.GITLAB_PTOKEN })
     return url.toString()
-  },
-
-  getUsers: async (url = gitLab.url()) => {
-    const response = await axios.get(`${url}&per_page=100000000`)
-    return response.data
   },
 
   getUser: async (email, url = gitLab.url()) => {
     const response = await axios.get(
-      `${url}&search=${email}&per_page=100000000`
+      `${url}&search=${email}&per_page=100`
     )
     return (response.data || [])[0]
   },

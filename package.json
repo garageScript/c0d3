@@ -51,6 +51,8 @@
     "ci:deploy": "./scripts/deploy.sh",
     "ci:test": "./scripts/test.sh",
     "cypress:open": "cypress open",
+    "tu:dev": "jest --watchAll",
+    "tu": "jest",
     "tf": "cypress run",
     "tfs": "cypress run --spec"
   },
