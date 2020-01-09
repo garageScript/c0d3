@@ -50,4 +50,25 @@ describe('data', () => {
     const result = await gitLab.data('', 1, [])
     expect(result).toEqual([])
   })
+  it('should get and combine data', async () => {
+    const diffResultsGen = (() => {
+      let i = 0
+      return () => {
+        if (i === 0) {
+          i = i + 1
+          return { data: [3, 2] }
+        }
+        if (i === 1) {
+          i = i + 1
+          return { data: [9, 8] }
+        }
+        return { data: [] }
+      }
+    })()
+
+    axios.get = jest.fn(diffResultsGen)
+
+    const result = await gitLab.data('', 1, [])
+    expect(result).toEqual([3, 2, 9, 8])
+  })
 })
