@@ -10,24 +10,20 @@ const landingPage = document.querySelector( '#landingContainer' )
 const reactContainer = document.querySelector( '#reactContainer' )
 const hasVisited = localStorage.getItem( 'session_c0d3' )
 const isRootURL = window.location.pathname === '/'
+reactContainer.classList.toggle( 'hidden' )
 
 loadUserInfo( () => {
   const userInfo = { ...window.userInfo }
 
   // TODO: Remove hack. Replace all instances of userName with username
   userInfo.userName = userInfo.username
-
   const { userName, id } = userInfo || {}
+  const isLogged = Boolean(userName) && Boolean(id)
 
-  if ( hasVisited ) {
-    landingPage.classList.add( 'hidden' )
-
-    if ( ( userName && id ) || !isRootURL ) {
-      reactContainer.classList.remove( 'hidden' )
-      return  ReactDOM.render( <App />, reactContainer )
-    }
-
-    return landingPage.classList.remove( 'hidden' )
+  if ( hasVisited && ( isLogged || !isRootURL )) {
+    landingPage.classList.toggle( 'hidden' )
+    reactContainer.classList.toggle( 'hidden' )
+    ReactDOM.render( <App />, reactContainer )
   }
 } )
 
