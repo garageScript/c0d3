@@ -220,7 +220,7 @@ app.post('/waitlist', (req, res) => {
 
 app.get('/*', (req, res) => {
   if (req.user && req.user.id) { return res.sendFile(path.join(__dirname, '../public/root.html')) }
-  return res.sendFile(path.join(__dirname, '../public/landing.html'))
+  return res.sendFile(path.join(__dirname, '../public/index.html'))
 })
 
 // Send 404 to non-existing routes

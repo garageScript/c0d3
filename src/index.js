@@ -10,7 +10,7 @@ const landingPage = document.querySelector( '#landingContainer' )
 const reactContainer = document.querySelector( '#reactContainer' )
 const hasVisited = localStorage.getItem( 'session_c0d3' )
 const isRootURL = window.location.pathname === '/'
-reactContainer.classList.toggle( 'hidden' )
+reactContainer.classList.add( 'hidden' )
 
 loadUserInfo( () => {
   const userInfo = { ...window.userInfo }
@@ -21,8 +21,8 @@ loadUserInfo( () => {
   const isLogged = Boolean(userName) && Boolean(id)
 
   if ( hasVisited && ( isLogged || !isRootURL )) {
-    landingPage.classList.toggle( 'hidden' )
-    reactContainer.classList.toggle( 'hidden' )
+    landingPage.classList.add( 'hidden' )
+    reactContainer.classList.remove( 'hidden' )
     ReactDOM.render( <App />, reactContainer )
   }
 } )
