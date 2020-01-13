@@ -43,5 +43,4 @@ const startApp = () => {
   }
 }
 
-localStorage.setItem('session_c0d3', Date.now())
 startApp()
