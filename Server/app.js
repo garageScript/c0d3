@@ -216,6 +216,10 @@ app.get('/verifySubmissionToken', async (req, res) => {
 // Process Waitlist request
 app.post('/waitlist', (req, res) => {
   authHelpers.joinWaitList(req, res)
+} )
+
+app.get('/*', (req, res) => {
+  return res.sendFile(path.join(__dirname, '../public/index.html'))
 })
 
 // Send 404 to non-existing routes
