@@ -12,25 +12,30 @@ const isProbablyLoggedIn = localStorage.getItem( 'session_c0d3' )
 const isRootURL = window.location.pathname === '/'
 reactContainer.classList.add( 'hidden' )
 
+if ( (isProbablyLoggedIn && isRootURL ) || !isRootURL) {
+  landingPage.classList.add( 'hidden' )
+}
+
 loadUserInfo( () => {
   const userInfo = { ...window.userInfo }
-  // TODO: Remove hack. Replace all instances of userName with username
+    // TODO: Remove hack. Replace all instances of userName with username
   userInfo.userName = userInfo.username
   const { userName, id } = userInfo || {}
   const isLoggedIn = Boolean( userName ) && Boolean( id )
 
-  if ( isProbablyLoggedIn && isRootURL) {
-    landingPage.classList.add( 'hidden' )
-  }
-
-  if ( isLoggedIn || !isRootURL ) {
+  if ( isLoggedIn ) {
     landingPage.classList.add( 'hidden' )
     reactContainer.classList.remove( 'hidden' )
-    ReactDOM.render( <App />, reactContainer )
+    return ReactDOM.render( <App />, reactContainer )
+  }
 
-    if ( isLoggedIn ) {
-      localStorage.setItem( 'session_c0d3', JSON.stringify( userInfo ) )
-    }
+  if ( isRootURL ) {
+    landingPage.classList.remove( 'hidden' )
+    reactContainer.classList.add( 'hidden' )
+  } else {
+    landingPage.classList.add( 'hidden' )
+    reactContainer.classList.remove( 'hidden' )
+    return ReactDOM.render( <App />, reactContainer )
   }
 } )
 
