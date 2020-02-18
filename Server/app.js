@@ -197,7 +197,7 @@ app.get('/ios', (req, res) => {
 })
 
 const noAuthRouter = (req, res) => {
-  return res.sendFile(path.join(__dirname, '../public/root.html'))
+  return res.sendFile(path.join(__dirname, '../public/index.html'))
 }
 app.get('/signup', noAuthRouter)
 app.get('/signin', noAuthRouter)
@@ -216,11 +216,10 @@ app.get('/verifySubmissionToken', async (req, res) => {
 // Process Waitlist request
 app.post('/waitlist', (req, res) => {
   authHelpers.joinWaitList(req, res)
-})
+} )
 
 app.get('/*', (req, res) => {
-  if (req.user && req.user.id) { return res.sendFile(path.join(__dirname, '../public/root.html')) }
-  return res.sendFile(path.join(__dirname, '../public/landing.html'))
+  return res.sendFile(path.join(__dirname, '../public/index.html'))
 })
 
 // Send 404 to non-existing routes

@@ -2,7 +2,7 @@
 describe('c0d3.com', () => {
   it('allows sign in flow', () => {
     const url = Cypress.env('baseUrl')
-    const route = '/landing.html'
+    const route = '/'
     cy.visit(`${url}${route}`)
 
     cy.contains(/^log in$/i).click()
