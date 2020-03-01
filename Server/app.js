@@ -146,7 +146,8 @@ apolloServer.applyMiddleware({
         'https://v2.c0d3.app',
         config.CLIENT_URL,
       ]
-      if (whitelist.includes(origin)) {
+      console.log('request received from', origin)
+      if (whitelist.includes(origin) || !origin) {
         return cb(null, true)
       }
       return cb(new Error('Not allowed by cors'))
