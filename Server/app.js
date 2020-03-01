@@ -136,7 +136,21 @@ const apolloServer = new ApolloServer({
 apolloServer.applyMiddleware({
   app,
   cors: {
-    origin: config.CLIENT_URL
+    credentials: true,
+    origin: (origin, cb) => {
+      // Hard to find documentation on this.
+      //   Source: https://github.com/apollographql/apollo-server/issues/1142#issuecomment-584790781
+      const whitelist = [
+        'https://c0d3.com',
+        'https://www.c0d3.com',
+        'https://v2.c0d3.app',
+        config.CLIENT_URL,
+      ]
+      if (whitelist.includes(origin)) {
+        return cb(null, true)
+      }
+      return cb(new Error('Not allowed by cors'))
+    }
   }
 })
 
