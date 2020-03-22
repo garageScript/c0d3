@@ -111,8 +111,6 @@ app.use(session({
   resave: false, // This is set to false because SequelizeStore supports touch method
   saveUninitialized: false // false is useful for implementing login sessions, reducing server storage usage
 }))
-app.use(passport.initialize())
-app.use(passport.session()) // persistent login session
 
 // For CORS. Must be placed at the top so this handles
 // cors request first before propagating to other middlewares
@@ -126,6 +124,8 @@ app.use((req, res, next) => {
   )
   next()
 })
+app.use(passport.initialize())
+app.use(passport.session()) // persistent login session
 
 const apolloServer = new ApolloServer({
   schema: gqlSchema,
