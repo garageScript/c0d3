@@ -151,7 +151,6 @@ apolloServer.applyMiddleware({
       // CLI submission have no origins, so origin will be undefined.
       //   Therefore, In addition to allowing domains, we must also check for
       //   cases wher origin is undefined
-        return cb(null, true)
       if (whitelist.includes(origin) || !origin) {
         return cb(null, true)
       }
