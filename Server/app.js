@@ -109,7 +109,8 @@ app.use(session({
     db: sequelize
   }),
   resave: false, // This is set to false because SequelizeStore supports touch method
-  saveUninitialized: false // false is useful for implementing login sessions, reducing server storage usage
+  saveUninitialized: false, // false is useful for implementing login sessions, reducing server storage usage
+  cookie: {sameSite: 'none', secure: process.env.NODE_ENV === 'production'} 
 }))
 
 // For CORS. Must be placed at the top so this handles
@@ -117,10 +118,10 @@ app.use(session({
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Credentials', true)
   res.header('Access-Control-Allow-Origin', req.headers.origin)
-  res.header('Access-Control-Allow-Methods', 'PUT, POST') // cors preflight
+  res.header('Access-Control-Allow-Methods', 'GET', 'PUT, POST') // cors preflight
   res.header(
     'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept'
+    'Origin, X-Requested-With, Content-Type, Accept, Credentials'
   )
   next()
 })
