@@ -57,7 +57,6 @@ passport.use(new LocalStrategy(async (username, password, done) => {
   const user = await User.findOne({ where: { username } })
   if (!user) { return done(null, false) }
 
-
   const pwIsValid = await bcrypt.compare(password, user.password)
   if (!pwIsValid) { return done(null, false) }
   try {
@@ -70,7 +69,6 @@ passport.use(new LocalStrategy(async (username, password, done) => {
     log.error(`Signin for mattermost or gitlab failed: ${err}`)
     console.log('err', err)
   }
- 
   const userData = {
     id: user.dataValues.id,
     name: user.dataValues.name,
