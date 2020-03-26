@@ -102,6 +102,7 @@ app.post('/cli/signin', async (req, res) => {
   }
 })
 
+app.set('trust proxy', 1) // Source: https://github.com/expressjs/session#cookie-options
 app.use(session({
   secret: config.SESSION_SECRET,
   domain: config.HOST_NAME,
