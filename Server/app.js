@@ -111,7 +111,7 @@ app.use(session({
   }),
   resave: false, // This is set to false because SequelizeStore supports touch method
   saveUninitialized: false, // false is useful for implementing login sessions, reducing server storage usage
-  cookie: {sameSite: 'none', secure: process.env.NODE_ENV === 'production'} 
+  cookie: {sameSite: 'none', secure: true} // secure must always be true for sameSite none
 }))
 
 // For CORS. Must be placed at the top so this handles
@@ -119,7 +119,7 @@ app.use(session({
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Credentials', true)
   res.header('Access-Control-Allow-Origin', req.headers.origin)
-  res.header('Access-Control-Allow-Methods', 'GET', 'PUT, POST') // cors preflight
+  res.header('Access-Control-Allow-Methods', 'GET, PUT, POST') // cors preflight
   res.header(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept, Credentials'
@@ -148,6 +148,11 @@ apolloServer.applyMiddleware({
         'https://v2.c0d3.app',
         config.CLIENT_URL,
       ]
+
+      // Development should allow all domains to access graphql
+      if (process.env.NODE_ENV !== 'production') {
+        return cb(null, true)
+      }
       // Bug 2/29/2020: All submissions broke.
       // CLI submission have no origins, so origin will be undefined.
       //   Therefore, In addition to allowing domains, we must also check for
