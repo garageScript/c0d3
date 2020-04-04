@@ -111,7 +111,7 @@ app.use(session({
   }),
   resave: false, // This is set to false because SequelizeStore supports touch method
   saveUninitialized: false, // false is useful for implementing login sessions, reducing server storage usage
-  cookie: {sameSite: 'none', secure: true}
+  cookie: {sameSite: 'none', secure: true} // secure must always be true for sameSite none
 }))
 
 // For CORS. Must be placed at the top so this handles
