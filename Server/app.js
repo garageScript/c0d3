@@ -39,6 +39,8 @@ app.use('/*', (req, res, next) => {
     const pathStat = stats[req.path] || []
     pathStat.push(Date.now())
     stats[req.path] = pathStat
+  } catch(e) {
+    console.log('error detected', e)
   }
   return next()
 })
