@@ -25,6 +25,26 @@ const matterMostService = require('./auth/lib/matterMostService')
 const gitLab = require('./auth/lib/helpers')
 const nanoid = require('nanoid')
 
+app.get('/', (req, res) => {
+  return res.redirect('https://www.c0d3.com')
+})
+
+const stats = {}
+app.get('/stats', (req, res) => {
+  return res.json(stats)
+})
+
+app.use('/*', (req, res, next) => {
+  try{
+    const pathStat = stats[req.path] || []
+    pathStat.push(Date.now())
+    stats[req.path] = pathStat
+  } catch(e) {
+    console.log('error detected', e)
+  }
+  return next()
+})
+
 // Middleware to process requests
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
