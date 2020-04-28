@@ -29,11 +29,11 @@ app.get('/', (req, res) => {
   return res.redirect('https://www.c0d3.com')
 })
 
+const stats = {}
 app.get('/stats', (req, res) => {
   return res.json(stats)
 })
 
-const stats = {}
 app.use('/*', (req, res, next) => {
   try{
     const pathStat = stats[req.path] || []
