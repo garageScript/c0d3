@@ -34,7 +34,7 @@ app.get('/stats', (req, res) => {
   return res.json(stats)
 })
 
-app.use('/*', (req, res, next) => {
+app.use((req, res, next) => {
   try{
     const pathStat = stats[req.path] || []
     pathStat.push(Date.now())
