@@ -33,7 +33,8 @@ class SignInForm extends React.Component {
       this.state.username,
       this.state.password,
       authResponse => {
-        if (authResponse.success) {
+        if ( authResponse.success ) {
+          localStorage.setItem( 'session_c0d3', Date.now() )
           window.location = authResponse.userInfo.redirectPath || '/'
           return
         }

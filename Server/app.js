@@ -102,6 +102,7 @@ app.post('/cli/signin', async (req, res) => {
   }
 })
 
+app.set('trust proxy', 1) // Source: https://github.com/expressjs/session#cookie-options
 app.use(session({
   secret: config.SESSION_SECRET,
   domain: config.HOST_NAME,
@@ -109,23 +110,24 @@ app.use(session({
     db: sequelize
   }),
   resave: false, // This is set to false because SequelizeStore supports touch method
-  saveUninitialized: false // false is useful for implementing login sessions, reducing server storage usage
+  saveUninitialized: false, // false is useful for implementing login sessions, reducing server storage usage
+  cookie: {sameSite: 'none', secure: true} // secure must always be true for sameSite none
 }))
-app.use(passport.initialize())
-app.use(passport.session()) // persistent login session
 
 // For CORS. Must be placed at the top so this handles
 // cors request first before propagating to other middlewares
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Credentials', true)
   res.header('Access-Control-Allow-Origin', req.headers.origin)
-  res.header('Access-Control-Allow-Methods', 'PUT, POST') // cors preflight
+  res.header('Access-Control-Allow-Methods', 'GET, PUT, POST') // cors preflight
   res.header(
     'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept'
+    'Origin, X-Requested-With, Content-Type, Accept, Credentials'
   )
   next()
 })
+app.use(passport.initialize())
+app.use(passport.session()) // persistent login session
 
 const apolloServer = new ApolloServer({
   schema: gqlSchema,
@@ -136,7 +138,30 @@ const apolloServer = new ApolloServer({
 apolloServer.applyMiddleware({
   app,
   cors: {
-    origin: config.CLIENT_URL
+    credentials: true,
+    origin: (origin, cb) => {
+      // Hard to find documentation on this.
+      //   Source: https://github.com/apollographql/apollo-server/issues/1142#issuecomment-584790781
+      const whitelist = [
+        'https://c0d3.com',
+        'https://www.c0d3.com',
+        'https://v2.c0d3.app',
+        config.CLIENT_URL,
+      ]
+
+      // Development should allow all domains to access graphql
+      if (process.env.NODE_ENV !== 'production') {
+        return cb(null, true)
+      }
+      // Bug 2/29/2020: All submissions broke.
+      // CLI submission have no origins, so origin will be undefined.
+      //   Therefore, In addition to allowing domains, we must also check for
+      //   cases wher origin is undefined
+      if (whitelist.includes(origin) || !origin) {
+        return cb(null, true)
+      }
+      return cb(new Error('Not allowed by cors'))
+    }
   }
 })
 
@@ -197,7 +222,7 @@ app.get('/ios', (req, res) => {
 })
 
 const noAuthRouter = (req, res) => {
-  return res.sendFile(path.join(__dirname, '../public/root.html'))
+  return res.sendFile(path.join(__dirname, '../public/index.html'))
 }
 app.get('/signup', noAuthRouter)
 app.get('/signin', noAuthRouter)
@@ -216,11 +241,10 @@ app.get('/verifySubmissionToken', async (req, res) => {
 // Process Waitlist request
 app.post('/waitlist', (req, res) => {
   authHelpers.joinWaitList(req, res)
-})
+} )
 
 app.get('/*', (req, res) => {
-  if (req.user && req.user.id) { return res.sendFile(path.join(__dirname, '../public/root.html')) }
-  return res.sendFile(path.join(__dirname, '../public/landing.html'))
+  return res.sendFile(path.join(__dirname, '../public/index.html'))
 })
 
 // Send 404 to non-existing routes

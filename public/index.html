@@ -33,7 +33,351 @@
 </head>
 <body>
   <div id="modal-root"></div>
-  <div id="root"> </div>
+  <div id="reactContainer"></div>
+  <div id="landingContainer">
+    <nav class="c0d3-nav" role="navigation">
+      <div class="top-menu">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-2">
+              <div id="c0d3-logo"><a href="index.html">c0d3.com</a></div>
+            </div>
+            <div class="col-md-10 text-right menu-1">
+              <ul>
+                <li class="active"><a href="/">Home</a></li>
+                <li>
+                  <a href="#journey">Journey</a>
+                </li>
+                <li><a href="#join">Join</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="/signin">Log In</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <section
+      id="home"
+      class="video-hero"
+      style="background-color: black; text-align:center;"
+      data-section="home"
+    >
+      <!-- <pre style="display: inline-block; text-align:left; margin-top: 130px; background-color: black; color: #0f0;">
+        db      d88888b  .d8b.  d8888b. d8b   db         d88b  .d8b.  db    db  .d8b.  .d8888.  .o88b. d8888b. d888888b d8888b. d888888b
+        88      88'     d8' `8b 88  `8D 888o  88         `8P' d8' `8b 88    88 d8' `8b 88'  YP d8P  Y8 88  `8D   `88'   88  `8D `~~88~~'
+        88      88ooooo 88ooo88 88oobY' 88V8o 88          88  88ooo88 Y8    8P 88ooo88 `8bo.   8P      88oobY'    88    88oodD'    88
+        88      88~~~~~ 88~~~88 88`8b   88 V8o88          88  88~~~88 `8b  d8' 88~~~88   `Y8b. 8b      88`8b      88    88~~~      88
+        88booo. 88.     88   88 88 `88. 88  V888      db. 88  88   88  `8bd8'  88   88 db   8D Y8b  d8 88 `88.   .88.   88         88
+        Y88888P Y88888P YP   YP 88   YD VP   V8P      Y8888P  YP   YP    YP    YP   YP `8888Y'  `Y88P' 88   YD Y888888P 88         YP
+
+
+
+        d888888b db   db d88888b       .d88b.  db      d8888b.      .d8888.  .o88b. db   db  .d88b.   .d88b.  db           db   d8b   db  .d8b.  db    db
+        `~~88~~' 88   88 88'          .8P  Y8. 88      88  `8D      88'  YP d8P  Y8 88   88 .8P  Y8. .8P  Y8. 88           88   I8I   88 d8' `8b `8b  d8'
+          88    88ooo88 88ooooo      88    88 88      88   88      `8bo.   8P      88ooo88 88    88 88    88 88           88   I8I   88 88ooo88  `8bd8'
+          88    88~~~88 88~~~~~      88    88 88      88   88        `Y8b. 8b      88~~~88 88    88 88    88 88           Y8   I8I   88 88~~~88    88
+          88    88   88 88.          `8b  d8' 88booo. 88  .8D      db   8D Y8b  d8 88   88 `8b  d8' `8b  d8' 88booo.      `8b d8'8b d8' 88   88    88
+          YP    YP   YP Y88888P       `Y88P'  Y88888P Y8888D'      `8888Y'  `Y88P' YP   YP  `Y88P'   `Y88P'  Y88888P       `8b8' `8d8'  YP   YP    YP
+      </pre> -->
+      <img src="/images/heading.png" id="imageHeading" alt="" />
+    </section>
+    <section id="videoSection">
+      <h3>See How</h3>
+      <span class="play"
+        ><a href="#journey" class="pulse popup-vimeo"
+          ><i class="icon-arrow-down"></i></a
+      ></span>
+    </section>
+
+    <a name="journey"></a>
+    <!-- Section: Blog v.1 -->
+    <section class="">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <!-- Section heading -->
+            <h2 class="h1-responsive font-weight-bold text-center my-5">
+              Overview of your learning journey
+            </h2>
+            <p class="text-center w-responsive mx-auto mb-5">
+              Our learning process is interactive and follows the same
+              practice as a well functioning engineering team. From the
+              first line of code you write, you will be code reviewed by
+              engineers to ensure you are always following industry best
+              practices.
+            </p>
+
+            <p></p>
+
+            <!-- Grid row -->
+            <div class="row">
+              <!-- Grid column -->
+              <div class="col-lg-5">
+                <!-- Featured image -->
+                <div class="view overlay rounded z-depth-2 mb-lg-0 mb-4">
+                  <img
+                    class="img-fluid"
+                    src="/images/shell.png"
+                    alt="Sample image"
+                  />
+                  <a>
+                    <div class="mask rgba-white-slight"></div>
+                  </a>
+                </div>
+              </div>
+              <!-- Grid column -->
+
+              <!-- Grid column -->
+              <div class="col-lg-7">
+                <!-- Category -->
+                <a href="#!" class="green-text"
+                  ><h6 class="font-weight-bold mb-3">Setup</h6></a
+                >
+                <!-- Post title -->
+                <h3 class="font-weight-bold mb-3">
+                  <strong>Creating an account</strong>
+                </h3>
+                <!-- Excerpt -->
+                <p>
+                  After creating an account, you will gain ssh access to our
+                  computer. This means that you can code from any
+                  device/operating system (phone, tablet, chromebooks, macs,
+                  windows). All necessary tools will already be set up for
+                  you, there will be no need to set up and install anything
+                  and you can immediately jump into our curriculum
+                </p>
+                <!-- Post data -->
+              </div>
+              <!-- Grid column -->
+            </div>
+            <!-- Grid row -->
+
+            <hr class="my-5" />
+
+            <!-- Grid row -->
+            <div class="row">
+              <!-- Grid column -->
+              <div class="col-lg-7">
+                <!-- Category -->
+                <a href="#!" class="pink-text"
+                  ><h6 class="font-weight-bold mb-3">Learning</h6></a
+                >
+                <!-- Post title -->
+                <h3 class="font-weight-bold mb-3">
+                  <strong>Curriculum</strong>
+                </h3>
+                <!-- Excerpt -->
+                <p>
+                  Each lesson in our curriculum is designed to be hands on
+                  and you will learn by working through plenty of exercises.
+                  There will be video lectures to guide you along as well as
+                  lecture notes. In the interactive lessons where you write
+                  server code and build web applications, you will be able
+                  to create your own subdomains and your code is immediately
+                  available on c0d3.com around the world. If you get stuck,
+                  you can ask for help in our chat channel, where students
+                  who passed the lessons would be helping you along.
+                </p>
+              </div>
+              <!-- Grid column -->
+
+              <!-- Grid column -->
+              <div class="col-lg-5">
+                <!-- Featured image -->
+                <div class="view overlay rounded z-depth-2">
+                  <img
+                    class="img-fluid"
+                    src="/images/curriculum.png"
+                    alt="Sample image"
+                  />
+                  <a>
+                    <div class="mask rgba-white-slight"></div>
+                  </a>
+                </div>
+              </div>
+              <!-- Grid column -->
+            </div>
+            <!-- Grid row -->
+
+            <hr class="my-5" />
+
+            <!-- Grid row -->
+            <div class="row">
+              <!-- Grid column -->
+              <div class="col-lg-5">
+                <!-- Featured image -->
+                <div class="view overlay rounded z-depth-2 mb-lg-0 mb-4">
+                  <img
+                    class="img-fluid"
+                    src="/images/teacher.png"
+                    alt="Sample image"
+                  />
+                  <a>
+                    <div class="mask rgba-white-slight"></div>
+                  </a>
+                </div>
+              </div>
+              <!-- Grid column -->
+
+              <!-- Grid column -->
+              <div class="col-lg-7">
+                <!-- Category -->
+                <a href="#!" class="indigo-text"
+                  ><h6 class="font-weight-bold mb-3">Teaching</h6></a
+                >
+                <!-- Post title -->
+                <h3 class="font-weight-bold mb-3">
+                  <strong>Conducting Code Reviews</strong>
+                </h3>
+                <!-- Excerpt -->
+                <p>
+                  When you finish your lesson, you will have the opportunity
+                  to help new students who are starting the lesson. By code
+                  reviewing students to the same standard that you were code
+                  reviewed, you help ensure that new students are writing
+                  good code and becoming better engineers. At the same time,
+                  conducting regular code reviews helps you improve your
+                  ability to read/debug code as well as understand the
+                  lesson concepts at a deeper level.
+                </p>
+              </div>
+              <!-- Grid column -->
+            </div>
+            <!-- Grid row -->
+
+            <hr class="my-5" />
+
+            <!-- Grid row -->
+            <div class="row">
+              <!-- Grid column -->
+              <div class="col-lg-7">
+                <!-- Category -->
+                <a href="#!" class="pink-text"
+                  ><h6 class="font-weight-bold mb-3">Success</h6></a
+                >
+                <!-- Post title -->
+                <h3 class="font-weight-bold mb-3">
+                  <strong>Work Experience</strong>
+                </h3>
+                <!-- Excerpt -->
+                <p>
+                  After completing our curriculum, you will gain access to
+                  our internal code repository that powers c0d3.com and have
+                  the opportunity to work with our engineers and experience
+                  the entire workflow of a full stack software engineer.
+                  There will be bugs and feature list on our issue board for
+                  you to contribute to and you will be held to the same
+                  expectations as any respected engineer: high quality code
+                  and proper testing. Every feature contribution will be
+                  documented and recogized on our contribution list and you
+                  would be able to list your contributions as work
+                  experience on your resume.
+                </p>
+              </div>
+              <!-- Grid column -->
+
+              <!-- Grid column -->
+              <div class="col-lg-5">
+                <!-- Featured image -->
+                <div class="view overlay rounded z-depth-2">
+                  <img
+                    class="img-fluid"
+                    src="/images/contrib.png"
+                    alt="Sample image"
+                  />
+                  <a>
+                    <div class="mask rgba-white-slight"></div>
+                  </a>
+                </div>
+              </div>
+              <!-- Grid column -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <a name="join"></a>
+    <section
+      class="py-5"
+      style="margin-top: 50px; background-color: black;"
+    >
+      <div class="container" style="text-align: center;">
+        <!-- <pre style="display: inline-block; text-align:left; color: #0f0; background: black; border: 0;">
+                ##  #######  #### ##    ##    ##     ##  ######  ####
+                ## ##     ##  ##  ###   ##    ##     ## ##    ## ####
+                ## ##     ##  ##  ####  ##    ##     ## ##       ####
+                ## ##     ##  ##  ## ## ##    ##     ##  ######   ##
+          ##    ## ##     ##  ##  ##  ####    ##     ##       ##
+          ##    ## ##     ##  ##  ##   ###    ##     ## ##    ## ####
+          ######   #######  #### ##    ##     #######   ######  ####
+        </pre> -->
+        <img
+          src="/images/joinus.png"
+          style="max-width: 450px; margin-bottom: 10px"
+          alt=""
+        />
+        <div class="row">
+          <div class="col-6 offset-3">
+            <p style="color: #999">
+              To prevent our servers from being overloaded, please send a
+              request to join our waitlist
+            </p>
+
+            <div class="md-form input-group">
+              <input
+                type="text"
+                class="form-control"
+                style="color: white;"
+                id="emailInput"
+                placeholder="email"
+                aria-label="email"
+                aria-describedby="basic-addon2"
+              />
+              <button
+                class="btn btn-mdb-color waves-effect m-0"
+                type="button"
+                id="joinButton"
+              >
+                Request WaitList
+              </button>
+            </div>
+            <div class="invalid-feedback" id="invalidFeedback"></div>
+            <div class="valid-feedback" id="validFeedback">
+              You were successfully added to the waitlist. Please check your
+              email for confirmation and details
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="my-5" style="background-color: #050;" />
+
+      <a name="contact"></a>
+      <div class="container" style="color: #666;">
+        <div class="row row-pb-md">
+          <div class="col-5">
+            <h4>C0D3.com</h4>
+            <p>
+              We are on a mission to train people to become great engineers.
+            </p>
+          </div>
+          <div class="col-3">
+            <h4>Contact Info</h4>
+            <p>
+              490 W San Carlos St,
+              <br />
+              San Jose,A 95110
+            </p>
+            <p><a href="mailto:hello@c0d3.com">hello@c0d3.com</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Section: Blog v.1 -->
+  </div>
   <script src="/mdb/js/jquery-3.3.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
 

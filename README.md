@@ -45,8 +45,7 @@ NOTE: If you choose to setup your development server locally, you must install t
 
 6. Start the backend server on the correct port - `supervisor Server/app.js`
 7. Start the frontend server on the correct port - `yarn start`
-8. On the front-end, add landing.html to url
-   > For example: https://your-client-url.c0d3.com/landing.html
+   > For example: https://your-client-url.c0d3.com
 
 9. Create a cypress.env.json file with `baseUrl` to be the same as the
    CLIENT_URL environment variable.
@@ -69,7 +68,7 @@ NOTE: If you choose to setup your development server locally, you must install t
 
 ### Unit Tests
 
-To run unit tests in watch mode: `yarn tu:dev`  
+To run unit tests in watch mode: `yarn tu:dev`
 - If you want to mock a node module, mock should be placed in `__mocks__` directory
 - For information about jest and mocking, [read the documentation](https://jestjs.io/docs/en/manual-mocks)
 
@@ -168,4 +167,3 @@ https://dba.stackexchange.com/questions/65662/postgres-how-to-insert-row-with-au
   - belongsTo Room
   - belongsTo User
 - UserRoom (unread, isLastRoom)
-

@@ -28,7 +28,7 @@
 
 Cypress.Commands.add('login', (name = 'bot', password = 'letmein1') => {
   const url = Cypress.env('baseUrl')
-  const route = '/landing.html'
+  const route = '/'
   cy.visit(`${url}${route}`)
 
   cy.contains(/^log in$/i).click()
@@ -65,7 +65,7 @@ Cypress.Commands.add('profile', () => {
 })
 
 Cypress.Commands.add('curriculum', () => {
-  const url = Cypress.env('baseUrl')
+  const url = Cypress.env( 'baseUrl' )
   cy.contains('Curriculum').click()
   cy.url().should('include', '/curriculum')
 })

@@ -62,7 +62,8 @@ const NavBarComponent = ({ location }) => {
             to='/'
             className='nav-link dropdown-item'
             onClick={() => {
-              authClient.session.end(() => {
+              authClient.session.end( () => {
+                localStorage.clear()
                 window.location = '/'
               })
             }}

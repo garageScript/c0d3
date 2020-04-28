@@ -181,7 +181,7 @@ module.exports = {
       }).then(([challenge, lesson]) => {
         if (!author || !challenge || !lesson) return userSubmission
         const lessonName = lesson.chatUrl.split('/').pop()
-        const message = `@${author.username} has submitted a solution **_${challenge.title}_**. Click [here](<https://c0d3.com/teacher/${lesson.order}>) to review the code.`
+        const message = `@${author.username} has submitted a solution **_${challenge.title}_**. Click [here](<https://c0d3.com/teacher/${lesson.id}>) to review the code.`
         matterMostService.publicChannelMessage(lessonName, message)
         return userSubmission
       })
