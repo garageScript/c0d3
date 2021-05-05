@@ -1,6 +1,10 @@
 # C0D3.com
 This is the codebase for the website c0d3.com, which provides a platform for students to learn coding through solving challenges.
 
+## ARCHIVED
+
+This repo was archived due to being outdated. A new rewrite of the app is currently hosted under https://github.com/garageScript/c0d3-app, please direct issues and pull requests there.
+
 ## How to Start
 
 The following will describe how to setup your own development server.  You have the option to setup your development server on either your local machine, or within c0d3's server. The process described below works for both cases.
